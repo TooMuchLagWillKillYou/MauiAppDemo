@@ -4,9 +4,11 @@
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public TimeOnly Hour { get; set; }
         public int People { get; set; }
-        public int Table { get; set; }
+        /// <summary>
+        /// Must be a string to accept table names such as "F4"
+        /// </summary>
+        public string? Table { get; set; }
         public string? Notes { get; set; }
     }
 }

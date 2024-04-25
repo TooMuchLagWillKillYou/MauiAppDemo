@@ -21,14 +21,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Reservation reservation)
+        public IActionResult AddReservation(Reservation reservation)
         {
             try
             {
                 _context.Reservations.Add(reservation);
                 _context.SaveChanges();
 
-                return Created();
+                return CreatedAtAction(nameof(AddReservation), new { id = reservation.Id}, reservation);
             }
             catch (Exception)
             {
