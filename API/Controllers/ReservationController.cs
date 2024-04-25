@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("api/[controller]")]
     public class ReservationController : Controller
     {
         TableDbContext _context;
@@ -21,19 +22,54 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddReservation(Reservation reservation)
+        public async Task<IActionResult> AddReservation(Reservation reservation)
         {
+            _context.Reservations.Add(reservation);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(AddReservation), new { id = reservation.Id }, reservation);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditReservation(int id, Reservation editedReservation)
+        {
+            if (id != editedReservation.Id)
+                return BadRequest();
+
+            _context.Entry(editedReservation).State = EntityState.Modified;
+
             try
             {
-                _context.Reservations.Add(reservation);
-                _context.SaveChanges();
-
-                return CreatedAtAction(nameof(AddReservation), new { id = reservation.Id}, reservation);
+                await _context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (DbUpdateConcurrencyException)
             {
-                return BadRequest();
+                if (!ReservationExists(id))
+                    return NotFound();
+                else
+                    throw;
             }
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReservation(int id)
+        {
+            Reservation r = await _context.Reservations.FindAsync(id);
+
+            if (r == null)
+                return NotFound();
+
+            _context.Reservations.Remove(r);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool ReservationExists(long id)
+        {
+            return _context.Reservations.Any(e => e.Id == id);
         }
     }
 }
