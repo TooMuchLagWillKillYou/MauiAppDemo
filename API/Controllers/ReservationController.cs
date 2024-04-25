@@ -1,12 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace API.Controllers
 {
+    [ApiController]
+    [Route("controller")]
     public class ReservationController : Controller
     {
-        public IActionResult Index()
+        TableDbContext _context;
+
+        public ReservationController(TableDbContext context)
         {
-            return View();
+            _context = context;
+        }
+
+        [HttpGet("GetReservations")]
+        public IEnumerable<Reservation> GetReservations()
+        {
+            return _context.Reservations.ToList();
+        }
+
+        [HttpPost]
+        public IActionResult Add(Reservation reservation)
+        {
+            try
+            {
+                _context.Reservations.Add(reservation);
+                _context.SaveChanges();
+
+                return Created();
+            }
+            catch (Exception)
+            {
+                return BadRequest();
+            }
+
         }
     }
 }
