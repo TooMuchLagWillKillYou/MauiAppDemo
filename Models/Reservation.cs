@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public DateTime Hour { get; set; }
+        public TimeOnly Hour { get; set; }
         public int People { get; set; }
         public int Table { get; set; }
         public string? Notes { get; set; }
