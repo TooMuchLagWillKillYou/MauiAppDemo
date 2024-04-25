@@ -30,6 +30,7 @@ namespace API.Controllers
             return CreatedAtAction(nameof(AddReservation), new { id = reservation.Id }, reservation);
         }
 
+        // CONVERT TO PATCH??
         [HttpPut("{id}")]
         public async Task<IActionResult> EditReservation(int id, Reservation editedReservation)
         {
