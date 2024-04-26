@@ -8,12 +8,6 @@ import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
 import ReservationsTable from "./ReservationsTable";
 
 function App() {
-  // useEffect(() => {
-  //   fetch("https://localhost:7099/api/Reservation/GetReservations")
-  //     .then((response) => response.json())
-  //     .then((data) => console.log("data", data));
-  // });
-
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
