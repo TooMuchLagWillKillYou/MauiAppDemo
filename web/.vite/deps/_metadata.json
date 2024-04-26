@@ -1,0 +1,109 @@
+{
+  "hash": "391136c6",
+  "configHash": "7bb85771",
+  "lockfileHash": "ccaa8294",
+  "browserHash": "ce384349",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "7c0fdb4c",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "580948e1",
+      "needsInterop": true
+    },
+    "@mui/joy": {
+      "src": "../../node_modules/@mui/joy/index.js",
+      "file": "@mui_joy.js",
+      "fileHash": "87c88126",
+      "needsInterop": false
+    },
+    "@mui/joy/styles": {
+      "src": "../../node_modules/@mui/joy/styles/index.js",
+      "file": "@mui_joy_styles.js",
+      "fileHash": "299230d3",
+      "needsInterop": false
+    },
+    "@mui/joy/CssBaseline": {
+      "src": "../../node_modules/@mui/joy/CssBaseline/index.js",
+      "file": "@mui_joy_CssBaseline.js",
+      "fileHash": "88a95fd5",
+      "needsInterop": false
+    },
+    "@mui/icons-material/HomeRounded": {
+      "src": "../../node_modules/@mui/icons-material/HomeRounded.js",
+      "file": "@mui_icons-material_HomeRounded.js",
+      "fileHash": "2b43f537",
+      "needsInterop": true
+    },
+    "@mui/icons-material/ChevronRightRounded": {
+      "src": "../../node_modules/@mui/icons-material/ChevronRightRounded.js",
+      "file": "@mui_icons-material_ChevronRightRounded.js",
+      "fileHash": "354826ed",
+      "needsInterop": true
+    },
+    "@mui/joy/ListItemButton": {
+      "src": "../../node_modules/@mui/joy/ListItemButton/index.js",
+      "file": "@mui_joy_ListItemButton.js",
+      "fileHash": "727c7f62",
+      "needsInterop": false
+    },
+    "@mui/icons-material/BrightnessAutoRounded": {
+      "src": "../../node_modules/@mui/icons-material/BrightnessAutoRounded.js",
+      "file": "@mui_icons-material_BrightnessAutoRounded.js",
+      "fileHash": "907000f3",
+      "needsInterop": true
+    },
+    "@mui/icons-material": {
+      "src": "../../node_modules/@mui/icons-material/esm/index.js",
+      "file": "@mui_icons-material.js",
+      "fileHash": "4ff2d14a",
+      "needsInterop": false
+    },
+    "@mui/joy/IconButton": {
+      "src": "../../node_modules/@mui/joy/IconButton/index.js",
+      "file": "@mui_joy_IconButton.js",
+      "fileHash": "0bb9d70a",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-RM7A454J": {
+      "file": "chunk-RM7A454J.js"
+    },
+    "chunk-NZSDOL3G": {
+      "file": "chunk-NZSDOL3G.js"
+    },
+    "chunk-U6GQ4ZSJ": {
+      "file": "chunk-U6GQ4ZSJ.js"
+    },
+    "chunk-LN3PE63S": {
+      "file": "chunk-LN3PE63S.js"
+    },
+    "chunk-JOAIAL5Q": {
+      "file": "chunk-JOAIAL5Q.js"
+    },
+    "chunk-TQQ2ZAVS": {
+      "file": "chunk-TQQ2ZAVS.js"
+    },
+    "chunk-BU3PPHQO": {
+      "file": "chunk-BU3PPHQO.js"
+    },
+    "chunk-6CMDHOK4": {
+      "file": "chunk-6CMDHOK4.js"
+    },
+    "chunk-HQ7Y7MN3": {
+      "file": "chunk-HQ7Y7MN3.js"
+    },
+    "chunk-O34IQWEA": {
+      "file": "chunk-O34IQWEA.js"
+    },
+    "chunk-O2F6JIHC": {
+      "file": "chunk-O2F6JIHC.js"
+    }
+  }
+}
