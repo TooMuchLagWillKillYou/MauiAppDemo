@@ -1,6 +1,5 @@
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace API
 {
@@ -8,6 +7,7 @@ namespace API
     {
         public static void Main(string[] args)
         {
+            var AllowSpecificOrigins = "_AllowSpecificOrigins";
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -16,8 +16,16 @@ namespace API
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<TableDbContext>(options => 
+            builder.Services.AddDbContext<TableDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection")));
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("http://localhost:5173");
+                                  });
+            });
 
             var app = builder.Build();
 
@@ -30,8 +38,9 @@ namespace API
 
             app.UseHttpsRedirection();
 
+            app.UseCors(AllowSpecificOrigins);
+            
             app.UseAuthorization();
-
 
             app.MapControllers();
 

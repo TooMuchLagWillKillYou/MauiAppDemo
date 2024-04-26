@@ -5,3 +5,6 @@ Next steps:
 1. convertire EditReservation da HttpPut a Http Patch?
 2. come integro un'applicazione frontend in React?
 3. come connetto l'app frontend con le API?
+
+Todo:
+1. controllare di aver abilitato correttamente in CORS
