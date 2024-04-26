@@ -13,6 +13,7 @@ import {
 } from "@mui/joy";
 import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
+import { ReservationAPI } from "./apis/ReservationAPI";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -70,12 +71,9 @@ export default function ReservationsTable(props) {
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
-    fetch("https://localhost:7099/api/Reservation/GetReservations")
-      .then((response) => response.json())
-      .then((data) => {
-        setReservations(data);
-        console.log(data);
-      });
+    ReservationAPI.getAll().then((data) => {
+      setReservations(data);
+    });
   }, []);
 
   return (
