@@ -14,6 +14,7 @@ import {
 import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import { ReservationAPI } from "./apis/ReservationAPI";
+import AddReservationForm from "./AddReservationForm";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -153,6 +154,7 @@ export default function ReservationsTable(props) {
         </thead>
 
         <tbody>
+          <AddReservationForm />
           {reservations.length > 0
             ? stableSort(reservations, getComparator(order, "id")).map(
                 (row) => (
