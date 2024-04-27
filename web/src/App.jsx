@@ -1,21 +1,13 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import React from "react";
 import Sidebar from "./Sidebar";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
-import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import HomeRounded from "@mui/icons-material/HomeRounded";
+import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
+import ReservationsTable from "./ReservationsTable";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  // useEffect(() => {
-  //   fetch("https://localhost:7099/api/Reservation/GetReservations")
-  //     .then((response) => response.json())
-  //     .then((data) => console.log("data", data));
-  // });
-
   return (
     <CssVarsProvider disableTransitionOnChange>
       <CssBaseline />
@@ -44,7 +36,7 @@ function App() {
             <Breadcrumbs
               size="sm"
               aria-label="breadcrumbs"
-              separator={<ChevronRightRoundedIcon fontSize="sm" />}
+              separator={<ChevronRightRounded fontSize="sm" />}
               sx={{ pl: 0 }}
             >
               <Link
@@ -53,7 +45,7 @@ function App() {
                 href="#some-link"
                 aria-label="Home"
               >
-                <HomeRoundedIcon />
+                <HomeRounded />
               </Link>
               <Link
                 underline="hover"
@@ -84,6 +76,7 @@ function App() {
               Prenotazioni
             </Typography>
           </Box>
+          <ReservationsTable />
         </Box>
       </Box>
     </CssVarsProvider>

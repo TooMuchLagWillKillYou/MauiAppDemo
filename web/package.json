@@ -15,8 +15,10 @@
     "@fontsource/inter": "^5.0.18",
     "@mui/icons-material": "^5.15.15",
     "@mui/joy": "^5.0.0-beta.36",
+    "axios": "^1.6.8",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-imask": "^7.6.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
