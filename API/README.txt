@@ -8,3 +8,6 @@ Next steps:
 
 Todo:
 1. controllare di aver abilitato correttamente in CORS
+2. validazione corretta degli input dell'utente: 
+	- il campo 'People' deve essere di tipo numerico e non accettare valori inferiori a 1
+	- il campo 'Table' dovrebbe suggerire la lista di tavoli liberi o dovrebbe controllare che vengano inseriti solamente dei valori validi (magari basandosi sulla mappa?)
