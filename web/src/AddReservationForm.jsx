@@ -6,35 +6,15 @@ import { ReservationAPI } from "./apis/ReservationAPI";
 
 export default function AddReservationForm(props) {
   const [newReservation, setNewReservation] = useState({});
-  function createReservation(event) {
-    // ReservationAPI.create(newReservation).then((response) =>
-    //   console.log(response)
-    // );
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Accept", "application/json");
-    myHeaders.append("Access-Control-Allow-Origin", "https://localhost:44387");
-
-    const raw = JSON.stringify({
+  function createReservation() {
+    ReservationAPI.create({
       id: 0,
-      name: "Ciao",
+      name: "Hello",
       people: 5,
       dateTime: "2024-04-28T15:02:09.712Z",
       table: "4",
       notes: "",
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-    };
-
-    fetch("https://localhost:44387/api/Reservation", requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result));
-    // .catch((error) => console.error(error));
+    }).then((response) => console.log(response));
   }
   function setReservationProperty(event) {
     setNewReservation({

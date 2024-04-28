@@ -3,12 +3,6 @@ import axios from "axios";
 export const api = axios.create({
   //   withCredentials: true,
   baseURL: "https://localhost:44387/api",
-  // headers: {
-  //   "Access-Control-Allow-Origin": "*",
-  //   //  "Access-Control-Allow-Headers":
-  //   //    "Origin, X-Requested-With, Content-Type, Accept",
-  //   "Content-Type": "application/json",
-  // },
 });
 
 // defining a custom error handler for all APIs
