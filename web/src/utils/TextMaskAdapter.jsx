@@ -14,7 +14,7 @@ export const TextMaskAdapter = React.forwardRef(function TextMaskAdapter(
         "#": /[1-9]/,
       }}
       inputRef={ref}
-      onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      onAccept={(value) => onChange({ target: { id: props.id, value } })}
       overwrite
     />
   );
