@@ -12,3 +12,6 @@ Todo:
 	- il campo 'People' deve essere di tipo numerico e non accettare valori inferiori a 1
 	- il campo 'Table' dovrebbe suggerire la lista di tavoli liberi o dovrebbe controllare che vengano inseriti solamente dei valori validi (magari basandosi sulla mappa?)
 	- il campo 'DateTime' deve accettare valori da 0 a 24 per le ore e da 0 a 60 per i minuti
+
+Resources:
+1. CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
