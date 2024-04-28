@@ -26,9 +26,12 @@ export const ReservationAPI = {
   },
   create: async function (newReservation, cancel = false) {
     await api.request({
-      url: `/Reservation`,
       method: "POST",
-      data: newReservation,
+      url: `/Reservation`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(newReservation),
       signal: cancel
         ? cancelApiObject[this.create.name].handleRequestCancellation().signal
         : undefined,
