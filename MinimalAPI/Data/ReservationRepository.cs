@@ -23,7 +23,7 @@ namespace MinimalAPI.Data
             var entity = await _context.Reservations.SingleOrDefaultAsync(r => r.Id == id);
 
             if (entity == null)
-                return null;
+                throw new ArgumentException($"Could not get reservation {id}");
 
             return EntityToDto(entity);
         }

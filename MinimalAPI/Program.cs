@@ -41,6 +41,9 @@ namespace MinimalAPI
             app.UseAuthorization();
 
             app.MapGet("/reservations", (IReservationRepository repository) => repository.GetAll());
+
+            app.MapGet("/reservation/{id:int}", async (int id, IReservationRepository repository) => 
+                await repository.Get(id));
            
             app.MapPost("/reservations", async ([FromBody]ReservationDto dto, IReservationRepository repository) =>
             {
