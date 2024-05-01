@@ -14,7 +14,9 @@ import {
 import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import AddReservationForm from "./AddReservationForm";
-import useFetchReservations from "./hooks/reservationHooks";
+import useFetchReservations, {
+  useDeleteReservation,
+} from "./hooks/reservationHooks";
 import { dateTimeFormatter } from "./config";
 import ApiStatus from "./apiStatus";
 
@@ -50,7 +52,13 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function RowMenu() {
+function RowMenu({ id }) {
+  const deleteReservationMutation = useDeleteReservation();
+  const deleteRow = () => {
+    console.log("hit");
+    deleteReservationMutation.mutate(id);
+  };
+
   return (
     <Dropdown>
       <MenuButton
@@ -62,7 +70,9 @@ function RowMenu() {
       <Menu size="sm" sx={{ minWidth: 140 }}>
         <MenuItem>Modifica</MenuItem>
         <Divider />
-        <MenuItem color="danger">Cancella</MenuItem>
+        <MenuItem color="danger" onClick={deleteRow}>
+          Cancella
+        </MenuItem>
       </Menu>
     </Dropdown>
   );
@@ -198,7 +208,7 @@ export default function ReservationsTable() {
                       <Typography level="body-xs">{row.notes}</Typography>
                     </td>
                     <td>
-                      <RowMenu />
+                      <RowMenu id={row.id} />
                     </td>
                   </tr>
                 ))

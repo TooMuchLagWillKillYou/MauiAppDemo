@@ -54,7 +54,7 @@ const useUpdateReservation = () => {
 const useDeleteReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/reservations`, id),
+    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/reservations/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],

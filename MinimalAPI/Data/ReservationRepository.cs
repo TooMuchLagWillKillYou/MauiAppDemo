@@ -60,7 +60,7 @@ namespace MinimalAPI.Data
                 throw new ArgumentException($"Could not delete reservation {id}");
 
             _context.Reservations.Remove(entity);
-
+            await _context.SaveChangesAsync();
         }
 
         private static void DtoToEntity(ReservationDto d, ReservationEntity e)
