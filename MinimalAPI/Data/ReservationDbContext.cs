@@ -4,6 +4,8 @@ namespace MinimalAPI.Data
 {
     public class ReservationDbContext : DbContext
     {
+        public ReservationDbContext(DbContextOptions<ReservationDbContext> options) : base(options) { }
+        
         public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
