@@ -1,23 +1,10 @@
 import React, { useState } from "react";
-import {
-  Table,
-  Checkbox,
-  Link,
-  Typography,
-  Dropdown,
-  Menu,
-  MenuButton,
-  MenuItem,
-  Divider,
-  Sheet,
-} from "@mui/joy";
-import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
-import IconButton from "@mui/joy/IconButton";
-import useFetchReservations, {
-  useDeleteReservation,
-} from "../hooks/reservationHooks";
+import { Table, Checkbox, Link, Typography, Sheet } from "@mui/joy";
+import { ArrowDropDown } from "@mui/icons-material";
+import useFetchReservations from "../hooks/reservationHooks";
 import { dateTimeFormatter } from "../config";
 import ApiStatus from "../apiStatus";
+import RowMenu from "./RowMenu";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -51,31 +38,40 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-function RowMenu({ id }) {
-  const deleteReservationMutation = useDeleteReservation();
-  const deleteRow = () => {
-    console.log("hit");
-    deleteReservationMutation.mutate(id);
-  };
+// function RowMenu({ id }) {
+//   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+//   const deleteReservationMutation = useDeleteReservation();
+//   const deleteRow = () => {
+//     deleteReservationMutation.mutate(id);
+//   };
 
-  return (
-    <Dropdown>
-      <MenuButton
-        slots={{ root: IconButton }}
-        slotProps={{ root: { variant: "plain", color: "neutral", size: "sm" } }}
-      >
-        <MoreHorizRounded />
-      </MenuButton>
-      <Menu size="sm" sx={{ minWidth: 140 }}>
-        <MenuItem>Modifica</MenuItem>
-        <Divider />
-        <MenuItem color="danger" onClick={deleteRow}>
-          Cancella
-        </MenuItem>
-      </Menu>
-    </Dropdown>
-  );
-}
+//   return (
+//     <React.Fragment>
+//       <Dropdown>
+//         <MenuButton
+//           slots={{ root: IconButton }}
+//           slotProps={{
+//             root: { variant: "plain", color: "neutral", size: "sm" },
+//           }}
+//         >
+//           <MoreHorizRounded />
+//         </MenuButton>
+//         <Menu size="sm" sx={{ minWidth: 140 }}>
+//           <MenuItem>Modifica</MenuItem>
+//           <Divider />
+//           <MenuItem color="danger" onClick={() => setDeleteModalIsOpen(true)}>
+//             Cancella
+//           </MenuItem>
+//         </Menu>
+//       </Dropdown>
+//       <DeleteModal
+//         isOpen={deleteModalIsOpen}
+//         setIsOpen={setDeleteModalIsOpen}
+//         onClick={deleteRow}
+//       />
+//     </React.Fragment>
+//   );
+// }
 
 export default function ReservationsTable() {
   const [selected, setSelected] = useState([]);
