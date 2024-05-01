@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MinimalAPI.Data;
 using MinimalAPI.Dtos;
@@ -18,7 +19,7 @@ namespace MinimalAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddCors();
-            builder.Services.AddDbContext<ReservationDbContext>(opt => 
+            builder.Services.AddDbContext<ReservationDbContext>(opt =>
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
@@ -31,7 +32,7 @@ namespace MinimalAPI
                 app.UseSwaggerUI();
             }
 
-            app.UseCors(policyConfig => 
+            app.UseCors(policyConfig =>
                 policyConfig.WithOrigins("http://localhost:3000")
                     .AllowAnyHeader().AllowAnyMethod());
 
@@ -40,6 +41,33 @@ namespace MinimalAPI
             app.UseAuthorization();
 
             app.MapGet("/reservations", (IReservationRepository repository) => repository.GetAll());
+           
+            app.MapPost("/reservations", async ([FromBody]ReservationDto dto, IReservationRepository repository) =>
+            {
+                var newReservation = repository.Add(dto);
+                return Results.Created();
+            }).Produces<ReservationDto>(StatusCodes.Status201Created);
+
+            app.MapPut("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
+            {
+                if (await repository.Get(dto.id) == null)
+                {
+                    return Results.Problem($"Reservation {dto.id} not found", statusCode: StatusCodes.Status404NotFound);
+                }
+                var updatedReservation = await repository.Update(dto);
+                return Results.Ok(updatedReservation);
+            }).ProducesProblem(StatusCodes.Status404NotFound).Produces<ReservationDto>(StatusCodes.Status204NoContent);
+
+            app.MapDelete("/reservations/{id:int}", async (int id, IReservationRepository repository) =>
+            {
+                if (await repository.Get(id) == null)
+                {
+                    return Results.Problem($"Reservation {id} not found", statusCode: StatusCodes.Status404NotFound);
+                }
+
+                await repository.Delete(id);
+                return Results.Ok();
+            }).ProducesProblem(StatusCodes.Status404NotFound).Produces(StatusCodes.Status200OK);
 
             app.Run();
         }
