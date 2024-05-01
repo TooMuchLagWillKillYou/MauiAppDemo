@@ -17,6 +17,7 @@ namespace MinimalAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddCors();
             builder.Services.AddDbContext<ReservationDbContext>(opt => 
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
@@ -29,6 +30,10 @@ namespace MinimalAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseCors(policyConfig => 
+                policyConfig.WithOrigins("http://localhost:3000")
+                    .AllowAnyHeader().AllowAnyMethod());
 
             app.UseHttpsRedirection();
 
