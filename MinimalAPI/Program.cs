@@ -44,7 +44,7 @@ namespace MinimalAPI
            
             app.MapPost("/reservations", async ([FromBody]ReservationDto dto, IReservationRepository repository) =>
             {
-                var newReservation = repository.Add(dto);
+                var newReservation = await repository.Add(dto);
                 return Results.Created();
             }).Produces<ReservationDto>(StatusCodes.Status201Created);
 
