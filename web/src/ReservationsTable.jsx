@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Table,
   Checkbox,
@@ -13,8 +13,8 @@ import {
 } from "@mui/joy";
 import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
-import { ReservationAPI } from "./apis/ReservationAPI";
 import AddReservationForm from "./AddReservationForm";
+import useFetchReservations from "./hooks/reservationHooks";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,13 +69,7 @@ function RowMenu() {
 export default function ReservationsTable(props) {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("desc");
-  const [reservations, setReservations] = useState([]);
-
-  useEffect(() => {
-    ReservationAPI.getAll().then((data) => {
-      setReservations(data);
-    });
-  }, []);
+  const reservations = useFetchReservations();
 
   return (
     <Sheet

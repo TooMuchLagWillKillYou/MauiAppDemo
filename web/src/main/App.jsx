@@ -1,11 +1,11 @@
 import React from "react";
-import Sidebar from "./Sidebar";
+import Sidebar from "../Sidebar";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import HomeRounded from "@mui/icons-material/HomeRounded";
 import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
-import ReservationsTable from "./ReservationsTable";
+import ReservationsTable from "../ReservationsTable";
 
 function App() {
   return (
