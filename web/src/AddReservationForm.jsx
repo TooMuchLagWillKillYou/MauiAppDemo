@@ -1,86 +1,111 @@
 import React, { useState } from "react";
-import { Input, IconButton } from "@mui/joy";
-import { TextMaskAdapter } from "./utils/TextMaskAdapter";
-import Add from "@mui/icons-material/Add";
-import { ReservationAPI } from "./apis/ReservationAPI";
+import { Box, Button, Input, FormControl, FormLabel, Stack } from "@mui/joy";
+import AddIcon from "@mui/icons-material/Add";
+import { useAddReservation } from "./hooks/reservationHooks";
 
 export default function AddReservationForm(props) {
-  const [newReservation, setNewReservation] = useState({});
-  function createReservation() {
-    ReservationAPI.create({
-      id: 0,
-      name: "Hello",
-      people: 5,
-      dateTime: "2024-04-28T15:02:09.712Z",
-      table: "4",
-      notes: "",
-    }).then((response) => console.log(response));
-  }
-  function setReservationProperty(event) {
-    setNewReservation({
-      ...newReservation,
-      [event.target.id]: event.target.value,
-    });
-  }
+  const [reservation, setReservation] = useState({});
+  const addReservationMutation = useAddReservation();
+
+  const submit = (e) => {
+    e.preventDefault();
+    addReservationMutation.mutate(reservation);
+  };
 
   return (
-    <tr>
-      <td style={{ textAlign: "center", width: 120 }}></td>
-      <td>
-        <Input
-          id="name"
-          onChange={setReservationProperty.bind(this)}
-          placeholder="Es: Mario"
-          variant="plain"
-          size="sm"
-          required
-        />
-      </td>
-      <td>
-        <Input
-          id="dateTime"
-          onChange={setReservationProperty.bind(this)}
-          placeholder="20:00"
-          variant="plain"
-          size="sm"
-          required
-          slotProps={{ input: { component: TextMaskAdapter } }}
-        />
-      </td>
-      <td>
-        <Input
-          id="people"
-          onChange={setReservationProperty.bind(this)}
-          variant="plain"
-          size="sm"
-          required
-        />
-      </td>
-      <td>
-        <Input
-          id="table"
-          onChange={setReservationProperty.bind(this)}
-          variant="plain"
-          size="sm"
-        />
-      </td>
-      <td>
-        <Input
-          id="notes"
-          onChange={setReservationProperty.bind(this)}
-          variant="plain"
-          size="sm"
-        />
-      </td>
-      <td>
-        <IconButton
-          variant="solid"
-          color="primary"
-          onClick={() => createReservation()}
-        >
-          <Add />
-        </IconButton>
-      </td>
-    </tr>
+    <Box
+      className="SearchAndFilters-tabletUp"
+      sx={{
+        borderRadius: "sm",
+        py: 2,
+        display: { xs: "none", sm: "flex" },
+        flexWrap: "wrap",
+        gap: 1.5,
+        "& > *": {
+          minWidth: { xs: "120px", md: "160px" },
+        },
+      }}
+    >
+      <form style={{ flexGrow: 1 }}>
+        <Stack direction="row" spacing={2}>
+          <FormControl>
+            <FormLabel>Nome</FormLabel>
+            <Input
+              placeholder="Es: Mario Rossi"
+              variant="plain"
+              onChange={(e) =>
+                setReservation({ ...reservation, name: e.target.value })
+              }
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Ora</FormLabel>
+            <Input
+              type="time"
+              variant="plain"
+              onChange={(e) =>
+                setReservation({
+                  ...reservation,
+                  hour: new Date(e.target.value),
+                })
+              }
+            />
+          </FormControl>
+          <FormControl
+            sx={{
+              width: 85,
+            }}
+          >
+            <FormLabel>Persone</FormLabel>
+            <Input
+              type="number"
+              variant="plain"
+              slotProps={{
+                input: {
+                  min: 1,
+                  step: 1,
+                },
+              }}
+              onChange={(e) =>
+                setReservation({ ...reservation, people: e.target.value })
+              }
+            />
+          </FormControl>
+          <FormControl
+            sx={{
+              width: 85,
+            }}
+          >
+            <FormLabel>Tavolo</FormLabel>
+            <Input
+              variant="plain"
+              onChange={(e) =>
+                setReservation({ ...reservation, table: e.target.value })
+              }
+            />
+          </FormControl>
+          <FormControl sx={{ flexGrow: 1 }}>
+            <FormLabel>Note</FormLabel>
+            <Input
+              placeholder="Es: il cliente chiede il tavolo 4"
+              variant="plain"
+              onChange={(e) =>
+                setReservation({ ...reservation, notes: e.target.value })
+              }
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            color="primary"
+            startDecorator={<AddIcon />}
+            size="md"
+            sx={{ placeSelf: "flex-end" }}
+            onClick={submit}
+          >
+            Aggiungi
+          </Button>
+        </Stack>
+      </form>
+    </Box>
   );
 }

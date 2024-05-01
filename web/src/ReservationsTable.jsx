@@ -78,125 +78,134 @@ export default function ReservationsTable() {
   }
 
   return (
-    <Sheet
-      className="OrderTableContainer"
-      variant="outlined"
-      sx={{
-        display: { xs: "none", sm: "initial" },
-        width: "100%",
-        borderRadius: "sm",
-        flexShrink: 1,
-        overflow: "auto",
-        minHeight: 0,
-      }}
-    >
-      <Table
-        aria-labelledby="tableTitle"
-        stickyHeader
-        hoverRow
+    <React.Fragment>
+      <AddReservationForm />
+      <Sheet
+        className="OrderTableContainer"
+        variant="outlined"
         sx={{
-          "--TableCell-headBackground": "var(--joy-palette-background-level1)",
-          "--Table-headerUnderlineThickness": "1px",
-          "--TableRow-hoverBackground": "var(--joy-palette-background-level1)",
-          "--TableCell-paddingY": "4px",
-          "--TableCell-paddingX": "8px",
+          display: { xs: "none", sm: "initial" },
+          width: "100%",
+          borderRadius: "sm",
+          flexShrink: 1,
+          overflow: "auto",
+          minHeight: 0,
         }}
       >
-        <thead>
-          <tr>
-            <th style={{ width: 48, textAlign: "center", padding: "12px 6px" }}>
-              <Checkbox
-                size="sm"
-                indeterminate={
-                  selected.length > 0 && selected.length !== data.length
-                }
-                checked={selected.length === data.length}
-                onChange={(event) => {
-                  setSelected(
-                    event.target.checked ? data.map((row) => row.id) : []
-                  );
-                }}
-                color={
-                  selected.length > 0 || selected.length === data.length
-                    ? "primary"
-                    : undefined
-                }
-                sx={{ verticalAlign: "text-bottom" }}
-              />
-            </th>
-            <th style={{ width: 120, padding: "12px 6px" }}>
-              <Link
-                underline="none"
-                color="primary"
-                component="button"
-                onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
-                fontWeight="lg"
-                endDecorator={<ArrowDropDown />}
-                sx={{
-                  "& svg": {
-                    transition: "0.2s",
-                    transform:
-                      order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
-                  },
-                }}
+        <Table
+          aria-labelledby="tableTitle"
+          stickyHeader
+          hoverRow
+          sx={{
+            "--TableCell-headBackground":
+              "var(--joy-palette-background-level1)",
+            "--Table-headerUnderlineThickness": "1px",
+            "--TableRow-hoverBackground":
+              "var(--joy-palette-background-level1)",
+            "--TableCell-paddingY": "4px",
+            "--TableCell-paddingX": "8px",
+          }}
+        >
+          <thead>
+            <tr>
+              <th
+                style={{ width: 48, textAlign: "center", padding: "12px 6px" }}
               >
-                Nome
-              </Link>
-            </th>
-            <th style={{ width: 100, padding: "12px 6px" }}>Ora</th>
-            <th style={{ width: 100, padding: "12px 6px" }}>Persone</th>
-            <th style={{ width: 100, padding: "12px 6px" }}>Tavolo</th>
-            <th style={{ width: 220, padding: "12px 6px" }}>Note</th>
-            <th style={{ width: 140, padding: "12px 6px" }}> </th>
-          </tr>
-        </thead>
+                <Checkbox
+                  size="sm"
+                  indeterminate={
+                    selected.length > 0 && selected.length !== data.length
+                  }
+                  checked={selected.length === data.length}
+                  onChange={(event) => {
+                    setSelected(
+                      event.target.checked ? data.map((row) => row.id) : []
+                    );
+                  }}
+                  color={
+                    selected.length > 0 || selected.length === data.length
+                      ? "primary"
+                      : undefined
+                  }
+                  sx={{ verticalAlign: "text-bottom" }}
+                />
+              </th>
+              <th style={{ width: 120, padding: "12px 6px" }}>
+                <Link
+                  underline="none"
+                  color="primary"
+                  component="button"
+                  onClick={() => setOrder(order === "asc" ? "desc" : "asc")}
+                  fontWeight="lg"
+                  endDecorator={<ArrowDropDown />}
+                  sx={{
+                    "& svg": {
+                      transition: "0.2s",
+                      transform:
+                        order === "desc" ? "rotate(0deg)" : "rotate(180deg)",
+                    },
+                  }}
+                >
+                  Nome
+                </Link>
+              </th>
+              <th style={{ width: 100, padding: "12px 6px" }}>Ora</th>
+              <th style={{ width: 100, padding: "12px 6px" }}>Persone</th>
+              <th style={{ width: 100, padding: "12px 6px" }}>Tavolo</th>
+              <th style={{ width: 220, padding: "12px 6px" }}>Note</th>
+              <th style={{ width: 140, padding: "12px 6px" }}> </th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <AddReservationForm />
-          {data.length > 0
-            ? stableSort(data, getComparator(order, "id")).map((row) => (
-                <tr key={row.id}>
-                  <td style={{ textAlign: "center", width: 120 }}>
-                    <Checkbox
-                      size="sm"
-                      checked={selected.includes(row.id)}
-                      color={selected.includes(row.id) ? "primary" : undefined}
-                      onChange={(event) => {
-                        setSelected((ids) =>
-                          event.target.checked
-                            ? ids.concat(row.id)
-                            : ids.filter((itemId) => itemId !== row.id)
-                        );
-                      }}
-                      slotProps={{ checkbox: { sx: { textAlign: "left" } } }}
-                      sx={{ verticalAlign: "text-bottom" }}
-                    />
-                  </td>
-                  <td>
-                    <Typography level="body-xs">{row.name}</Typography>
-                  </td>
-                  <td>
-                    <Typography level="body-xs">
-                      {dateTimeFormatter.format(row.Hour)}
-                    </Typography>
-                  </td>
-                  <td>
-                    <Typography level="body-xs">{row.people}</Typography>
-                  </td>
-                  <td>
-                    <Typography level="body-xs">{row.table}</Typography>
-                  </td>
-                  <td>
-                    <Typography level="body-xs">{row.notes}</Typography>
-                  </td>
-                  <td>
-                    <RowMenu />
-                  </td>
-                </tr>
-              ))
-            : null}
-        </tbody>
-      </Table>
-    </Sheet>
+          <tbody>
+            {/* <AddReservationForm /> */}
+            {data.length > 0
+              ? stableSort(data, getComparator(order, "id")).map((row) => (
+                  <tr key={row.id}>
+                    <td style={{ textAlign: "center", width: 120 }}>
+                      <Checkbox
+                        size="sm"
+                        checked={selected.includes(row.id)}
+                        color={
+                          selected.includes(row.id) ? "primary" : undefined
+                        }
+                        onChange={(event) => {
+                          setSelected((ids) =>
+                            event.target.checked
+                              ? ids.concat(row.id)
+                              : ids.filter((itemId) => itemId !== row.id)
+                          );
+                        }}
+                        slotProps={{ checkbox: { sx: { textAlign: "left" } } }}
+                        sx={{ verticalAlign: "text-bottom" }}
+                      />
+                    </td>
+                    <td>
+                      <Typography level="body-xs">{row.name}</Typography>
+                    </td>
+                    <td>
+                      <Typography level="body-xs">
+                        {dateTimeFormatter.format(row.Hour)}
+                      </Typography>
+                    </td>
+                    <td>
+                      <Typography level="body-xs">{row.people}</Typography>
+                    </td>
+                    <td>
+                      <Typography level="body-xs">{row.table}</Typography>
+                    </td>
+                    <td>
+                      <Typography level="body-xs">{row.notes}</Typography>
+                    </td>
+                    <td>
+                      <RowMenu />
+                    </td>
+                  </tr>
+                ))
+              : null}
+          </tbody>
+        </Table>
+      </Sheet>
+    </React.Fragment>
   );
 }
