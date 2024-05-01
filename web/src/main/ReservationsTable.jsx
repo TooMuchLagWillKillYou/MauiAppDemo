@@ -13,12 +13,11 @@ import {
 } from "@mui/joy";
 import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
-import AddReservationForm from "./AddReservationForm";
 import useFetchReservations, {
   useDeleteReservation,
-} from "./hooks/reservationHooks";
-import { dateTimeFormatter } from "./config";
-import ApiStatus from "./apiStatus";
+} from "../hooks/reservationHooks";
+import { dateTimeFormatter } from "../config";
+import ApiStatus from "../apiStatus";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -89,7 +88,6 @@ export default function ReservationsTable() {
 
   return (
     <React.Fragment>
-      <AddReservationForm />
       <Sheet
         className="OrderTableContainer"
         variant="outlined"

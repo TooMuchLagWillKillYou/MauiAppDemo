@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Button, Input, FormControl, FormLabel, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
-import { useAddReservation } from "./hooks/reservationHooks";
+import { useAddReservation } from "../hooks/reservationHooks";
 
 export default function AddReservationForm(props) {
   const [reservation, setReservation] = useState({});
