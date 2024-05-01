@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using MinimalAPI.Data;
+using MinimalAPI.Dtos;
 
 namespace MinimalAPI
 {
@@ -18,6 +19,7 @@ namespace MinimalAPI
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<ReservationDbContext>(opt => 
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 
             var app = builder.Build();
 
@@ -32,8 +34,7 @@ namespace MinimalAPI
 
             app.UseAuthorization();
 
-
-            app.MapGet("/reservations", (ReservationDbContext context) => context.Reservations);
+            app.MapGet("/reservations", (IReservationRepository repository) => repository.GetAll());
 
             app.Run();
         }
