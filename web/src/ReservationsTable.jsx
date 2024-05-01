@@ -15,6 +15,8 @@ import { ArrowDropDown, MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import AddReservationForm from "./AddReservationForm";
 import useFetchReservations from "./hooks/reservationHooks";
+import { dateTimeFormatter } from "./config";
+import ApiStatus from "./apiStatus";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -66,10 +68,14 @@ function RowMenu() {
   );
 }
 
-export default function ReservationsTable(props) {
+export default function ReservationsTable() {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("desc");
-  const reservations = useFetchReservations();
+  const { data, status, isSuccess } = useFetchReservations();
+
+  if (!isSuccess) {
+    return <ApiStatus status={status} />;
+  }
 
   return (
     <Sheet
@@ -102,18 +108,16 @@ export default function ReservationsTable(props) {
               <Checkbox
                 size="sm"
                 indeterminate={
-                  selected.length > 0 && selected.length !== reservations.length
+                  selected.length > 0 && selected.length !== data.length
                 }
-                checked={selected.length === reservations.length}
+                checked={selected.length === data.length}
                 onChange={(event) => {
                   setSelected(
-                    event.target.checked
-                      ? reservations.map((row) => row.id)
-                      : []
+                    event.target.checked ? data.map((row) => row.id) : []
                   );
                 }}
                 color={
-                  selected.length > 0 || selected.length === reservations.length
+                  selected.length > 0 || selected.length === data.length
                     ? "primary"
                     : undefined
                 }
@@ -149,52 +153,47 @@ export default function ReservationsTable(props) {
 
         <tbody>
           <AddReservationForm />
-          {reservations.length > 0
-            ? stableSort(reservations, getComparator(order, "id")).map(
-                (row) => (
-                  <tr key={row.id}>
-                    <td style={{ textAlign: "center", width: 120 }}>
-                      <Checkbox
-                        size="sm"
-                        checked={selected.includes(row.id)}
-                        color={
-                          selected.includes(row.id) ? "primary" : undefined
-                        }
-                        onChange={(event) => {
-                          setSelected((ids) =>
-                            event.target.checked
-                              ? ids.concat(row.id)
-                              : ids.filter((itemId) => itemId !== row.id)
-                          );
-                        }}
-                        slotProps={{ checkbox: { sx: { textAlign: "left" } } }}
-                        sx={{ verticalAlign: "text-bottom" }}
-                      />
-                    </td>
-                    <td>
-                      <Typography level="body-xs">{row.name}</Typography>
-                    </td>
-                    <td>
-                      <Typography level="body-xs">
-                        {new Date(row.dateTime).getHours()}:
-                        {new Date(row.dateTime).getMinutes()}
-                      </Typography>
-                    </td>
-                    <td>
-                      <Typography level="body-xs">{row.people}</Typography>
-                    </td>
-                    <td>
-                      <Typography level="body-xs">{row.table}</Typography>
-                    </td>
-                    <td>
-                      <Typography level="body-xs">{row.notes}</Typography>
-                    </td>
-                    <td>
-                      <RowMenu />
-                    </td>
-                  </tr>
-                )
-              )
+          {data.length > 0
+            ? stableSort(data, getComparator(order, "id")).map((row) => (
+                <tr key={row.id}>
+                  <td style={{ textAlign: "center", width: 120 }}>
+                    <Checkbox
+                      size="sm"
+                      checked={selected.includes(row.id)}
+                      color={selected.includes(row.id) ? "primary" : undefined}
+                      onChange={(event) => {
+                        setSelected((ids) =>
+                          event.target.checked
+                            ? ids.concat(row.id)
+                            : ids.filter((itemId) => itemId !== row.id)
+                        );
+                      }}
+                      slotProps={{ checkbox: { sx: { textAlign: "left" } } }}
+                      sx={{ verticalAlign: "text-bottom" }}
+                    />
+                  </td>
+                  <td>
+                    <Typography level="body-xs">{row.name}</Typography>
+                  </td>
+                  <td>
+                    <Typography level="body-xs">
+                      {dateTimeFormatter.format(row.Hour)}
+                    </Typography>
+                  </td>
+                  <td>
+                    <Typography level="body-xs">{row.people}</Typography>
+                  </td>
+                  <td>
+                    <Typography level="body-xs">{row.table}</Typography>
+                  </td>
+                  <td>
+                    <Typography level="body-xs">{row.notes}</Typography>
+                  </td>
+                  <td>
+                    <RowMenu />
+                  </td>
+                </tr>
+              ))
             : null}
         </tbody>
       </Table>
