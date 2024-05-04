@@ -40,10 +40,10 @@ namespace MinimalAPI.Data
 
         public async Task<ReservationDto> Update(ReservationDto reservation)
         {
-            var entity = await _context.Reservations.FindAsync(reservation.id);
+            var entity = await _context.Reservations.FindAsync(reservation.Id);
 
             if (entity == null)
-                throw new ArgumentException($"Could not update reservation {reservation.id}");
+                throw new ArgumentException($"Could not update reservation {reservation.Id}");
 
             DtoToEntity(reservation, entity);
             _context.Entry(entity).State = EntityState.Modified;
@@ -65,12 +65,12 @@ namespace MinimalAPI.Data
 
         private static void DtoToEntity(ReservationDto d, ReservationEntity e)
         {
-            e.Id = d.id;
-            e.Name = d.name;
-            e.Hour = d.hour;
-            e.People = d.people;
-            e.Table = d.table;
-            e.Notes = d.notes;
+            e.Id = d.Id;
+            e.Name = d.Name;
+            e.Hour = d.Hour;
+            e.People = d.People;
+            e.Table = d.Table;
+            e.Notes = d.Notes;
         }
 
         private static ReservationDto EntityToDto(ReservationEntity e)
