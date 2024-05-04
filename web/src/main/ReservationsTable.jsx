@@ -38,41 +38,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// function RowMenu({ id }) {
-//   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-//   const deleteReservationMutation = useDeleteReservation();
-//   const deleteRow = () => {
-//     deleteReservationMutation.mutate(id);
-//   };
-
-//   return (
-//     <React.Fragment>
-//       <Dropdown>
-//         <MenuButton
-//           slots={{ root: IconButton }}
-//           slotProps={{
-//             root: { variant: "plain", color: "neutral", size: "sm" },
-//           }}
-//         >
-//           <MoreHorizRounded />
-//         </MenuButton>
-//         <Menu size="sm" sx={{ minWidth: 140 }}>
-//           <MenuItem>Modifica</MenuItem>
-//           <Divider />
-//           <MenuItem color="danger" onClick={() => setDeleteModalIsOpen(true)}>
-//             Cancella
-//           </MenuItem>
-//         </Menu>
-//       </Dropdown>
-//       <DeleteModal
-//         isOpen={deleteModalIsOpen}
-//         setIsOpen={setDeleteModalIsOpen}
-//         onClick={deleteRow}
-//       />
-//     </React.Fragment>
-//   );
-// }
-
 export default function ReservationsTable() {
   const [selected, setSelected] = useState([]);
   const [order, setOrder] = useState("desc");
