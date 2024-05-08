@@ -167,7 +167,7 @@ export default function ReservationsTable() {
                       <Typography level="body-xs">{row.notes}</Typography>
                     </td>
                     <td>
-                      <RowMenu id={row.id} />
+                      <RowMenu item={row} />
                     </td>
                   </tr>
                 ))

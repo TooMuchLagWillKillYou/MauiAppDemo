@@ -4,13 +4,18 @@ import { MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import { useDeleteReservation } from "../hooks/reservationHooks";
 import DeleteModal from "./DeleteModal";
+import EditModal from "./EditModal";
 
-export default function RowMenu({ id }) {
+export default function RowMenu({ item }) {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [editModalIsOpen, setEditModalIsOpen] = useState(false);
   const deleteReservationMutation = useDeleteReservation();
+
   const deleteRow = () => {
-    deleteReservationMutation.mutate(id);
+    deleteReservationMutation.mutate(item.id);
   };
+
+  const editRow = () => {};
 
   return (
     <React.Fragment>
@@ -24,7 +29,7 @@ export default function RowMenu({ id }) {
           <MoreHorizRounded />
         </MenuButton>
         <Menu size="sm" sx={{ minWidth: 140 }}>
-          <MenuItem>Modifica</MenuItem>
+          <MenuItem onClick={() => setEditModalIsOpen(true)}>Modifica</MenuItem>
           <Divider />
           <MenuItem color="danger" onClick={() => setDeleteModalIsOpen(true)}>
             Cancella
@@ -35,6 +40,12 @@ export default function RowMenu({ id }) {
         isOpen={deleteModalIsOpen}
         setIsOpen={setDeleteModalIsOpen}
         onClick={deleteRow}
+      />
+      <EditModal
+        isOpen={editModalIsOpen}
+        setIsOpen={setEditModalIsOpen}
+        onClick={editRow}
+        itemToEdit={item}
       />
     </React.Fragment>
   );
