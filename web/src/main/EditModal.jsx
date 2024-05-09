@@ -17,6 +17,7 @@ import { WarningRounded } from "@mui/icons-material";
 import { InfoOutlined } from "@mui/icons-material";
 import { useUpdateReservation } from "../hooks/reservationHooks";
 import { useState } from "react";
+import FormInput from "./components/ReservationInput";
 
 export default function EditModal(props) {
   const { itemToEdit, isOpen, setIsOpen } = props;
@@ -54,118 +55,61 @@ export default function EditModal(props) {
           <form style={{ flexGrow: 1 }}>
             <Box>
               <Stack direction="row" spacing={2}>
-                <FormControl
-                  error={
-                    validationErrors["Name"] != null &&
-                    validationErrors["Name"].length > 0
-                  }
-                >
-                  <FormLabel>Nome</FormLabel>
-                  <Input
-                    name="Name"
-                    variant="plain"
-                    defaultValue={reservation.name}
-                    onChange={handleChange}
-                  />
-                  {validationErrors["Name"] && (
-                    <FormHelperText>
-                      <InfoOutlined />
-                      {validationErrors["Name"]}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <FormControl
-                  error={
-                    validationErrors["Hour"] != null &&
-                    validationErrors["Hour"].length > 0
-                  }
-                >
-                  <FormLabel>Ora</FormLabel>
-                  <Input
-                    name="Hour"
-                    variant="plain"
-                    type="time"
-                    defaultValue={reservation.hour}
-                    onChange={handleChange}
-                  />
-                  {validationErrors["Hour"] && (
-                    <FormHelperText>
-                      <InfoOutlined />
-                      {validationErrors["Hour"]}
-                    </FormHelperText>
-                  )}
-                </FormControl>
+                <FormInput
+                  label="Nome"
+                  name="name"
+                  onChange={handleChange}
+                  errorMessage={validationErrors.name}
+                  defaultValue={reservation.name}
+                />
+                <FormInput
+                  label="Ora"
+                  name="hour"
+                  type="time"
+                  onChange={handleChange}
+                  errorMessage={validationErrors.hour}
+                  defaultValue={reservation.hour}
+                />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <FormControl
-                  error={
-                    validationErrors["People"] != null &&
-                    validationErrors["People"].length > 0
-                  }
-                >
-                  <FormLabel>Persone</FormLabel>
-                  <Input
-                    name="People"
-                    type="number"
-                    variant="plain"
-                    slotProps={{
-                      input: {
-                        min: 1,
-                        step: 1,
-                      },
-                    }}
-                    defaultValue={reservation.people}
-                    onChange={handleChange}
-                  />
-                  {validationErrors["People"] && (
-                    <FormHelperText>
-                      <InfoOutlined />
-                      {validationErrors["People"]}
-                    </FormHelperText>
-                  )}
-                </FormControl>
-                <FormControl
-                  error={
-                    validationErrors["Table"] != null &&
-                    validationErrors["Table"].length > 0
-                  }
-                >
-                  <FormLabel>Tavolo</FormLabel>
-                  <Input
-                    name="Hour"
-                    variant="plain"
-                    defaultValue={reservation.table}
-                    onChange={handleChange}
-                  />
-                  {validationErrors["Table"] && (
-                    <FormHelperText>
-                      <InfoOutlined />
-                      {validationErrors["Table"]}
-                    </FormHelperText>
-                  )}
-                </FormControl>
+                <FormInput
+                  label="Persone"
+                  name="people"
+                  type="number"
+                  onChange={handleChange}
+                  errorMessage={validationErrors.people}
+                  sx={{
+                    width: 85,
+                  }}
+                  slotProps={{
+                    input: {
+                      min: 1,
+                      step: 1,
+                    },
+                  }}
+                  defaultValue={reservation.people}
+                />
+                <FormInput
+                  label="Tavolo"
+                  name="table"
+                  onChange={handleChange}
+                  errorMessage={validationErrors.table}
+                  sx={{
+                    width: 85,
+                  }}
+                  defaultValue={reservation.table}
+                />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <FormControl
-                  error={
-                    validationErrors["Notes"] != null &&
-                    validationErrors["Notes"].length > 0
+                <FormInput
+                  label="Note"
+                  name="notes"
+                  onChange={(e) =>
+                    setReservation({ ...reservation, notes: e.target.value })
                   }
-                >
-                  <FormLabel>Note</FormLabel>
-                  <Input
-                    name="Notes"
-                    variant="plain"
-                    defaultValue={reservation.notes}
-                    onChange={handleChange}
-                  />
-                  {validationErrors["Notes"] && (
-                    <FormHelperText>
-                      <InfoOutlined />
-                      {validationErrors["Notes"]}
-                    </FormHelperText>
-                  )}
-                </FormControl>
+                  errorMessage={validationErrors.notes}
+                  sx={{ flexGrow: 1 }}
+                />
               </Stack>
             </Box>
           </form>

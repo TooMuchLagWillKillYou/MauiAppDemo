@@ -64,7 +64,7 @@ export default function AddReservationForm(props) {
             onChange={(e) =>
               setReservation({ ...reservation, name: e.target.value })
             }
-            errorMessage={validationErrors["name"]}
+            errorMessage={validationErrors.name}
           />
           <FormInput
             label="Ora"
@@ -76,7 +76,7 @@ export default function AddReservationForm(props) {
                 hour: new Date(e.target.value),
               })
             }
-            errorMessage={validationErrors["hour"]}
+            errorMessage={validationErrors.hour}
           />
           <FormInput
             label="Persone"
@@ -85,7 +85,7 @@ export default function AddReservationForm(props) {
             onChange={(e) =>
               setReservation({ ...reservation, people: e.target.value })
             }
-            errorMessage={validationErrors["people"]}
+            errorMessage={validationErrors.people}
             sx={{
               width: 85,
             }}
@@ -102,7 +102,7 @@ export default function AddReservationForm(props) {
             onChange={(e) =>
               setReservation({ ...reservation, table: e.target.value })
             }
-            errorMessage={validationErrors["table"]}
+            errorMessage={validationErrors.table}
             sx={{
               width: 85,
             }}
@@ -113,7 +113,7 @@ export default function AddReservationForm(props) {
             onChange={(e) =>
               setReservation({ ...reservation, notes: e.target.value })
             }
-            errorMessage={validationErrors["notes"]}
+            errorMessage={validationErrors.notes}
             sx={{ flexGrow: 1 }}
           />
           <Button
