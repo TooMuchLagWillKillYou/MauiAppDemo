@@ -4,7 +4,7 @@ import { ArrowDropDown } from "@mui/icons-material";
 import useFetchReservations from "../hooks/reservationHooks";
 import { dateTimeFormatter } from "../config";
 import ApiStatus from "../apiStatus";
-import RowMenu from "./RowMenu";
+import RowMenu from "./components/RowMenu";
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
