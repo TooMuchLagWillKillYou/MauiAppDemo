@@ -22,10 +22,10 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddReservation(Reservation reservation)
+        public IActionResult AddReservation([FromBody]Reservation reservation)
         {
             _context.Reservations.Add(reservation);
-            await _context.SaveChangesAsync();
+             _context.SaveChangesAsync();
 
             return CreatedAtAction(nameof(AddReservation), new { id = reservation.Id }, reservation);
         }

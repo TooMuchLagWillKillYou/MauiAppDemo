@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 namespace API
 {
@@ -23,7 +24,7 @@ namespace API
                 options.AddPolicy(name: AllowSpecificOrigins,
                                   policy =>
                                   {
-                                      policy.WithOrigins("http://localhost:5173");
+                                      policy.WithOrigins("http://localhost:5173").AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
                                   });
             });
 
