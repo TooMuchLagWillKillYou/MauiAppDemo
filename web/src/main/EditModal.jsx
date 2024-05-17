@@ -6,18 +6,12 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  FormHelperText,
-  Stack,
-  FormControl,
-  FormLabel,
-  Input,
   Box,
 } from "@mui/joy";
 import { WarningRounded } from "@mui/icons-material";
-import { InfoOutlined } from "@mui/icons-material";
 import { useUpdateReservation } from "../hooks/reservationHooks";
 import { useState } from "react";
-import FormInput from "./components/ReservationInput";
+import ReservationForm from "./ReservationForm";
 
 export default function EditModal(props) {
   const { itemToEdit, isOpen, setIsOpen } = props;
@@ -44,6 +38,7 @@ export default function EditModal(props) {
       open={isOpen}
       onClose={() => setIsOpen(false)}
       sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      size="lg"
     >
       <ModalDialog variant="outlined" role="alertdialog">
         <DialogTitle>
@@ -54,63 +49,11 @@ export default function EditModal(props) {
         <DialogContent>
           <form style={{ flexGrow: 1 }}>
             <Box>
-              <Stack direction="row" spacing={2}>
-                <FormInput
-                  label="Nome"
-                  name="name"
-                  onChange={handleChange}
-                  errorMessage={validationErrors.name}
-                  defaultValue={reservation.name}
-                />
-                <FormInput
-                  label="Ora"
-                  name="hour"
-                  type="time"
-                  onChange={handleChange}
-                  errorMessage={validationErrors.hour}
-                  defaultValue={reservation.hour}
-                />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <FormInput
-                  label="Persone"
-                  name="people"
-                  type="number"
-                  onChange={handleChange}
-                  errorMessage={validationErrors.people}
-                  sx={{
-                    width: 85,
-                  }}
-                  slotProps={{
-                    input: {
-                      min: 1,
-                      step: 1,
-                    },
-                  }}
-                  defaultValue={reservation.people}
-                />
-                <FormInput
-                  label="Tavolo"
-                  name="table"
-                  onChange={handleChange}
-                  errorMessage={validationErrors.table}
-                  sx={{
-                    width: 85,
-                  }}
-                  defaultValue={reservation.table}
-                />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <FormInput
-                  label="Note"
-                  name="notes"
-                  onChange={(e) =>
-                    setReservation({ ...reservation, notes: e.target.value })
-                  }
-                  errorMessage={validationErrors.notes}
-                  sx={{ flexGrow: 1 }}
-                />
-              </Stack>
+              <ReservationForm
+                reservation={reservation}
+                validationErrors={validationErrors}
+                onChange={handleChange}
+              />
             </Box>
           </form>
         </DialogContent>

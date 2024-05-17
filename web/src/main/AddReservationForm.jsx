@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Input,
-  FormControl,
-  FormLabel,
-  Stack,
-  FormHelperText,
-} from "@mui/joy";
+import { Box, Button, Grid } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
 import { useAddReservation } from "../hooks/reservationHooks";
-import { InfoOutlined } from "@mui/icons-material";
-import FormInput from "./components/ReservationInput";
+import ReservationForm from "./ReservationForm";
 
 export default function AddReservationForm(props) {
   const [reservation, setReservation] = useState({});
@@ -57,76 +48,26 @@ export default function AddReservationForm(props) {
       }}
     >
       <form style={{ flexGrow: 1 }}>
-        <Stack direction="row" spacing={2}>
-          <FormInput
-            label="Nome"
-            name="name"
-            onChange={(e) =>
-              setReservation({ ...reservation, name: e.target.value })
-            }
-            errorMessage={validationErrors.name}
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+          <ReservationForm
+            reservation={reservation}
+            validationErrors={validationErrors}
+            handleChange={handleChange}
+            horizontal
           />
-          <FormInput
-            label="Ora"
-            name="hour"
-            type="time"
-            onChange={(e) =>
-              setReservation({
-                ...reservation,
-                hour: new Date(e.target.value),
-              })
-            }
-            errorMessage={validationErrors.hour}
-          />
-          <FormInput
-            label="Persone"
-            name="people"
-            type="number"
-            onChange={(e) =>
-              setReservation({ ...reservation, people: e.target.value })
-            }
-            errorMessage={validationErrors.people}
-            sx={{
-              width: 85,
-            }}
-            slotProps={{
-              input: {
-                min: 1,
-                step: 1,
-              },
-            }}
-          />
-          <FormInput
-            label="Tavolo"
-            name="table"
-            onChange={(e) =>
-              setReservation({ ...reservation, table: e.target.value })
-            }
-            errorMessage={validationErrors.table}
-            sx={{
-              width: 85,
-            }}
-          />
-          <FormInput
-            label="Note"
-            name="notes"
-            onChange={(e) =>
-              setReservation({ ...reservation, notes: e.target.value })
-            }
-            errorMessage={validationErrors.notes}
-            sx={{ flexGrow: 1 }}
-          />
-          <Button
-            type="submit"
-            color="primary"
-            startDecorator={<AddIcon />}
-            size="md"
-            sx={{ placeSelf: "flex-end" }}
-            onClick={submit}
-          >
-            Aggiungi
-          </Button>
-        </Stack>
+          <Grid display="flex" justifyContent="center" alignItems="center">
+            <Button
+              type="submit"
+              color="primary"
+              startDecorator={<AddIcon />}
+              size="md"
+              sx={{ placeSelf: "flex-end" }}
+              onClick={submit}
+            >
+              Aggiungi
+            </Button>
+          </Grid>
+        </Grid>
       </form>
     </Box>
   );

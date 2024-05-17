@@ -1,95 +1,72 @@
 import React from "react";
-import { Box, FormControl, FormLabel, Input, Stack } from "@mui/joy";
+import { Grid } from "@mui/joy";
+import FormInput from "./components/ReservationInput";
 
-export default function ReservationForm({ reservation }) {
+export default function ReservationForm(props) {
+  const { reservation, validationErrors, handleChange, horizontal } = props;
+
   return (
-    <form style={{ flexGrow: 1 }}>
-      <Box>
-        <Stack direction="row" spacing={2}>
-          <FormControl
-            error={
-              validationErrors["Name"] != null &&
-              validationErrors["Name"].length > 0
-            }
-          >
-            <FormLabel>Nome</FormLabel>
-            <Input
-              name="Name"
-              variant="plain"
-              defaultValue={reservation.name}
-            />
-            {validationErrors["Name"] && (
-              <FormHelperText>
-                <InfoOutlined />
-                {validationErrors["Name"]}
-              </FormHelperText>
-            )}
-          </FormControl>
-          <FormControl
-            error={
-              validationErrors["Hour"] != null &&
-              validationErrors["Hour"].length > 0
-            }
-          >
-            <FormLabel>Ora</FormLabel>
-            <Input
-              name="Hour"
-              variant="plain"
-              type="time"
-              defaultValue={reservation.hour}
-            />
-            {validationErrors["Hour"] && (
-              <FormHelperText>
-                <InfoOutlined />
-                {validationErrors["Hour"]}
-              </FormHelperText>
-            )}
-          </FormControl>
-        </Stack>
-        <Stack direction="row" spacing={2}>
-          <FormControl
-            error={
-              validationErrors["People"] != null &&
-              validationErrors["People"].length > 0
-            }
-            sx={{
-              width: 85,
-            }}
-          >
-            <FormLabel>Persone</FormLabel>
-            <Input
-              name="People"
-              type="number"
-              variant="plain"
-              slotProps={{
-                input: {
-                  min: 1,
-                  step: 1,
-                },
-              }}
-              defaultValue={reservation.people}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Tavolo</FormLabel>
-            <Input
-              name="Hour"
-              variant="plain"
-              defaultValue={reservation.table}
-            />
-          </FormControl>
-        </Stack>
-        <Stack direction="row" spacing={2}>
-          <FormControl>
-            <FormLabel>Note</FormLabel>
-            <Input
-              name="Notes"
-              variant="plain"
-              defaultValue={reservation.notes}
-            />
-          </FormControl>
-        </Stack>
-      </Box>
-    </form>
+    <>
+      <Grid xs={3}>
+        <FormInput
+          label="Nome"
+          name="name"
+          onChange={handleChange}
+          errorMessage={validationErrors.name}
+          defaultValue={reservation.name}
+        />
+      </Grid>
+      <Grid xs={1}>
+        <FormInput
+          label="Ora"
+          name="hour"
+          type="time"
+          onChange={handleChange}
+          errorMessage={validationErrors.hour}
+          defaultValue={reservation.hour}
+        />
+      </Grid>
+      <Grid xs={1}>
+        <FormInput
+          label="Persone"
+          name="people"
+          type="number"
+          onChange={handleChange}
+          errorMessage={validationErrors.people}
+          sx={{
+            width: 85,
+          }}
+          slotProps={{
+            input: {
+              min: 1,
+              step: 1,
+            },
+          }}
+          defaultValue={reservation.people}
+        />
+      </Grid>
+      <Grid xs={1}>
+        <FormInput
+          label="Tavolo"
+          name="table"
+          onChange={handleChange}
+          errorMessage={validationErrors.table}
+          sx={{
+            width: 85,
+          }}
+          defaultValue={reservation.table}
+        />
+      </Grid>
+      <Grid xs={4}>
+        <FormInput
+          label="Note"
+          name="notes"
+          onChange={handleChange}
+          errorMessage={validationErrors.notes}
+          sx={{ flexGrow: 1 }}
+          defaultValue={reservation.notes}
+        />
+      </Grid>
+    </>
   );
 }
