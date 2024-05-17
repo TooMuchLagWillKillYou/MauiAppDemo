@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Grid } from "@mui/joy";
+import { Box, Button, Grid, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
 import { useAddReservation } from "../hooks/reservationHooks";
 import ReservationForm from "./ReservationForm";
@@ -48,26 +48,24 @@ export default function AddReservationForm(props) {
       }}
     >
       <form style={{ flexGrow: 1 }}>
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
           <ReservationForm
             reservation={reservation}
             validationErrors={validationErrors}
             handleChange={handleChange}
             horizontal
           />
-          <Grid display="flex" justifyContent="center" alignItems="center">
-            <Button
-              type="submit"
-              color="primary"
-              startDecorator={<AddIcon />}
-              size="md"
-              sx={{ placeSelf: "flex-end" }}
-              onClick={submit}
-            >
-              Aggiungi
-            </Button>
-          </Grid>
-        </Grid>
+          <Button
+            type="submit"
+            color="primary"
+            startDecorator={<AddIcon />}
+            size="md"
+            sx={{ placeSelf: "flex-end" }}
+            onClick={submit}
+          >
+            Aggiungi
+          </Button>
+        </Stack>
       </form>
     </Box>
   );

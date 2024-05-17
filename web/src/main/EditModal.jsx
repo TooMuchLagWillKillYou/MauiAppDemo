@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Box,
+  Stack,
 } from "@mui/joy";
 import { WarningRounded } from "@mui/icons-material";
 import { useUpdateReservation } from "../hooks/reservationHooks";
@@ -48,13 +48,13 @@ export default function EditModal(props) {
         <Divider />
         <DialogContent>
           <form style={{ flexGrow: 1 }}>
-            <Box>
+            <Stack spacing={1} flexWrap="wrap" useFlexGap>
               <ReservationForm
                 reservation={reservation}
                 validationErrors={validationErrors}
                 onChange={handleChange}
               />
-            </Box>
+            </Stack>
           </form>
         </DialogContent>
         <DialogActions>
