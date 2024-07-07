@@ -6,6 +6,7 @@ import CssBaseline from "@mui/joy/CssBaseline";
 import HomeRounded from "@mui/icons-material/HomeRounded";
 import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
 import ReservationsTable from "./ReservationsTable";
+import AddReservationForm from "./AddReservationForm";
 
 function App() {
   return (
@@ -76,6 +77,7 @@ function App() {
               Prenotazioni
             </Typography>
           </Box>
+          <AddReservationForm />
           <ReservationsTable />
         </Box>
       </Box>
