@@ -10,7 +10,7 @@ import {
 } from "@mui/joy";
 import { WarningRounded } from "@mui/icons-material";
 import { useUpdateReservation } from "../hooks/reservationHooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReservationForm from "./ReservationForm";
 
 export default function EditModal(props) {
@@ -18,6 +18,21 @@ export default function EditModal(props) {
   const [reservation, setReservation] = useState(itemToEdit);
   const [validationErrors, setValidationErrors] = useState({});
   const updateReservationMutation = useUpdateReservation();
+
+  useEffect(() => {
+    if (
+      updateReservationMutation.error &&
+      updateReservationMutation.error.response?.status == 400
+    ) {
+      const errorsDictionary = {};
+      Object.entries(updateReservationMutation.error.response?.data.errors).map(
+        ([key, value]) => {
+          return (errorsDictionary[key] = value);
+        }
+      );
+      setValidationErrors(errorsDictionary);
+    }
+  }, [updateReservationMutation.isError]);
 
   const handleChange = (e) => {
     const inputName = e.target.name;
@@ -28,7 +43,11 @@ export default function EditModal(props) {
   const submit = (e) => {
     e.preventDefault();
     updateReservationMutation.mutate(reservation);
-    setIsOpen(false);
+
+    if (!updateReservationMutation.isError) {
+      setReservation(itemToEdit);
+      setIsOpen(true);
+    }
   };
 
   return (
@@ -52,7 +71,7 @@ export default function EditModal(props) {
               <ReservationForm
                 reservation={reservation}
                 validationErrors={validationErrors}
-                onChange={handleChange}
+                handleChange={handleChange}
               />
             </Stack>
           </form>

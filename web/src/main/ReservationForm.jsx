@@ -3,15 +3,15 @@ import { Stack } from "@mui/joy";
 import FormInput from "./components/FormInput";
 
 export default function ReservationForm(props) {
-  const { reservation, validationErrors, handleChange, horizontal } = props;
-
+  const { reservation, validationErrors, handleChange } = props;
+  console.log("component's error: ", validationErrors);
   return (
     <>
       <FormInput
         label="Nome"
         name="name"
         onChange={handleChange}
-        errorMessage={validationErrors.name}
+        errorMessage={validationErrors.Name}
         defaultValue={reservation.name}
       />
       <FormInput
@@ -19,7 +19,7 @@ export default function ReservationForm(props) {
         name="hour"
         type="time"
         onChange={handleChange}
-        errorMessage={validationErrors.hour}
+        errorMessage={validationErrors.Hour}
         defaultValue={reservation.hour}
       />
       <FormInput
@@ -27,7 +27,7 @@ export default function ReservationForm(props) {
         name="people"
         type="number"
         onChange={handleChange}
-        errorMessage={validationErrors.people}
+        errorMessage={validationErrors.People}
         sx={{
           width: 85,
         }}
@@ -43,7 +43,7 @@ export default function ReservationForm(props) {
         label="Tavolo"
         name="table"
         onChange={handleChange}
-        errorMessage={validationErrors.table}
+        errorMessage={validationErrors.Table}
         sx={{
           width: 85,
         }}
@@ -53,7 +53,7 @@ export default function ReservationForm(props) {
         label="Note"
         name="notes"
         onChange={handleChange}
-        errorMessage={validationErrors.notes}
+        errorMessage={validationErrors.Notes}
         sx={{ flexGrow: 1 }}
         defaultValue={reservation.notes}
       />
