@@ -46,7 +46,7 @@ namespace MinimalAPI
             app.MapGet("/reservation/{id:int}", async (int id, IReservationRepository repository) => 
                 await repository.Get(id));
            
-            app.MapPost("/reservations", async ([FromBody]ReservationDto dto, IReservationRepository repository) =>
+            app.MapPost("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
             {
                 if (!MiniValidator.TryValidate(dto, out var errors))
                     return Results.ValidationProblem(errors);
@@ -65,7 +65,9 @@ namespace MinimalAPI
 
                 var updatedReservation = await repository.Update(dto);
                 return Results.Ok(updatedReservation);
-            }).ProducesValidationProblem().ProducesProblem(StatusCodes.Status404NotFound).Produces<ReservationDto>(StatusCodes.Status204NoContent);
+            }).ProducesValidationProblem()
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .Produces<ReservationDto>(StatusCodes.Status204NoContent);
 
             app.MapDelete("/reservations/{id:int}", async (int id, IReservationRepository repository) =>
             {

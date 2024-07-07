@@ -53,7 +53,6 @@ export default function AddReservationForm(props) {
             reservation={reservation}
             validationErrors={validationErrors}
             handleChange={handleChange}
-            horizontal
           />
           <Button
             type="submit"
