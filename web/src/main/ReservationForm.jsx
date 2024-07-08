@@ -1,5 +1,4 @@
 import React from "react";
-import { Stack } from "@mui/joy";
 import FormInput from "./components/FormInput";
 
 export default function ReservationForm(props) {
@@ -9,14 +8,14 @@ export default function ReservationForm(props) {
     <>
       <FormInput
         label="Nome"
-        name="name"
+        name="Name"
         onChange={handleChange}
         errorMessage={validationErrors.Name}
         defaultValue={reservation.name}
       />
       <FormInput
         label="Ora"
-        name="hour"
+        name="Hour"
         type="time"
         onChange={handleChange}
         errorMessage={validationErrors.Hour}
@@ -24,7 +23,7 @@ export default function ReservationForm(props) {
       />
       <FormInput
         label="Persone"
-        name="people"
+        name="People"
         type="number"
         onChange={handleChange}
         errorMessage={validationErrors.People}
@@ -41,7 +40,7 @@ export default function ReservationForm(props) {
       />
       <FormInput
         label="Tavolo"
-        name="table"
+        name="Table"
         onChange={handleChange}
         errorMessage={validationErrors.Table}
         sx={{
@@ -51,7 +50,7 @@ export default function ReservationForm(props) {
       />
       <FormInput
         label="Note"
-        name="notes"
+        name="Notes"
         onChange={handleChange}
         errorMessage={validationErrors.Notes}
         sx={{ flexGrow: 1 }}
