@@ -35,6 +35,9 @@ const useAddReservation = () => {
         queryKey: ["reservations"],
       });
     },
+    onError: (error) => {
+      console.log("useAddReservation error", error.respose.data.errors);
+    },
   });
 };
 
@@ -48,6 +51,9 @@ const useUpdateReservation = () => {
         queryKey: ["reservations"],
       });
     },
+    onError: (error) => {
+      console.log("useUpdateReservation error", error.respose.data.errors);
+    },
   });
 };
 
@@ -59,6 +65,9 @@ const useDeleteReservation = () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],
       });
+    },
+    onError: (error) => {
+      console.log("useDeleteReservation error", error.respose.data.errors);
     },
   });
 };
