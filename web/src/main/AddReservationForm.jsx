@@ -10,22 +10,22 @@ export default function AddReservationForm(props) {
   const addReservationMutation = useAddReservation();
 
   useEffect(() => {
+    const errorsDictionary = {};
     if (
       addReservationMutation.error &&
       addReservationMutation.error.response?.status == 400
     ) {
-      const errorsDictionary = {};
       Object.entries(addReservationMutation.error.response?.data.errors).map(
         ([key, value]) => (errorsDictionary[key] = value)
       );
-      setValidationErrors(errorsDictionary);
     }
+    setValidationErrors(errorsDictionary);
   }, [addReservationMutation.isError]);
 
   const handleChange = (e) => {
     const inputName = e.target.name;
     setReservation({ ...reservation, [inputName]: e.target.value });
-    setValidationErrors({ ...validationErrors, [inputName]: "" });
+    setValidationErrors({ ...validationErrors, [inputName]: null });
   };
 
   const submit = (e) => {
