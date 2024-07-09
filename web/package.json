@@ -19,7 +19,10 @@
     "axios": "^1.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-imask": "^7.6.0"
+    "react-imask": "^7.6.0",
+    "@mui/material": "5.16.0",
+    "@mui/x-date-pickers": "7.9.0",
+    "dayjs": "1.11.11"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

@@ -3,8 +3,8 @@ import { Dropdown, Menu, MenuButton, MenuItem, Divider } from "@mui/joy";
 import { MoreHorizRounded } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import { useDeleteReservation } from "../../hooks/reservationHooks";
-import DeleteModal from "../DeleteModal";
-import EditModal from "../EditModal";
+import DeleteModal from "../reservation/DeleteModal";
+import EditModal from "../reservation/EditModal";
 
 export default function RowMenu({ item }) {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);

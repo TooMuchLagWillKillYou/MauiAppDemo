@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Grid, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
-import { useAddReservation } from "../hooks/reservationHooks";
+import { useAddReservation } from "../../hooks/reservationHooks";
 import ReservationForm from "./ReservationForm";
 
 export default function AddReservationForm(props) {
@@ -26,6 +26,9 @@ export default function AddReservationForm(props) {
     const inputName = e.target.name;
     setReservation({ ...reservation, [inputName]: e.target.value });
     setValidationErrors({ ...validationErrors, [inputName]: null });
+
+    console.log("event", e.target.value);
+    console.log("res", reservation);
   };
 
   const submit = (e) => {

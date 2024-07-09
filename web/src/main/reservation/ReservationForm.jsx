@@ -1,5 +1,5 @@
 import React from "react";
-import FormInput from "./components/FormInput";
+import FormInput from "../shared/FormInput";
 
 export default function ReservationForm(props) {
   const { reservation, validationErrors, handleChange } = props;
