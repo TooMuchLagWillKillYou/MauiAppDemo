@@ -8,7 +8,8 @@ Next steps:
 4. refactoring dei form, testare creazione, modifica e messaggi di errore in entrambi i form
 5. DONE - modifica di una prenotazione
 6. salvare correttamente il campo 'hour', perché row.Hour e non row.hour?
-7. navigazione ai componenti 'Prenotazioni' e 'Tavoli'
+7. paginazione con i giorni dell'anno corrente
+navigazione ai componenti 'Prenotazioni' e 'Tavoli'
 
 Todo:
 1. controllare di aver abilitato correttamente in CORS

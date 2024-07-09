@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@mui/joy";
 import { WarningRounded } from "@mui/icons-material";
-import { useUpdateReservation } from "../hooks/reservationHooks";
+import { useUpdateReservation } from "../../hooks/reservationHooks";
 import { useEffect, useState } from "react";
 import ReservationForm from "./ReservationForm";
 
