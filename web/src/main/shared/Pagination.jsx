@@ -5,10 +5,12 @@ import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import "dayjs/locale/it";
+import PaginationModal from "../PaginationModal";
 
 export default function Pagination() {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [isToday, setIsToday] = useState(true);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     setIsToday(
@@ -25,7 +27,7 @@ export default function Pagination() {
   };
   const navigate = (daysToAdd) =>
     setCurrentDate(currentDate.add(daysToAdd, "days"));
-  const handleClick = () => setCurrentDate(dayjs());
+  const handleClick = () => setModalIsOpen(true); //setCurrentDate(dayjs());
   const handleChange = (event) => setCurrentDate(event);
 
   return (
@@ -41,7 +43,13 @@ export default function Pagination() {
           <ChevronRight />
         </Button>
       </div>
-      <div className="date-picker-container">
+      <PaginationModal
+        currentDate={currentDate}
+        setCurrentDate={setCurrentDate}
+        isOpen={modalIsOpen}
+        setIsOpen={setModalIsOpen}
+      />
+      {/* <div className="date-picker-container">
         <StaticDatePicker
           value={currentDate}
           minDate={dayjs("2022-06-03")}
@@ -49,7 +57,7 @@ export default function Pagination() {
           onChange={handleChange}
           //shouldDisableDate // prop per gestire i giorni di ferie/chiusura
         />
-      </div>
+      </div> */}
     </div>
   );
 }
