@@ -22,3 +22,4 @@ Todo:
 Resources:
 1. CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 2. Icons: https://mui.com/material-ui/material-icons/
+3. Pluralsight: https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-react-building-end-to-end-spa/table-of-contents
