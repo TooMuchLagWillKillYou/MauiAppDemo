@@ -4,6 +4,7 @@ import { Button } from "@mui/joy";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
+import "dayjs/locale/it";
 
 export default function Pagination() {
   const [currentDate, setCurrentDate] = useState(dayjs());
@@ -17,10 +18,10 @@ export default function Pagination() {
 
   const getTextToDisplay = () => {
     if (isToday) {
-      return "Today";
+      return "oggi";
     }
 
-    return currentDate.format("dddd D MMMM");
+    return currentDate.locale("it").format("dddd D MMMM");
   };
   const navigate = (daysToAdd) =>
     setCurrentDate(currentDate.add(daysToAdd, "days"));
@@ -41,13 +42,13 @@ export default function Pagination() {
         </Button>
       </div>
       <div className="date-picker-container">
-        {/* <StaticDatePicker
-          // value={currentDate}
+        <StaticDatePicker
+          value={currentDate}
           minDate={dayjs("2022-06-03")}
           maxDate={dayjs().add(1, "year")}
-          // onChange={handleChange}
-          // shouldDisableDate // prop per gestire i giorni di ferie/chiusura
-        /> */}
+          onChange={handleChange}
+          //shouldDisableDate // prop per gestire i giorni di ferie/chiusura
+        />
       </div>
     </div>
   );
