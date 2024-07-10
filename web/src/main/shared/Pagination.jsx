@@ -1,33 +1,31 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { Button } from "@mui/joy";
+import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
-require("dayjs/locale/it");
 
 export default function Pagination() {
-  const [currentDay, setCurrentDay] = useState(dayjs());
-  const [isToday, setIsToday] = useState(
-    currentDay.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY")
-  );
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const [isToday, setIsToday] = useState(true);
 
   useEffect(() => {
-    setIsToday(currentDay.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY"));
-  }, [currentDay]);
+    setIsToday(
+      currentDate.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY")
+    );
+  }, [currentDate]);
 
   const getTextToDisplay = () => {
     if (isToday) {
-      return "oggi";
+      return "Today";
     }
-    return currentDay.locale("it").format("dddd D MMMM");
+
+    return currentDate.format("dddd D MMMM");
   };
-
   const navigate = (daysToAdd) =>
-    setCurrentDay(currentDay.add(daysToAdd, "day"));
-
-  const handleChange = (event) => setCurrentDay(event);
-  const handleClick = () => setCurrentDay(dayjs());
+    setCurrentDate(currentDate.add(daysToAdd, "days"));
+  const handleClick = () => setCurrentDate(dayjs());
+  const handleChange = (event) => setCurrentDate(event);
 
   return (
     <div className="pagination-container">
@@ -35,7 +33,7 @@ export default function Pagination() {
         <Button variant="plain" size="sm" onClick={() => navigate(-1)}>
           <ChevronLeft />
         </Button>
-        <span className="displayed-day" onClick={handleClick}>
+        <span className="displayed-date" onClick={handleClick}>
           {getTextToDisplay()}
         </span>
         <Button variant="plain" size="sm" onClick={() => navigate(1)}>
@@ -43,13 +41,13 @@ export default function Pagination() {
         </Button>
       </div>
       <div className="date-picker-container">
-        <StaticDatePicker
-          value={currentDay}
+        {/* <StaticDatePicker
+          // value={currentDate}
           minDate={dayjs("2022-06-03")}
           maxDate={dayjs().add(1, "year")}
-          onChange={handleChange}
+          // onChange={handleChange}
           // shouldDisableDate // prop per gestire i giorni di ferie/chiusura
-        />
+        /> */}
       </div>
     </div>
   );
