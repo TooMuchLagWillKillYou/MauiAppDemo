@@ -1,7 +1,7 @@
 import React from "react";
 import Sidebar from "./Sidebar";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
-import { CssVarsProvider } from "@mui/joy/styles";
+// import { CssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
 import HomeRounded from "@mui/icons-material/HomeRounded";
 import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
@@ -12,7 +12,9 @@ import "./style.css";
 
 function App() {
   return (
-    <CssVarsProvider disableTransitionOnChange>
+    <>
+      {/* if you uncomment this component, <StaticDatePicker /> will crash */}
+      {/* <CssVarsProvider disableTransitionOnChange> */}
       <CssBaseline />
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
         <Sidebar />
@@ -84,7 +86,9 @@ function App() {
           <ReservationsTable />
         </Box>
       </Box>
-    </CssVarsProvider>
+
+      {/* </CssVarsProvider> */}
+    </>
   );
 }
 
