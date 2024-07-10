@@ -7,6 +7,8 @@ import HomeRounded from "@mui/icons-material/HomeRounded";
 import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
 import ReservationsTable from "./reservation/ReservationsTable";
 import AddReservationForm from "./reservation/AddReservationForm";
+import Pagination from "./shared/Pagination";
+import "./style.css";
 
 function App() {
   return (
@@ -77,6 +79,7 @@ function App() {
               Prenotazioni
             </Typography>
           </Box>
+          <Pagination />
           <AddReservationForm />
           <ReservationsTable />
         </Box>
