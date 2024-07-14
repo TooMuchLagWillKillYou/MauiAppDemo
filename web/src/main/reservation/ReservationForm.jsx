@@ -12,6 +12,9 @@ export default function ReservationForm(props) {
         onChange={handleChange}
         errorMessage={validationErrors.Name}
         defaultValue={reservation.name}
+        sx={{
+          width: 300,
+        }}
       />
       <FormInput
         label="Ora"
@@ -20,6 +23,9 @@ export default function ReservationForm(props) {
         onChange={handleChange}
         errorMessage={validationErrors.Hour}
         defaultValue={reservation.hour}
+        sx={{
+          width: 200,
+        }}
       />
       <FormInput
         label="Persone"
@@ -28,7 +34,7 @@ export default function ReservationForm(props) {
         onChange={handleChange}
         errorMessage={validationErrors.People}
         sx={{
-          width: 85,
+          width: 200,
         }}
         slotProps={{
           input: {
@@ -44,7 +50,7 @@ export default function ReservationForm(props) {
         onChange={handleChange}
         errorMessage={validationErrors.Table}
         sx={{
-          width: 85,
+          width: 200,
         }}
         defaultValue={reservation.table}
       />

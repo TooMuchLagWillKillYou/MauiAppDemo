@@ -25,7 +25,7 @@ export default function FormInput(props) {
         defaultValue={defaultValue}
         onChange={onChange}
         sx={sx}
-        variant="soft"
+        variant="outlined"
         slotProps={slotProps}
       />
       {errorMessage && (
