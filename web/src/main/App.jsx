@@ -8,6 +8,7 @@ import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
 import Pagination from "./shared/Pagination";
 import "./style.css";
 import ReservationsDataGrid from "./reservation/ReservationsDataGrid";
+import AddReservation from "./reservation/AddReservation";
 
 function App() {
   return (
@@ -81,6 +82,7 @@ function App() {
             </Typography>
           </Box>
           <Pagination />
+          <AddReservation />
           <ReservationsDataGrid />
         </Box>
       </Box>
