@@ -5,10 +5,11 @@ Next steps:
 1. DONE - convertire EditReservation da HttpPut a Http Patch?
 2. DONE - come integro un'applicazione frontend in React?
 3. DONE - come connetto l'app frontend con le API?
-4. refactoring dei form, testare creazione, modifica e messaggi di errore in entrambi i form
+4. DONE - refactoring dei form, testare creazione, modifica e messaggi di errore in entrambi i form
 5. DONE - modifica di una prenotazione
-6. salvare correttamente il campo 'hour', perché row.Hour e non row.hour?
-7. paginazione con i giorni dell'anno corrente
+6. CRUD con <DataGrid /> + display dei messaggi di error nella snackbar
+7. salvare correttamente il campo 'hour', perché row.Hour e non row.hour?
+8. paginazione con i giorni dell'anno corrente
 navigazione ai componenti 'Prenotazioni' e 'Tavoli'
 
 Todo:
