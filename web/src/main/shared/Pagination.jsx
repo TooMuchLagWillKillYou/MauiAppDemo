@@ -9,9 +9,9 @@ import PaginationModal from "./PaginationModal";
 
 export default function Pagination() {
   const [currentDate, setCurrentDate] = useState(dayjs());
-  let isToday =
-    currentDate.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY");
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const isToday =
+    currentDate.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY");
 
   const getTextToDisplay = () => {
     if (isToday) {
