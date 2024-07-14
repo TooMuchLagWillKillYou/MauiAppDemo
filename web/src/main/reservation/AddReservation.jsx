@@ -4,7 +4,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { useAddReservation } from "../../hooks/reservationHooks";
 import ReservationForm from "./ReservationForm";
 
-export default function AddReservationForm(props) {
+export default function AddReservation(props) {
   const [reservation, setReservation] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const addReservationMutation = useAddReservation();
@@ -26,9 +26,6 @@ export default function AddReservationForm(props) {
     const inputName = e.target.name;
     setReservation({ ...reservation, [inputName]: e.target.value });
     setValidationErrors({ ...validationErrors, [inputName]: null });
-
-    console.log("event", e.target.value);
-    console.log("res", reservation);
   };
 
   const submit = (e) => {
