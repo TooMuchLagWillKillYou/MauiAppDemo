@@ -1,9 +1,12 @@
 
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MinimalAPI.Data;
 using MinimalAPI.Dtos;
 using MiniValidation;
+using System.Globalization;
 
 namespace MinimalAPI
 {
@@ -23,6 +26,17 @@ namespace MinimalAPI
             builder.Services.AddDbContext<ReservationDbContext>(opt =>
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCulture = new[]
+                {
+                    new CultureInfo("it-IT")
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "it-IT", uiCulture: "it-IT");
+                options.SupportedCultures = supportedCulture;
+                options.SupportedCultures = supportedCulture;
+            });
 
             var app = builder.Build();
 
@@ -32,6 +46,9 @@ namespace MinimalAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(locOptions.Value);
 
             app.UseCors(policyConfig =>
                 policyConfig.WithOrigins("http://localhost:3000")
