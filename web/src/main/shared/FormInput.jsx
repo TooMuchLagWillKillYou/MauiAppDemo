@@ -7,7 +7,6 @@ export default function FormInput(props) {
     label,
     name,
     type,
-    defaultValue,
     onChange,
     sx,
     slotProps,
@@ -22,7 +21,6 @@ export default function FormInput(props) {
       <Input
         name={name}
         type={type}
-        defaultValue={defaultValue}
         onChange={onChange}
         sx={sx}
         variant="outlined"

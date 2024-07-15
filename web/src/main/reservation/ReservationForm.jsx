@@ -2,7 +2,7 @@ import React from "react";
 import FormInput from "../shared/FormInput";
 
 export default function ReservationForm(props) {
-  const { reservation, validationErrors, handleChange } = props;
+  const { validationErrors, handleChange } = props;
   return (
     <>
       <FormInput
@@ -10,7 +10,6 @@ export default function ReservationForm(props) {
         name="Name"
         onChange={handleChange}
         errorMessage={validationErrors.Name}
-        defaultValue={reservation.name}
         sx={{
           width: 300,
         }}
@@ -21,7 +20,6 @@ export default function ReservationForm(props) {
         type="time"
         onChange={handleChange}
         errorMessage={validationErrors.Hour}
-        defaultValue={reservation.hour}
         sx={{
           width: 200,
         }}
@@ -41,7 +39,6 @@ export default function ReservationForm(props) {
             step: 1,
           },
         }}
-        defaultValue={reservation.people}
       />
       <FormInput
         label="Tavolo"
@@ -51,7 +48,6 @@ export default function ReservationForm(props) {
         sx={{
           width: 200,
         }}
-        defaultValue={reservation.table}
       />
       <FormInput
         label="Note"
@@ -59,7 +55,6 @@ export default function ReservationForm(props) {
         onChange={handleChange}
         errorMessage={validationErrors.Notes}
         sx={{ flexGrow: 1 }}
-        defaultValue={reservation.notes}
       />
     </>
   );
