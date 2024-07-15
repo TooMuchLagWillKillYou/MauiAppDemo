@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinimalAPI.Data;
 
@@ -11,9 +12,11 @@ using MinimalAPI.Data;
 namespace MinimalAPI.Migrations
 {
     [DbContext(typeof(ReservationDbContext))]
-    partial class ReservationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240714203111_TimeOnlyNew")]
+    partial class TimeOnlyNew
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,8 +33,8 @@ namespace MinimalAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Hour")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeOnly>("Hour")
+                        .HasColumnType("time");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -49,35 +52,6 @@ namespace MinimalAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reservations");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Hour = new DateTime(2024, 7, 14, 23, 8, 55, 142, DateTimeKind.Local).AddTicks(2625),
-                            Name = "Mario",
-                            Notes = "",
-                            People = 5,
-                            Table = "F2"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Hour = new DateTime(2024, 7, 14, 23, 8, 55, 142, DateTimeKind.Local).AddTicks(2675),
-                            Name = "Rossi",
-                            Notes = "possibimente sui divanetti",
-                            People = 2,
-                            Table = "7"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Hour = new DateTime(2024, 7, 14, 23, 8, 55, 142, DateTimeKind.Local).AddTicks(2679),
-                            Name = "Paolo",
-                            Notes = "",
-                            People = 10,
-                            Table = "30"
-                        });
                 });
 #pragma warning restore 612, 618
         }
