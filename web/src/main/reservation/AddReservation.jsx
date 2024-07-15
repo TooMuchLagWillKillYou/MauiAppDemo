@@ -33,9 +33,9 @@ export default function AddReservation(props) {
   const submit = (e) => {
     const hour = reservation.Hour.split(":")[0];
     const minute = reservation.Hour.split(":")[1];
-    const dateTime = dayjs().hour(hour).minute(minute);
-    reservation.Hour = dateTime.format("YYYY-MM-DDTHH:mm:ssZ[Z]");
-    console.log("res", reservation);
+    const dateTime = dayjs("2024-07-16").hour(hour).minute(minute);
+    reservation.Hour = dateTime.format();
+
     e.preventDefault();
     addReservationMutation.mutate(reservation);
   };
@@ -57,7 +57,6 @@ export default function AddReservation(props) {
       <form style={{ flexGrow: 1 }}>
         <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
           <ReservationForm
-            reservation={reservation}
             validationErrors={validationErrors}
             handleChange={handleChange}
           />
