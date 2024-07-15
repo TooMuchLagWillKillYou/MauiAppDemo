@@ -3,7 +3,6 @@ import FormInput from "../shared/FormInput";
 
 export default function ReservationForm(props) {
   const { reservation, validationErrors, handleChange } = props;
-  console.log("component's error: ", validationErrors);
   return (
     <>
       <FormInput

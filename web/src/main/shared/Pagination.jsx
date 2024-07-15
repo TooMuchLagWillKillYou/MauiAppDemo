@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
+import "dayjs/locale/it";
 import { Button } from "@mui/joy";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import "dayjs/locale/it";
 import PaginationModal from "./PaginationModal";
 
 export default function Pagination() {
