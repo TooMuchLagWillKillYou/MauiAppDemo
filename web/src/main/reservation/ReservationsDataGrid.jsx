@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
+import dayjs from "dayjs";
+import "dayjs/locale/it";
 import { DataGrid, GridCellModes } from "@mui/x-data-grid";
 import useFetchReservations, {
   useUpdateReservation,
 } from "../../hooks/reservationHooks";
 import ApiStatus from "../../apiStatus";
-import { Alert, Snackbar } from "@mui/joy";
+import { Snackbar } from "@mui/joy";
 
 export default function ReservationsDataGrid() {
   const [cellModesModel, setCellModesModel] = useState({});
@@ -25,6 +27,12 @@ export default function ReservationsDataGrid() {
       width: 200,
       editable: true,
       sortable: true,
+      valueGetter: (value) => {
+        if (!value) {
+          return value;
+        }
+        return dayjs(value).format("HH:mm");
+      },
     },
     {
       field: "people",
