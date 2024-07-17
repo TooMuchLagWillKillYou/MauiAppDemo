@@ -10,18 +10,29 @@ const useFetchReservations = () => {
       axios
         .get(`${config.baseApiUrl}/reservations`)
         .then((response) => response.data)
-        .catch((error) => console.error(error)),
+        .catch((error) => console.error("useFetchReservations", error)),
   });
 };
 
-const useFetchReservation = () => {
+const useFetchReservationsByDate = (date) => {
+  return useQuery({
+    queryKey: ["reservations", date],
+    queryFn: () =>
+      axios
+        .get(`${config.baseApiUrl}/reservations/${date}`)
+        .then((response) => response.data)
+        .catch((error) => console.error("useFetchReservationsByDate", error)),
+  });
+};
+
+const useFetchReservation = (id) => {
   return useQuery({
     queryKey: ["reservations", id],
-    queryFn: (id) =>
+    queryFn: () =>
       axios
         .get(`${config.baseApiUrl}/reservation/${id}`)
         .then((response) => response.data)
-        .catch((error) => console.error(error)),
+        .catch((error) => console.error("useFetchReservation", error)),
   });
 };
 
@@ -74,6 +85,7 @@ const useDeleteReservation = () => {
 
 export default useFetchReservations;
 export {
+  useFetchReservationsByDate,
   useFetchReservation,
   useAddReservation,
   useUpdateReservation,
