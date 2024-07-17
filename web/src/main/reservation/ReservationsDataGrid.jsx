@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import { DataGrid, GridCellModes } from "@mui/x-data-grid";
-import useFetchReservations, {
-  useUpdateReservation,
-} from "../../hooks/reservationHooks";
+import { useUpdateReservation } from "../../hooks/reservationHooks";
 import ApiStatus from "../../apiStatus";
 import { Snackbar } from "@mui/joy";
 
-export default function ReservationsDataGrid() {
+export default function ReservationsDataGrid({ data, status, isSuccess }) {
   const [cellModesModel, setCellModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
-  const { data, status, isSuccess } = useFetchReservations();
   const updateReservationMutation = useUpdateReservation();
   const columns = [
     {
@@ -155,7 +152,6 @@ export default function ReservationsDataGrid() {
           autoHideDuration={6000}
         >
           {snackbar.message}
-          {/* <Alert {...snackbar} onClose={handleCloseSnackbar} /> */}
         </Snackbar>
       )}
     </>

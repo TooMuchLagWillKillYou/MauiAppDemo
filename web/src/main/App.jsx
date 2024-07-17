@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import dayjs from "dayjs";
 import Sidebar from "./Sidebar";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 // import { CssVarsProvider } from "@mui/joy/styles";
@@ -9,11 +10,20 @@ import Pagination from "./shared/Pagination";
 import "./style.css";
 import ReservationsDataGrid from "./reservation/ReservationsDataGrid";
 import AddReservation from "./reservation/AddReservation";
+import { useFetchReservationsByDate } from "../hooks/reservationHooks";
 
 function App() {
+  const [currentDate, setCurrentDate] = useState(dayjs());
+  const { data, status, isSuccess } = useFetchReservationsByDate(currentDate);
+
+  const handleDateChange = (daysToAdd) => {
+    setCurrentDate(currentDate.add(daysToAdd, "days"));
+  };
+
   return (
     <>
       {/* if you uncomment this component, <StaticDatePicker /> will crash */}
+      {/* TODO: solve with this? https://github.com/mui/mui-x/issues/13799 */}
       {/* <CssVarsProvider disableTransitionOnChange> */}
       <CssBaseline />
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
@@ -81,9 +91,13 @@ function App() {
               Prenotazioni
             </Typography>
           </Box>
-          <Pagination />
-          <AddReservation />
-          <ReservationsDataGrid />
+          <Pagination currentDate={currentDate} onChange={handleDateChange} />
+          <AddReservation currentDate={currentDate} />
+          <ReservationsDataGrid
+            data={data}
+            status={status}
+            isSuccess={isSuccess}
+          />
         </Box>
       </Box>
 

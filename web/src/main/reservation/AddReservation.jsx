@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
-import { Box, Button, Grid, Stack } from "@mui/joy";
+import { Box, Button, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
 import { useAddReservation } from "../../hooks/reservationHooks";
 import ReservationForm from "./ReservationForm";
 
-export default function AddReservation(props) {
+export default function AddReservation({ currentDate }) {
   const [reservation, setReservation] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const addReservationMutation = useAddReservation();
@@ -33,9 +33,8 @@ export default function AddReservation(props) {
   const submit = (e) => {
     const hour = reservation.Hour.split(":")[0];
     const minute = reservation.Hour.split(":")[1];
-    const dateTime = dayjs("2024-07-16").hour(hour).minute(minute);
+    const dateTime = dayjs(currentDate).hour(hour).minute(minute);
     reservation.Hour = dateTime.format();
-
     e.preventDefault();
     addReservationMutation.mutate(reservation);
   };
