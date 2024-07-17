@@ -60,6 +60,9 @@ namespace MinimalAPI
 
             app.MapGet("/reservations", (IReservationRepository repository) => repository.GetAll());
 
+            app.MapGet("/reservations/{date:datetime}", async (DateTime date, IReservationRepository repository) =>
+                await repository.GetByDate(date));
+
             app.MapGet("/reservation/{id:int}", async (int id, IReservationRepository repository) => 
                 await repository.Get(id));
            

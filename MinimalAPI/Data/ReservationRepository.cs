@@ -18,6 +18,13 @@ namespace MinimalAPI.Data
                 new ReservationDto(r.Id, r.Name, r.Hour, r.People, r.Table, r.Notes)).ToListAsync();
         }
 
+        public async Task<List<ReservationDto>> GetByDate(DateTime date)
+        {
+            return await _context.Reservations.Where(r => DateOnly.FromDateTime(r.Hour) == DateOnly.FromDateTime(date))
+                .Select(r => new ReservationDto(r.Id, r.Name, r.Hour, r.People, r.Table, r.Notes))
+                .ToListAsync();
+        }
+
         public async Task<ReservationDto> Get(int id)
         {
             var entity = await _context.Reservations.SingleOrDefaultAsync(r => r.Id == id);
