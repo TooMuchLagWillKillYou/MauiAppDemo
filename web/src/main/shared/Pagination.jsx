@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
-import { Button } from "@mui/joy";
+import { Button, Typography } from "@mui/joy";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import PaginationModal from "./PaginationModal";
@@ -27,7 +27,7 @@ export default function Pagination({ currentDate, onChange }) {
           <ChevronLeft />
         </Button>
         <span className="displayed-date" onClick={handleClick}>
-          {getTextToDisplay()}
+          <Typography level="h1">{getTextToDisplay()}</Typography>
         </span>
         <Button variant="plain" size="sm" onClick={() => onChange(1)}>
           <ChevronRight />
