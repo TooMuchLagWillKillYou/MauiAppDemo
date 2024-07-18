@@ -8,14 +8,24 @@ Next steps:
 4. DONE - refactoring dei form, testare creazione, modifica e messaggi di errore in entrambi i form
 5. DONE - modifica di una prenotazione
 6. CRUD con <DataGrid /> + display dei messaggi di error nella snackbar
-	- salvare la prenotazione con la data selezionata
+	DONE- salvare la prenotazione con la data selezionata
 	- delete di una prenotazione
 	- svuotare il form di creazione dopo il submit
-	- paginazione filtrata per giorno
+	DONE - paginazione filtrata per giorno
 	- check di usare gli Effect nel modo corretto
-7. salvare correttamente il campo 'hour', perché row.Hour e non row.hour?
-8. paginazione con i giorni dell'anno corrente
-navigazione ai componenti 'Prenotazioni' e 'Tavoli'
+7. DONE salvare correttamente il campo 'hour', perché row.Hour e non row.hour?
+8. DONE paginazione con i giorni dell'anno corrente
+9. eliminazione di una prenotazione anche per giorni futuri
+10. impedire di aggiungere e modificare prenotazioni in giorni passati 
+11. fare altri test per salvataggio, modifica, e messaggi di errore
+12. sistemare CssVariables con l'issue che ho aperto su github
+13. calendario per agevolare la selezione di una data
+14. timeout che reimposta la data di oggi dopo un intervallo di tempo
+15. alert (vedi notion)
+16. centrare spinner
+17. tradurre "No rows" in "Nessun prenotazione per questo giorno"
+18. backend deve restituire tutti i messaggi di errore e in italiano
+19. eliminare progetti della solution non più necessari
 
 Todo:
 1. DONE - controllare di aver abilitato correttamente in CORS
@@ -29,3 +39,4 @@ Resources:
 1. CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
 2. Icons: https://mui.com/material-ui/material-icons/
 3. Pluralsight: https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-react-building-end-to-end-spa/table-of-contents
+

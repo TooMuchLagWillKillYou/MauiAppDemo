@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import "dayjs/locale/it";
 import { DataGrid, GridCellModes } from "@mui/x-data-grid";
 import { useUpdateReservation } from "../../hooks/reservationHooks";
-import ApiStatus from "../../ApiStatus";
+import ApiStatus from "../../utils/ApiStatus";
 import { Snackbar } from "@mui/joy";
 
 export default function ReservationsDataGrid({ data, status, isSuccess }) {
