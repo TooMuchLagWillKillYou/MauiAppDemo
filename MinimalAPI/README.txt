@@ -18,16 +18,19 @@ Next steps:
 9. eliminazione di una prenotazione anche per giorni futuri
 10. impedire di aggiungere e modificare prenotazioni in giorni passati 
 11. fare altri test per salvataggio, modifica, e messaggi di errore
-12. sistemare CssVariables con l'issue che ho aperto su github
+12. DONE - sistemare CssVariables con l'issue che ho aperto su github
 13. calendario per agevolare la selezione di una data
 14. timeout che reimposta la data di oggi dopo un intervallo di tempo
 15. alert (vedi notion)
-16. centrare spinner
+16. DONE - centrare spinner
 17. tradurre "No rows" in "Nessun prenotazione per questo giorno"
 18. backend deve restituire tutti i messaggi di errore e in italiano
 19. eliminare progetti della solution non più necessari
 
 Todo:
+- svuotare il form di creazione dopo aver premuto submit
+- testare i messaggi di errore
+- controllare che non ci siano side effect e che i componenti siano stati creati seguendo le guide di react
 1. DONE - controllare di aver abilitato correttamente in CORS
 2. validazione corretta degli input dell'utente: 
 	- DONE il campo 'People' deve essere di tipo numerico e non accettare valori inferiori a 1
