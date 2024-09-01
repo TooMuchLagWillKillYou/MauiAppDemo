@@ -1,15 +1,24 @@
 import React, { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
-import { DataGrid, GridCellModes } from "@mui/x-data-grid";
-import { useUpdateReservation } from "../../hooks/reservationHooks";
+import { DataGrid, GridActionsCellItem, GridCellModes } from "@mui/x-data-grid";
+import {
+  useDeleteReservation,
+  useUpdateReservation,
+} from "../../hooks/reservationHooks";
 import ApiStatus from "../../utils/ApiStatus";
 import { Snackbar } from "@mui/joy";
+import DeleteModal from "./DeleteModal";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 export default function ReservationsDataGrid({ data, status, isSuccess }) {
   const [cellModesModel, setCellModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [reservationToDelete, setReservationToDelete] = useState(null);
   const updateReservationMutation = useUpdateReservation();
+  const deleteReservationMutation = useDeleteReservation();
+
   const columns = [
     {
       field: "name",
@@ -53,7 +62,34 @@ export default function ReservationsDataGrid({ data, status, isSuccess }) {
       editable: true,
       sortable: true,
     },
+    {
+      field: "actions",
+      type: "actions",
+      headerName: "",
+      width: 100,
+      cellClassName: "actions",
+      getActions: ({ id }) => {
+        return [
+          <GridActionsCellItem
+            className="row-action-delete"
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={() => handleDeleteRow(id)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
   ];
+
+  function handleDeleteRow(id) {
+    setReservationToDelete(id);
+    setDeleteModalIsOpen(true);
+  }
+  const deleteRow = (id) => {
+    deleteReservationMutation.mutate(id);
+    setDeleteModalIsOpen(false);
+  };
 
   const handleCellClick = useCallback((params, event) => {
     if (!params.isEditable) {
@@ -154,6 +190,12 @@ export default function ReservationsDataGrid({ data, status, isSuccess }) {
           {snackbar.message}
         </Snackbar>
       )}
+      <DeleteModal
+        isOpen={deleteModalIsOpen}
+        setIsOpen={setDeleteModalIsOpen}
+        onClick={deleteRow}
+        itemToDelete={reservationToDelete}
+      />
     </>
   );
 }

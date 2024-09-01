@@ -11,7 +11,7 @@ import {
 import { WarningRounded } from "@mui/icons-material";
 
 export default function DeleteModal(props) {
-  const { isOpen, setIsOpen, onClick } = props;
+  const { isOpen, setIsOpen, onClick, itemToDelete } = props;
 
   return (
     <Modal
@@ -31,7 +31,11 @@ export default function DeleteModal(props) {
           Sei sicuro di voler eliminare questa prenotazione?
         </DialogContent>
         <DialogActions>
-          <Button variant="solid" color="danger" onClick={onClick}>
+          <Button
+            variant="solid"
+            color="danger"
+            onClick={() => onClick(itemToDelete)}
+          >
             Elimina
           </Button>
           <Button
