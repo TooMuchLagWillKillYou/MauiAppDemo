@@ -14,6 +14,7 @@ export default function AddReservation({ currentDate }) {
     const errorsDictionary = {};
     if (
       addReservationMutation.isError &&
+      addReservationMutation.error &&
       addReservationMutation.error.response?.status == 400
     ) {
       Object.entries(addReservationMutation.error.response?.data.errors).map(
@@ -31,7 +32,11 @@ export default function AddReservation({ currentDate }) {
 
   const submit = (e) => {
     e.preventDefault();
+    const [hour, minutes] = reservation.Hour.split(":");
+    const dateTime = dayjs(currentDate).hour(hour).minute(minutes);
+    reservation.Hour = dateTime.format();
     addReservationMutation.mutate(reservation);
+    setReservation({});
   };
 
   return (
@@ -40,6 +45,7 @@ export default function AddReservation({ currentDate }) {
       sx={{
         borderRadius: "sm",
         py: 2,
+        mb: 5,
         display: { xs: "none", sm: "flex" },
         flexWrap: "wrap",
         gap: 1.5,
