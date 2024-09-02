@@ -54,7 +54,7 @@ export default function ReservationForm(props) {
         name="Notes"
         onChange={handleChange}
         errorMessage={validationErrors.Notes}
-        sx={{ flexGrow: 1 }}
+        sx={{ flexGrow: 1, height: 36 }}
       />
     </>
   );
