@@ -71,7 +71,7 @@ namespace MinimalAPI
                 if (!MiniValidator.TryValidate(dto, out var errors))
                     return Results.ValidationProblem(errors);
                 
-                var newReservation = await repository.Add(dto);
+                await repository.Add(dto);
                 return Results.Created();
             }).ProducesValidationProblem()
                 .Produces<ReservationDto>(StatusCodes.Status201Created);
