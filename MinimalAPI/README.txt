@@ -26,6 +26,10 @@ Next steps:
 17. tradurre "No rows" in "Nessun prenotazione per questo giorno"
 18. backend deve restituire tutti i messaggi di errore e in italiano
 19. eliminare progetti della solution non più necessari
+20. form:
+    - se è valido, viene svuotato
+    - se contiene errori, non viene svuotato
+    - se contiene errori ma viene modificato il campo, si svuotano gli errori del campo modificato
 
 Todo:
 - svuotare il form di creazione dopo aver premuto submit
