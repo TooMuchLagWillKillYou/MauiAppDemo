@@ -1,43 +1,70 @@
-import React, { useState } from "react";
-import dayjs from "dayjs";
-import { Box, Button, Stack } from "@mui/joy";
+import { Box, FormControl, FormLabel, Button, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
-import { useAddReservation } from "../../hooks/reservationHooks";
-import ReservationForm from "./ReservationForm";
+import React, { useEffect, useState } from "react";
 import FormInput from "../shared/FormInput";
+import { TimeField } from "@mui/x-date-pickers";
+import { useAddReservation } from "../../hooks/reservationHooks";
+import dayjs from "dayjs";
 
-export default function AddReservation({ currentDate }) {
-  const [reservation, setReservation] = useState({});
+export default function AddReservation(props) {
   const addReservationMutation = useAddReservation();
-  const validationErrors = getValidationErrors();
+  const [name, setName] = useState("");
+  const [hour, setHour] = useState(dayjs());
+  const [people, setPeople] = useState(2);
+  const [table, setTable] = useState("");
+  const [notes, setNotes] = useState("");
+  const [validationErrors, setValidationErrors] = useState([]);
 
-  function getValidationErrors() {
-    const errorsDictionary = {};
+  useEffect(() => {
+    const result = {};
     if (
       addReservationMutation.isError &&
       addReservationMutation.error &&
       addReservationMutation.error.response?.status == 400
     ) {
       Object.entries(addReservationMutation.error.response?.data.errors).map(
-        ([key, value]) => (errorsDictionary[key] = value)
+        ([key, value]) => (result[key] = value)
       );
     }
-    return errorsDictionary;
-  }
+    setValidationErrors(result);
+  }, [addReservationMutation.isError]);
 
-  const handleChange = (e) => {
-    const inputName = e.target.name;
-    setReservation({ ...reservation, [inputName]: e.target.value });
-    validationErrors[inputName] = null;
+  const handleNameChange = (e) => {
+    setValidationErrors({ ...validationErrors, [e.target.name]: null });
+    setName(e.target.value);
   };
-
+  const handleHourChange = (e) => {
+    setValidationErrors({ ...validationErrors, [e.target.name]: null });
+    setHour(e);
+  };
+  const handlePeopleChange = (e) => {
+    setValidationErrors({ ...validationErrors, [e.target.name]: null });
+    setPeople(e.target.value);
+  };
+  const handleTableChange = (e) => {
+    setValidationErrors({ ...validationErrors, [e.target.name]: null });
+    setTable(e.target.value);
+  };
+  const handleNotesChange = (e) => {
+    setValidationErrors({ ...validationErrors, [e.target.name]: null });
+    setNotes(e.target.value);
+  };
   const submit = (e) => {
     e.preventDefault();
-    const [hour, minutes] = reservation.Hour.split(":");
-    const dateTime = dayjs(currentDate).hour(hour).minute(minutes);
-    reservation.Hour = dateTime.format();
-    addReservationMutation.mutate(reservation);
-    setReservation({});
+
+    addReservationMutation.mutate({
+      name,
+      hour,
+      people,
+      table,
+      notes,
+    });
+
+    setName("");
+    setHour(dayjs());
+    setPeople(2);
+    setTable("");
+    setNotes("");
   };
 
   return (
@@ -56,73 +83,73 @@ export default function AddReservation({ currentDate }) {
       }}
     >
       <form style={{ flexGrow: 1 }}>
-        {/* <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap> */}
-        {/* <ReservationForm
-            validationErrors={validationErrors}
-            handleChange={handleChange}
-          /> */}
-        <FormInput
-          label="Nome"
-          name="Name"
-          onChange={handleChange}
-          errorMessage={validationErrors.Name}
-          sx={{
-            width: 300,
-          }}
-        />
-        <FormInput
-          label="Ora"
-          name="Hour"
-          type="time"
-          onChange={handleChange}
-          errorMessage={validationErrors.Hour}
-          sx={{
-            width: 200,
-          }}
-        />
-        <FormInput
-          label="Persone"
-          name="People"
-          type="number"
-          onChange={handleChange}
-          errorMessage={validationErrors.People}
-          sx={{
-            width: 200,
-          }}
-          slotProps={{
-            input: {
-              min: 1,
-              step: 1,
-            },
-          }}
-        />
-        <FormInput
-          label="Tavolo"
-          name="Table"
-          onChange={handleChange}
-          errorMessage={validationErrors.Table}
-          sx={{
-            width: 200,
-          }}
-        />
-        <FormInput
-          label="Note"
-          name="Notes"
-          onChange={handleChange}
-          errorMessage={validationErrors.Notes}
-          sx={{ flexGrow: 1, height: 36 }}
-        />
-        <Button
-          type="submit"
-          color="primary"
-          startDecorator={<AddIcon />}
-          size="md"
-          // sx={{ placeSelf: "flex-end" }}
-          onClick={submit}
-        >
-          Aggiungi
-        </Button>
-        {/* </Stack> */}
+        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
+          <FormInput
+            label="Name"
+            name="Name"
+            value={name}
+            onChange={handleNameChange}
+            errorMessage={validationErrors.Name}
+            sx={{
+              width: 300,
+            }}
+          />
+          <FormControl>
+            <FormLabel>Hour</FormLabel>
+            <TimeField
+              format="HH:mm"
+              name="Hour"
+              value={hour}
+              onChange={handleHourChange}
+              // errorMessage={validationErrors.Hour}
+            />
+          </FormControl>
+          <FormInput
+            type="number"
+            label="People"
+            name="People"
+            value={people}
+            onChange={handlePeopleChange}
+            errorMessage={validationErrors.People}
+            sx={{
+              width: 200,
+            }}
+            slotProps={{
+              input: {
+                min: 1,
+                step: 1,
+              },
+            }}
+          />
+          <FormInput
+            label="Table"
+            name="Table"
+            onChange={handleTableChange}
+            value={table}
+            errorMessage={validationErrors.Table}
+            sx={{
+              width: 200,
+            }}
+          />
+          <FormInput
+            label="Notes"
+            name="Notes"
+            onChange={handleNotesChange}
+            value={notes}
+            errorMessage={validationErrors.Notes}
+            sx={{ flexGrow: 1, height: 36 }}
+          />
+          <Button
+            type="submit"
+            color="primary"
+            startDecorator={<AddIcon />}
+            size="md"
+            sx={{ placeSelf: "flex-end" }}
+            onClick={submit}
+          >
+            Aggiungi
+          </Button>
+        </Stack>
       </form>
     </Box>
   );
