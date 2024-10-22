@@ -1,20 +1,20 @@
 import { InfoOutlined } from "@mui/icons-material";
-import { FormControl, FormHelperText, FormLabel, Input } from "@mui/joy";
+import { FormControl, FormHelperText, FormLabel } from "@mui/joy";
+import { TimeField } from "@mui/x-date-pickers";
 
-export default function FormInput(props) {
-  const { errorMessage, label, name, type, onChange, sx, slotProps, value } =
+export default function FormTimeInput(props) {
+  const { errorMessage, label, format, name, onChange, sx, slotProps, value } =
     props;
 
   return (
     <FormControl error={errorMessage && errorMessage.length} sx={sx}>
       <FormLabel>{label}</FormLabel>
-      <Input
+      <TimeField
+        format={format}
         name={name}
-        type={type}
-        onChange={onChange}
         value={value}
+        onChange={onChange}
         sx={sx}
-        variant="outlined"
         slotProps={slotProps}
       />
       {errorMessage && (
