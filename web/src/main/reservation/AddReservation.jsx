@@ -5,6 +5,7 @@ import FormInput from "../shared/FormInput";
 import { TimeField } from "@mui/x-date-pickers";
 import { useAddReservation } from "../../hooks/reservationHooks";
 import dayjs from "dayjs";
+import FormTimeInput from "../shared/FormTimeInput";
 
 export default function AddReservation(props) {
   const addReservationMutation = useAddReservation();
@@ -34,7 +35,7 @@ export default function AddReservation(props) {
     setName(e.target.value);
   };
   const handleHourChange = (e) => {
-    setValidationErrors({ ...validationErrors, [e.target.name]: null });
+    setValidationErrors({ ...validationErrors, Hour: null });
     setHour(e);
   };
   const handlePeopleChange = (e) => {
@@ -94,16 +95,18 @@ export default function AddReservation(props) {
               width: 300,
             }}
           />
-          <FormControl>
-            <FormLabel>Hour</FormLabel>
-            <TimeField
-              format="HH:mm"
-              name="Hour"
-              value={hour}
-              onChange={handleHourChange}
-              // errorMessage={validationErrors.Hour}
-            />
-          </FormControl>
+          <FormTimeInput
+            format="HH:mm"
+            name="Hour"
+            value={hour}
+            onChange={handleHourChange}
+            errorMessage={validationErrors.Hour}
+            slotProps={{
+              textField: {
+                border: "2px solid green",
+              },
+            }}
+          />
           <FormInput
             type="number"
             label="People"
