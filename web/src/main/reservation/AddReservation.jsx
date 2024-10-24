@@ -5,12 +5,15 @@ import FormInput from "../shared/FormInput";
 import { TimeField } from "@mui/x-date-pickers";
 import { useAddReservation } from "../../hooks/reservationHooks";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import FormTimeInput from "../shared/FormTimeInput";
-
+dayjs.extend(utc);
+dayjs.extend(timezone);
 export default function AddReservation(props) {
   const addReservationMutation = useAddReservation();
   const [name, setName] = useState("");
-  const [hour, setHour] = useState(dayjs());
+  const [hour, setHour] = useState(dayjs.tz(dayjs(), "Europe/Rome"));
   const [people, setPeople] = useState(2);
   const [table, setTable] = useState("");
   const [notes, setNotes] = useState("");
@@ -23,11 +26,28 @@ export default function AddReservation(props) {
       addReservationMutation.error &&
       addReservationMutation.error.response?.status == 400
     ) {
+      parseValidationErrorsFromAPI();
+      resetUserInputs();
+    }
+    setValidationErrors(result);
+
+    function parseValidationErrorsFromAPI() {
       Object.entries(addReservationMutation.error.response?.data.errors).map(
         ([key, value]) => (result[key] = value)
       );
     }
-    setValidationErrors(result);
+    function resetUserInputs() {
+      const deserializedPayload = JSON.parse(
+        addReservationMutation.error.response?.config.data
+      );
+      setName(deserializedPayload.name ?? "");
+      setHour(
+        dayjs(deserializedPayload.hour) ?? dayjs.tz(dayjs(), "Europe/Rome")
+      );
+      setPeople(deserializedPayload.people ?? 2);
+      setTable(deserializedPayload.table ?? "");
+      setNotes(deserializedPayload.notes ?? "");
+    }
   }, [addReservationMutation.isError]);
 
   const handleNameChange = (e) => {
@@ -36,7 +56,7 @@ export default function AddReservation(props) {
   };
   const handleHourChange = (e) => {
     setValidationErrors({ ...validationErrors, Hour: null });
-    setHour(e);
+    setHour(dayjs(e).tz("Europe/Rome"));
   };
   const handlePeopleChange = (e) => {
     setValidationErrors({ ...validationErrors, [e.target.name]: null });
@@ -55,7 +75,7 @@ export default function AddReservation(props) {
 
     addReservationMutation.mutate({
       name,
-      hour,
+      hour: hour.format(),
       people,
       table,
       notes,
