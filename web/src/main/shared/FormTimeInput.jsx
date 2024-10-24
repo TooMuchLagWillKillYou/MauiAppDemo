@@ -1,6 +1,6 @@
 import { InfoOutlined } from "@mui/icons-material";
 import { FormControl, FormHelperText, FormLabel } from "@mui/joy";
-import { TimeField } from "@mui/x-date-pickers";
+import { TimePicker } from "@mui/x-date-pickers";
 
 export default function FormTimeInput(props) {
   const { errorMessage, label, format, name, onChange, sx, slotProps, value } =
@@ -9,7 +9,7 @@ export default function FormTimeInput(props) {
   return (
     <FormControl error={errorMessage && errorMessage.length} sx={sx}>
       <FormLabel>{label}</FormLabel>
-      <TimeField
+      <TimePicker
         format={format}
         name={name}
         value={value}
