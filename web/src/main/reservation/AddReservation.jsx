@@ -19,19 +19,19 @@ export default function AddReservation(props) {
     {
       label: "+15 min",
       getValue: () => {
-        return dayjs().add(15, "minute");
+        return currentTime.add(15, "minute");
       },
     },
     {
       label: "+30 min",
       getValue: () => {
-        return dayjs().add(30, "minute");
+        return currentTime.add(30, "minute");
       },
     },
     {
       label: "+1 hr",
       getValue: () => {
-        return dayjs().add(1, "hour");
+        return currentTime.add(1, "hour");
       },
     },
   ];
@@ -42,6 +42,13 @@ export default function AddReservation(props) {
   const [table, setTable] = useState("");
   const [notes, setNotes] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setHour(currentTime);
+    }, 300000);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const result = {};
@@ -145,9 +152,6 @@ export default function AddReservation(props) {
             onChange={handleHourChange}
             errorMessage={validationErrors.Hour}
             slotProps={{
-              textField: {
-                border: "2px solid green",
-              },
               shortcuts: {
                 items: shortcutItems,
               },
