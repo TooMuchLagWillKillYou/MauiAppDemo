@@ -8,12 +8,36 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import FormTimeInput from "../shared/FormTimeInput";
+import ceil from "../../utils/ceil";
+dayjs.extend(ceil);
 dayjs.extend(utc);
 dayjs.extend(timezone);
+
 export default function AddReservation(props) {
+  const currentTime = dayjs.tz(dayjs().ceil(15, "minutes"), "Europe/Rome");
+  const shortcutItems = [
+    {
+      label: "+15 min",
+      getValue: () => {
+        return dayjs().add(15, "minute");
+      },
+    },
+    {
+      label: "+30 min",
+      getValue: () => {
+        return dayjs().add(30, "minute");
+      },
+    },
+    {
+      label: "+1 hr",
+      getValue: () => {
+        return dayjs().add(1, "hour");
+      },
+    },
+  ];
   const addReservationMutation = useAddReservation();
   const [name, setName] = useState("");
-  const [hour, setHour] = useState(dayjs.tz(dayjs(), "Europe/Rome"));
+  const [hour, setHour] = useState(currentTime);
   const [people, setPeople] = useState(2);
   const [table, setTable] = useState("");
   const [notes, setNotes] = useState("");
@@ -41,15 +65,13 @@ export default function AddReservation(props) {
         addReservationMutation.error.response?.config.data
       );
       setName(deserializedPayload.name ?? "");
-      setHour(
-        dayjs(deserializedPayload.hour) ?? dayjs.tz(dayjs(), "Europe/Rome")
-      );
+      setHour(dayjs(deserializedPayload.hour) ?? currentTime);
       setPeople(deserializedPayload.people ?? 2);
       setTable(deserializedPayload.table ?? "");
       setNotes(deserializedPayload.notes ?? "");
     }
   }, [addReservationMutation.isError]);
-
+  //#region event handlers
   const handleNameChange = (e) => {
     setValidationErrors({ ...validationErrors, [e.target.name]: null });
     setName(e.target.value);
@@ -82,12 +104,12 @@ export default function AddReservation(props) {
     });
 
     setName("");
-    setHour(dayjs());
+    setHour(currentTime);
     setPeople(2);
     setTable("");
     setNotes("");
   };
-
+  //#endregion
   return (
     <Box
       className="SearchAndFilters-tabletUp"
@@ -116,6 +138,7 @@ export default function AddReservation(props) {
             }}
           />
           <FormTimeInput
+            label="Hour"
             format="HH:mm"
             name="Hour"
             value={hour}
@@ -124,6 +147,9 @@ export default function AddReservation(props) {
             slotProps={{
               textField: {
                 border: "2px solid green",
+              },
+              shortcuts: {
+                items: shortcutItems,
               },
             }}
           />
