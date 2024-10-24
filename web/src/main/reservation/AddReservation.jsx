@@ -2,7 +2,6 @@ import { Box, FormControl, FormLabel, Button, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
 import React, { useEffect, useState } from "react";
 import FormInput from "../shared/FormInput";
-import { TimeField } from "@mui/x-date-pickers";
 import { useAddReservation } from "../../hooks/reservationHooks";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -45,7 +44,7 @@ export default function AddReservation(props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setHour(currentTime);
+      setHour(dayjs.tz(dayjs().ceil(15, "minutes"), "Europe/Rome"));
     }, 300000);
     return () => clearInterval(interval);
   }, []);
@@ -78,26 +77,9 @@ export default function AddReservation(props) {
       setNotes(deserializedPayload.notes ?? "");
     }
   }, [addReservationMutation.isError]);
-  //#region event handlers
-  const handleNameChange = (e) => {
-    setValidationErrors({ ...validationErrors, [e.target.name]: null });
-    setName(e.target.value);
-  };
-  const handleHourChange = (e) => {
-    setValidationErrors({ ...validationErrors, Hour: null });
-    setHour(dayjs(e).tz("Europe/Rome"));
-  };
-  const handlePeopleChange = (e) => {
-    setValidationErrors({ ...validationErrors, [e.target.name]: null });
-    setPeople(e.target.value);
-  };
-  const handleTableChange = (e) => {
-    setValidationErrors({ ...validationErrors, [e.target.name]: null });
-    setTable(e.target.value);
-  };
-  const handleNotesChange = (e) => {
-    setValidationErrors({ ...validationErrors, [e.target.name]: null });
-    setNotes(e.target.value);
+  const onChange = (callback, inputName, inputValue) => {
+    setValidationErrors({ ...validationErrors, [inputName]: null });
+    callback(inputValue);
   };
   const submit = (e) => {
     e.preventDefault();
@@ -116,7 +98,6 @@ export default function AddReservation(props) {
     setTable("");
     setNotes("");
   };
-  //#endregion
   return (
     <Box
       className="SearchAndFilters-tabletUp"
@@ -138,7 +119,7 @@ export default function AddReservation(props) {
             label="Name"
             name="Name"
             value={name}
-            onChange={handleNameChange}
+            onChange={(e) => onChange(setName, "Name", e.target.value)}
             errorMessage={validationErrors.Name}
             sx={{
               width: 300,
@@ -149,7 +130,7 @@ export default function AddReservation(props) {
             format="HH:mm"
             name="Hour"
             value={hour}
-            onChange={handleHourChange}
+            onChange={(value) => onChange(setHour, "Hour", value)}
             errorMessage={validationErrors.Hour}
             slotProps={{
               shortcuts: {
@@ -162,7 +143,7 @@ export default function AddReservation(props) {
             label="People"
             name="People"
             value={people}
-            onChange={handlePeopleChange}
+            onChange={(e) => onChange(setPeople, "People", e.target.value)}
             errorMessage={validationErrors.People}
             sx={{
               width: 200,
@@ -177,7 +158,7 @@ export default function AddReservation(props) {
           <FormInput
             label="Table"
             name="Table"
-            onChange={handleTableChange}
+            onChange={(e) => onChange(setTable, "Table", e.target.value)}
             value={table}
             errorMessage={validationErrors.Table}
             sx={{
@@ -187,7 +168,7 @@ export default function AddReservation(props) {
           <FormInput
             label="Notes"
             name="Notes"
-            onChange={handleNotesChange}
+            onChange={(e) => onChange(setNotes, "Notes", e.target.value)}
             value={notes}
             errorMessage={validationErrors.Notes}
             sx={{ flexGrow: 1, height: 36 }}
