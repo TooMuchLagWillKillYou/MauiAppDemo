@@ -1,6 +1,6 @@
-import { Box, FormControl, FormLabel, Button, Stack } from "@mui/joy";
+import { Box, Button, Stack } from "@mui/joy";
 import AddIcon from "@mui/icons-material/Add";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FormInput from "../shared/FormInput";
 import { useAddReservation } from "../../hooks/reservationHooks";
 import dayjs from "dayjs";
@@ -12,25 +12,25 @@ dayjs.extend(ceil);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export default function AddReservation(props) {
-  const currentTime = dayjs.tz(dayjs().ceil(15, "minutes"), "Europe/Rome");
+export default function AddReservation() {
+  const currentTime = () => dayjs.tz(dayjs().ceil(5, "minutes"), "Europe/Rome");
   const shortcutItems = [
     {
-      label: "+15 min",
+      label: "+ 15 min",
       getValue: () => {
-        return currentTime.add(15, "minute");
+        return currentTime().add(15, "minute");
       },
     },
     {
-      label: "+30 min",
+      label: "+ 30 min",
       getValue: () => {
-        return currentTime.add(30, "minute");
+        return currentTime().add(30, "minute");
       },
     },
     {
-      label: "+1 hr",
+      label: "+ 1 hr",
       getValue: () => {
-        return currentTime.add(1, "hour");
+        return currentTime().add(1, "hour");
       },
     },
   ];
@@ -44,11 +44,10 @@ export default function AddReservation(props) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setHour(dayjs.tz(dayjs().ceil(15, "minutes"), "Europe/Rome"));
+      setHour(currentTime);
     }, 300000);
     return () => clearInterval(interval);
   }, []);
-
   useEffect(() => {
     const result = {};
     if (
