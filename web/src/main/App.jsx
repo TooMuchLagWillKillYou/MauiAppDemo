@@ -1,21 +1,20 @@
-import React, { useState } from "react";
-import dayjs from "dayjs";
-import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
+import { useState } from "react";
 import {
-  experimental_extendTheme as materialExtendTheme,
-  Experimental_CssVarsProvider as MaterialCssVarsProvider,
   THEME_ID as MATERIAL_THEME_ID,
+  ThemeProvider as MaterialThemeProvider,
 } from "@mui/material/styles";
-import { useFetchReservationsByDate } from "../hooks/reservationHooks";
-import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
-import Sidebar from "./Sidebar";
+import { CssVarsProvider as JoyCssVarsProvider } from "@mui/joy/styles";
 import CssBaseline from "@mui/joy/CssBaseline";
-import HomeRounded from "@mui/icons-material/HomeRounded";
-import ChevronRightRounded from "@mui/icons-material/ChevronRightRounded";
+import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
+import { HomeRounded, ChevronRightRounded } from "@mui/icons-material";
+import { useFetchReservationsByDate } from "../hooks/reservationHooks";
+import Sidebar from "./Sidebar";
 import Pagination from "./shared/Pagination";
 import ReservationsDataGrid from "./reservation/ReservationsDataGrid";
 import AddReservation from "./reservation/AddReservation";
+import dayjs from "dayjs";
 import "./style.css";
+import { materialTheme, joyTheme } from "../utils/themes.js";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(dayjs());
@@ -25,12 +24,10 @@ function App() {
     setCurrentDate(currentDate.add(daysToAdd, "days"));
   };
 
-  const materialTheme = materialExtendTheme();
-
   return (
     <>
-      <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
-        <JoyCssVarsProvider disableTransitionOnChange>
+      <MaterialThemeProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
+        <JoyCssVarsProvider theme={joyTheme} disableTransitionOnChange>
           <CssBaseline enableColorScheme />
           <Box sx={{ display: "flex", minHeight: "100dvh" }}>
             <Sidebar />
@@ -110,7 +107,7 @@ function App() {
             </Box>
           </Box>
         </JoyCssVarsProvider>
-      </MaterialCssVarsProvider>
+      </MaterialThemeProvider>
     </>
   );
 }
