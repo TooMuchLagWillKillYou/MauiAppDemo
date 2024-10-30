@@ -1,4 +1,4 @@
-import { outlinedInputClasses, inputBaseClasses } from "@mui/material";
+import { outlinedInputClasses } from "@mui/material";
 import { extendTheme as materialExtendTheme } from "@mui/material/styles";
 import { extendTheme as joyExtendTheme } from "@mui/joy/styles";
 
