@@ -37,7 +37,7 @@ export default function AddReservation() {
   const addReservationMutation = useAddReservation();
   const [name, setName] = useState("");
   const [hour, setHour] = useState(currentTime);
-  const [people, setPeople] = useState(2);
+  const [people, setPeople] = useState();
   const [table, setTable] = useState("");
   const [notes, setNotes] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
@@ -93,7 +93,7 @@ export default function AddReservation() {
 
     setName("");
     setHour(currentTime);
-    setPeople(2);
+    setPeople();
     setTable("");
     setNotes("");
   };

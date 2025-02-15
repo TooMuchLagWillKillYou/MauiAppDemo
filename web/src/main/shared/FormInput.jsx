@@ -1,28 +1,21 @@
-import { InfoOutlined } from "@mui/icons-material";
-import { FormControl, FormHelperText, FormLabel, Input } from "@mui/joy";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 
 export default function FormInput(props) {
-  const { errorMessage, label, name, type, onChange, sx, slotProps, value } =
-    props;
 
   return (
-    <FormControl error={errorMessage && errorMessage.length} sx={sx}>
-      <FormLabel>{label}</FormLabel>
-      <Input
-        name={name}
-        type={type}
-        onChange={onChange}
-        value={value}
-        sx={sx}
-        variant="outlined"
-        slotProps={slotProps}
-      />
-      {errorMessage && (
-        <FormHelperText>
-          <InfoOutlined />
-          {errorMessage}
-        </FormHelperText>
-      )}
-    </FormControl>
-  );
+      <Box>
+        <TextField
+            id={props.name}
+            label={props.label}
+            type={props.type}
+            value={props.value}
+            onChange={props.onChange}
+            slotProps={props.slotProps}
+            sx={props.sx}
+            error={props.errorMessage?.length}
+            helperText={props.errorMessage}
+        />
+      </Box>
+  )
 }
