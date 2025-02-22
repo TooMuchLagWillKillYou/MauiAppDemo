@@ -1,10 +1,8 @@
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 
 export default function FormInput(props) {
 
   return (
-      <Box>
         <TextField
             id={props.name}
             label={props.label}
@@ -16,6 +14,5 @@ export default function FormInput(props) {
             error={props.errorMessage?.length}
             helperText={props.errorMessage}
         />
-      </Box>
   )
 }

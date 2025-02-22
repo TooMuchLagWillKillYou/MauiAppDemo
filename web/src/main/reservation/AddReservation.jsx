@@ -1,4 +1,5 @@
-import { Box, Button, Stack } from "@mui/joy";
+import { Box, Stack } from "@mui/material";
+import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import { useEffect, useState } from "react";
 import FormInput from "../shared/FormInput";
@@ -113,7 +114,7 @@ export default function AddReservation() {
       }}
     >
       <form style={{ flexGrow: 1 }}>
-        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
+        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap >
           <FormInput
             label="Name"
             name="Name"
@@ -145,7 +146,7 @@ export default function AddReservation() {
             onChange={(e) => onChange(setPeople, "People", e.target.value)}
             errorMessage={validationErrors.People}
             sx={{
-              width: 200,
+              width: 100,
             }}
             slotProps={{
               input: {
@@ -161,7 +162,7 @@ export default function AddReservation() {
             value={table}
             errorMessage={validationErrors.Table}
             sx={{
-              width: 200,
+              width: 100,
             }}
           />
           <FormInput
@@ -174,13 +175,14 @@ export default function AddReservation() {
           />
           <Button
             type="submit"
-            color="primary"
-            startDecorator={<AddIcon />}
-            size="md"
-            sx={{ placeSelf: "flex-end" }}
+            // color="primary"
+              variant="contained"
+            startIcon={<AddIcon />}
+            // size="md"
+            // sx={{ placeSelf: "flex-end" }}
             onClick={submit}
           >
-            Aggiungi
+             Aggiungi
           </Button>
         </Stack>
       </form>

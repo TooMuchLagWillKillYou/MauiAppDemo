@@ -48,7 +48,7 @@ export default function PaginationModal(props) {
         </DialogContent>
         <DialogActions>
           <Button
-            variant="plain"
+            variant="text"
             color="neutral"
             onClick={() => setIsOpen(false)}
           >

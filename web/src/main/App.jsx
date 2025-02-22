@@ -20,7 +20,6 @@ function App() {
 
   return (
     <>
-      <CssBaseline enableColorScheme />
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
         <Sidebar />
         <Box

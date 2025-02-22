@@ -12,6 +12,7 @@ import {
 import listItemButtonClasses from "@mui/joy/ListItemButton";
 import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import React from "react";
 
 export default function Sidebar(props) {
@@ -102,6 +103,14 @@ export default function Sidebar(props) {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
+            <ListItem>
+                <ListItemButton>
+                    <MenuBookIcon  />
+                    <ListItemContent>
+                        <Typography level="title-sm">Menù</Typography>
+                    </ListItemContent>
+                </ListItemButton>
+            </ListItem>
         </List>
       </Box>
     </Sheet>
