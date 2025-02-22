@@ -88,6 +88,7 @@ function App() {
           <Pagination
             currentDate={currentDate}
             onChange={handleDateChange}
+            setCurrentDate={setCurrentDate}
           />
           <AddReservation currentDate={currentDate} />
           <ReservationsDataGrid

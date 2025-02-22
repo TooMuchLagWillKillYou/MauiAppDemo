@@ -6,7 +6,7 @@ import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
 import PaginationModal from "./PaginationModal";
 
-export default function Pagination({ currentDate, onChange }) {
+export default function Pagination({ currentDate, setCurrentDate, onChange }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const isToday =
     currentDate.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY");
@@ -35,6 +35,7 @@ export default function Pagination({ currentDate, onChange }) {
         currentDate={currentDate}
         isOpen={modalIsOpen}
         setIsOpen={setModalIsOpen}
+        setCurrentDate={setCurrentDate}
       />
     </div>
   );
