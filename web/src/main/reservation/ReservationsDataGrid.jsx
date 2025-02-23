@@ -3,7 +3,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/it";
 import { DataGrid, GridActionsCellItem, GridCellModes } from "@mui/x-data-grid";
 import {
-  useDeleteReservation, useFetchReservationsByDate,
+  useDeleteReservation,
+  useFetchReservationsByDate,
   useUpdateReservation,
 } from "../../hooks/reservationHooks";
 import ApiStatus from "../../utils/ApiStatus";
@@ -11,7 +12,7 @@ import { Snackbar } from "@mui/joy";
 import DeleteModal from "./DeleteModal";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
-export default function ReservationsDataGrid({currentDate}) {
+export default function ReservationsDataGrid({ currentDate }) {
   const [cellModesModel, setCellModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
@@ -114,16 +115,16 @@ export default function ReservationsDataGrid({currentDate}) {
                 ...acc2,
                 [field]: { mode: GridCellModes.View },
               }),
-              {}
+              {},
             ),
           }),
-          {}
+          {},
         ),
         [params.id]: {
           // Revert the mode of other cells in the same row
           ...Object.keys(prevModel[params.id] || {}).reduce(
             (acc, field) => ({ ...acc, [field]: { mode: GridCellModes.View } }),
-            {}
+            {},
           ),
           [params.field]: { mode: GridCellModes.Edit },
         },
@@ -137,9 +138,7 @@ export default function ReservationsDataGrid({currentDate}) {
 
   const processRowUpdate = useCallback(
     async (updatedRow, originalRow) => {
-      if (updatedRow == originalRow) {
-        return originalRow;
-      }
+      if (updatedRow === originalRow) return originalRow;
 
       const response = await updateReservationMutation.mutateAsync(updatedRow);
       setSnackbar({
@@ -148,7 +147,7 @@ export default function ReservationsDataGrid({currentDate}) {
       });
       return response;
     },
-    [updateReservationMutation]
+    [updateReservationMutation],
   );
 
   const handleProcessRowUpdateError = useCallback((error) => {

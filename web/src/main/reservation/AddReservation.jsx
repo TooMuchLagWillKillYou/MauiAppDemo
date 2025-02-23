@@ -34,7 +34,7 @@ export default function AddReservation() {
     if (
       addReservationMutation.isError &&
       addReservationMutation.error &&
-      addReservationMutation.error.response?.status == 400
+      addReservationMutation.error.response?.status === 400
     ) {
       parseValidationErrorsFromAPI();
       resetUserInputs();
