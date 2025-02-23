@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import { DataGrid, GridActionsCellItem, GridCellModes } from "@mui/x-data-grid";
@@ -165,7 +165,7 @@ export default function ReservationsDataGrid({ currentDate }) {
   }
 
   return (
-    <>
+    <React.Fragment>
       <DataGrid
         columns={columns}
         rows={data}
@@ -194,6 +194,6 @@ export default function ReservationsDataGrid({ currentDate }) {
         onClick={deleteRow}
         itemToDelete={reservationToDelete}
       />
-    </>
+    </React.Fragment>
   );
 }
