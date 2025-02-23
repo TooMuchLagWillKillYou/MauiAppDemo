@@ -104,7 +104,6 @@ export default function AddReservation() {
       sx={{
         borderRadius: "sm",
         py: 2,
-        mb: 5,
         display: { xs: "none", sm: "flex" },
         flexWrap: "wrap",
         gap: 1.5,

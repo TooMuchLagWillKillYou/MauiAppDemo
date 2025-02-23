@@ -1,18 +1,19 @@
 import TextField from "@mui/material/TextField";
 
-export default function FormInput(props) {
+export default function FormInput({name, label, type, value, onChange, slotProps, sx, errorMessage}) {
 
   return (
         <TextField
-            id={props.name}
-            label={props.label}
-            type={props.type}
-            value={props.value}
-            onChange={props.onChange}
-            slotProps={props.slotProps}
-            sx={props.sx}
-            error={props.errorMessage?.length}
-            helperText={props.errorMessage}
+            id={name}
+            label={label}
+            type={type}
+            value={value}
+            onChange={onChange}
+            slotProps={slotProps}
+            sx={sx}
+            error={errorMessage?.length}
+            helperText={errorMessage}
+            size="small"
         />
   )
 }
