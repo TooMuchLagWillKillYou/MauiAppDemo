@@ -19,7 +19,8 @@ export default function PaginationModal({ currentDate, setCurrentDate, isOpen, s
                 maxDate={dayjs().add(1, "year")}
                 onChange={handleChange}
                 slotProps={{ actionBar: { actions: [] } }}
-                //shouldDisableDate // prop per gestire i giorni di ferie/chiusura
+                // TODO: shouldDisableDate // prop per gestire i giorni di ferie/chiusura
+                // TODO: disable past
             />
           </div>
         </DialogContent>
