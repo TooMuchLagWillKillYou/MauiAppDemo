@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import { Button, Typography } from "@mui/material";
@@ -10,6 +10,17 @@ export default function Pagination({ currentDate, setCurrentDate, onChange }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const isToday =
     currentDate.format("DD/MM/YYYY") == dayjs().format("DD/MM/YYYY");
+
+  useEffect(() => {
+    function handleKeyDown(e) {
+      if (e.keyCode === 39) onChange(1)
+      if (e.keyCode === 37) onChange(-1)
+    }
+    document.addEventListener("keydown", handleKeyDown)
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown)
+    }
+  });
 
   const getTextToDisplay = () => {
     if (isToday) {
