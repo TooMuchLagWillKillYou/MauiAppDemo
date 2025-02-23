@@ -12,10 +12,9 @@ import {
 import listItemButtonClasses from "@mui/joy/ListItemButton";
 import BrightnessAutoRoundedIcon from "@mui/icons-material/BrightnessAutoRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import React from "react";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 
-export default function Sidebar(props) {
+export default function Sidebar() {
   return (
     <Sheet
       className="Sidebar"
@@ -66,7 +65,6 @@ export default function Sidebar(props) {
             lg: "translateX(-100%)",
           },
         }}
-        onClick={() => closeSidebar()}
       />
       <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
         <IconButton variant="soft" color="primary" size="sm">
@@ -103,14 +101,14 @@ export default function Sidebar(props) {
               </ListItemContent>
             </ListItemButton>
           </ListItem>
-            <ListItem>
-                <ListItemButton>
-                    <MenuBookIcon  />
-                    <ListItemContent>
-                        <Typography level="title-sm">Menù</Typography>
-                    </ListItemContent>
-                </ListItemButton>
-            </ListItem>
+          <ListItem>
+            <ListItemButton>
+              <MenuBookIcon />
+              <ListItemContent>
+                <Typography level="title-sm">Menù</Typography>
+              </ListItemContent>
+            </ListItemButton>
+          </ListItem>
         </List>
       </Box>
     </Sheet>

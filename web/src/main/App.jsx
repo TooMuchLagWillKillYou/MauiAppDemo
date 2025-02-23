@@ -1,12 +1,7 @@
 import { useState } from "react";
-import CssBaseline from "@mui/joy/CssBaseline";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 import { HomeRounded, ChevronRightRounded } from "@mui/icons-material";
-import { useFetchReservationsByDate } from "../hooks/reservationHooks";
 import Sidebar from "./Sidebar";
-import Pagination from "./shared/Pagination";
-import ReservationsDataGrid from "./reservation/ReservationsDataGrid";
-import AddReservation from "./reservation/AddReservation";
 import dayjs from "dayjs";
 import Reservations from "./pages/Reservations.jsx";
 

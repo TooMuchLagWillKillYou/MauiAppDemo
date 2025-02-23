@@ -43,12 +43,12 @@ export default function AddReservation() {
 
     function parseValidationErrorsFromAPI() {
       Object.entries(addReservationMutation.error.response?.data.errors).map(
-        ([key, value]) => (result[key] = value)
+        ([key, value]) => (result[key] = value),
       );
     }
     function resetUserInputs() {
       const deserializedPayload = JSON.parse(
-        addReservationMutation.error.response?.config.data
+        addReservationMutation.error.response?.config.data,
       );
       setName(deserializedPayload.name ?? "");
       setHour(dayjs(deserializedPayload.hour) ?? currentTime);
@@ -92,8 +92,8 @@ export default function AddReservation() {
         },
       }}
     >
-      <form style={{ flexGrow: 1 }} autoComplete='off'>
-        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap >
+      <form style={{ flexGrow: 1 }} autoComplete="off">
+        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
           <FormInput
             label="Name"
             name="Name"
@@ -132,7 +132,9 @@ export default function AddReservation() {
           <FormInput
             label="Table"
             name="Table"
-            onChange={(e) => onChange(setTable, "Table", e.target.value.toUpperCase())}
+            onChange={(e) =>
+              onChange(setTable, "Table", e.target.value.toUpperCase())
+            }
             value={table}
             errorMessage={validationErrors.Table}
             sx={{
@@ -149,14 +151,11 @@ export default function AddReservation() {
           />
           <Button
             type="submit"
-            // color="primary"
-              variant="contained"
+            variant="contained"
             startIcon={<AddIcon />}
-            // size="md"
-            // sx={{ placeSelf: "flex-end" }}
             onClick={submit}
           >
-             Aggiungi
+            Aggiungi
           </Button>
         </Stack>
       </form>

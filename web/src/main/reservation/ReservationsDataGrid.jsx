@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import { DataGrid, GridActionsCellItem, GridCellModes } from "@mui/x-data-grid";
 import {
-  useDeleteReservation,
+  useDeleteReservation, useFetchReservationsByDate,
   useUpdateReservation,
 } from "../../hooks/reservationHooks";
 import ApiStatus from "../../utils/ApiStatus";
@@ -11,13 +11,14 @@ import { Snackbar } from "@mui/joy";
 import DeleteModal from "./DeleteModal";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
-export default function ReservationsDataGrid({ data, status, isSuccess }) {
+export default function ReservationsDataGrid({currentDate}) {
   const [cellModesModel, setCellModesModel] = useState({});
   const [snackbar, setSnackbar] = useState(null);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const updateReservationMutation = useUpdateReservation();
   const deleteReservationMutation = useDeleteReservation();
+  const { data, status, isSuccess } = useFetchReservationsByDate(currentDate);
 
   const columns = [
     {
@@ -34,9 +35,7 @@ export default function ReservationsDataGrid({ data, status, isSuccess }) {
       editable: true,
       sortable: true,
       valueGetter: (value) => {
-        if (!value) {
-          return value;
-        }
+        if (!value) return value;
         return dayjs(value).format("HH:mm");
       },
     },
@@ -153,7 +152,7 @@ export default function ReservationsDataGrid({ data, status, isSuccess }) {
   );
 
   const handleProcessRowUpdateError = useCallback((error) => {
-    // TODO: this wil not trigger multiple snackbars in case of multiple errors
+    // TODO: this will not trigger multiple snackbars in case of multiple errors
     error.response?.data.errors &&
       Object.entries(error.response?.data.errors).map(([key, value, index]) => {
         setSnackbar({ key: index, message: value, color: "danger" });
