@@ -15,26 +15,6 @@ dayjs.extend(timezone);
 
 export default function AddReservation() {
   const currentTime = () => dayjs.tz(dayjs().ceil(5, "minutes"), "Europe/Rome");
-  const shortcutItems = [
-    {
-      label: "+ 15 min",
-      getValue: () => {
-        return currentTime().add(15, "minute");
-      },
-    },
-    {
-      label: "+ 30 min",
-      getValue: () => {
-        return currentTime().add(30, "minute");
-      },
-    },
-    {
-      label: "+ 1 hr",
-      getValue: () => {
-        return currentTime().add(1, "hour");
-      },
-    },
-  ];
   const addReservationMutation = useAddReservation();
   const [name, setName] = useState("");
   const [hour, setHour] = useState(currentTime);
@@ -72,7 +52,7 @@ export default function AddReservation() {
       );
       setName(deserializedPayload.name ?? "");
       setHour(dayjs(deserializedPayload.hour) ?? currentTime);
-      setPeople(deserializedPayload.people ?? 2);
+      setPeople(deserializedPayload.people ?? 0);
       setTable(deserializedPayload.table ?? "");
       setNotes(deserializedPayload.notes ?? "");
     }
@@ -112,7 +92,7 @@ export default function AddReservation() {
         },
       }}
     >
-      <form style={{ flexGrow: 1 }}>
+      <form style={{ flexGrow: 1 }} autoComplete='off'>
         <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap >
           <FormInput
             label="Name"
@@ -131,11 +111,6 @@ export default function AddReservation() {
             value={hour}
             onChange={(value) => onChange(setHour, "Hour", value)}
             errorMessage={validationErrors.Hour}
-            slotProps={{
-              shortcuts: {
-                items: shortcutItems,
-              },
-            }}
           />
           <FormInput
             type="number"
@@ -157,7 +132,7 @@ export default function AddReservation() {
           <FormInput
             label="Table"
             name="Table"
-            onChange={(e) => onChange(setTable, "Table", e.target.value)}
+            onChange={(e) => onChange(setTable, "Table", e.target.value.toUpperCase())}
             value={table}
             errorMessage={validationErrors.Table}
             sx={{

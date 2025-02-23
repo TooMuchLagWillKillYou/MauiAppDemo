@@ -30,7 +30,7 @@ export default function ReservationsDataGrid({ data, status, isSuccess }) {
     {
       field: "hour",
       headerName: "Ora",
-      width: 200,
+      width: 220,
       editable: true,
       sortable: true,
       valueGetter: (value) => {
@@ -44,14 +44,14 @@ export default function ReservationsDataGrid({ data, status, isSuccess }) {
       field: "people",
       headerName: "Persone",
       type: "number",
-      width: 200,
+      width: 108,
       editable: true,
       sortable: true,
     },
     {
       field: "table",
       headerName: "Tavolo",
-      width: 200,
+      width: 108,
       editable: true,
       sortable: true,
     },

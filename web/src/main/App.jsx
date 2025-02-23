@@ -8,7 +8,6 @@ import Pagination from "./shared/Pagination";
 import ReservationsDataGrid from "./reservation/ReservationsDataGrid";
 import AddReservation from "./reservation/AddReservation";
 import dayjs from "dayjs";
-import "./style.css";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(dayjs());
