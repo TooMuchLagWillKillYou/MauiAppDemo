@@ -1,13 +1,9 @@
-import { useState } from "react";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 import { HomeRounded, ChevronRightRounded } from "@mui/icons-material";
 import Sidebar from "./Sidebar";
-import dayjs from "dayjs";
 import Reservations from "./pages/Reservations.jsx";
 
 function App() {
-  const [currentDate, setCurrentDate] = useState(dayjs());
-
   return (
     <>
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
@@ -60,25 +56,8 @@ function App() {
               </Typography>
             </Breadcrumbs>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              mb: 1,
-              gap: 1,
-              flexDirection: { xs: "column", sm: "row" },
-              alignItems: { xs: "start", sm: "center" },
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            <Typography level="h2" component="h1">
-              Prenotazioni
-            </Typography>
-          </Box>
-          <Reservations
-            currentDate={currentDate}
-            setCurrentDate={setCurrentDate}
-          />
+
+          <Reservations />
         </Box>
       </Box>
     </>
