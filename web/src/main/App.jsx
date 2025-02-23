@@ -2,6 +2,7 @@ import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
 import { HomeRounded, ChevronRightRounded } from "@mui/icons-material";
 import Sidebar from "./Sidebar";
 import Reservations from "./pages/Reservations.jsx";
+import Breadcrumb from "./shared/Breadcrumb.jsx";
 
 function App() {
   return (
@@ -27,36 +28,7 @@ function App() {
             gap: 1,
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Breadcrumbs
-              size="sm"
-              aria-label="breadcrumbs"
-              separator={<ChevronRightRounded fontSize="sm" />}
-              sx={{ pl: 0 }}
-            >
-              <Link
-                underline="none"
-                color="neutral"
-                href="#some-link"
-                aria-label="Home"
-              >
-                <HomeRounded />
-              </Link>
-              <Link
-                underline="hover"
-                color="neutral"
-                href="#some-link"
-                fontSize={12}
-                fontWeight={500}
-              >
-                Dashboard
-              </Link>
-              <Typography color="primary" fontWeight={500} fontSize={12}>
-                Orders
-              </Typography>
-            </Breadcrumbs>
-          </Box>
-
+          <Breadcrumb />
           <Reservations />
         </Box>
       </Box>
