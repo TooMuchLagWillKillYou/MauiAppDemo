@@ -8,14 +8,10 @@ import Pagination from "./shared/Pagination";
 import ReservationsDataGrid from "./reservation/ReservationsDataGrid";
 import AddReservation from "./reservation/AddReservation";
 import dayjs from "dayjs";
+import Reservations from "./pages/Reservations.jsx";
 
 function App() {
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const { data, status, isSuccess } = useFetchReservationsByDate(currentDate);
-
-  const handleDateChange = (daysToAdd) => {
-    setCurrentDate(currentDate.add(daysToAdd, "days"));
-  };
 
   return (
     <>
@@ -84,16 +80,9 @@ function App() {
               Prenotazioni
             </Typography>
           </Box>
-          <Pagination
+          <Reservations
             currentDate={currentDate}
-            onChange={handleDateChange}
             setCurrentDate={setCurrentDate}
-          />
-          <AddReservation currentDate={currentDate} />
-          <ReservationsDataGrid
-            data={data}
-            status={status}
-            isSuccess={isSuccess}
           />
         </Box>
       </Box>
