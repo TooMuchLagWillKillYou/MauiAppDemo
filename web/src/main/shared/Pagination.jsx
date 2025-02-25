@@ -29,18 +29,19 @@ export default function Pagination({ currentDate, setCurrentDate, onChange }) {
   return (
     <Box sx={{ display: "flex", justifyContent: "center", marginBottom: 5 }}>
       <Stack direction="row">
-        <Button variant="outlined" size="sm" onClick={() => onChange(-1)}>
+        <Button variant="outlined" size="small" onClick={() => onChange(-1)}>
           <ChevronLeft />
         </Button>
         <Button
-          sx={{ width: 400, paddingX: 5, cursor: "pointer" }}
+          sx={{ height: 40, width: 400, cursor: "pointer" }}
+          size="small"
           onClick={() => setModalIsOpen(true)}
         >
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
             {getTextToDisplay()}
           </Typography>
         </Button>
-        <Button variant="outlined" size="sm" onClick={() => onChange(1)}>
+        <Button variant="outlined" size="small" onClick={() => onChange(1)}>
           <ChevronRight />
         </Button>
       </Stack>

@@ -1,5 +1,4 @@
-import { Box, Breadcrumbs, Link, Typography } from "@mui/joy";
-import { HomeRounded, ChevronRightRounded } from "@mui/icons-material";
+import { Box } from "@mui/joy";
 import Sidebar from "./Sidebar";
 import Reservations from "./pages/Reservations.jsx";
 import Breadcrumb from "./shared/Breadcrumb.jsx";
