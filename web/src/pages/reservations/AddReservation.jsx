@@ -99,7 +99,6 @@ export default function AddReservation() {
             name="Name"
             value={name}
             onChange={(e) => onChange(setName, "Name", e.target.value)}
-            errorMessage={validationErrors.Name}
             sx={{
               width: 300,
             }}
@@ -110,7 +109,6 @@ export default function AddReservation() {
             name="Hour"
             value={hour}
             onChange={(value) => onChange(setHour, "Hour", value)}
-            errorMessage={validationErrors.Hour}
           />
           <FormInput
             type="number"
@@ -118,7 +116,6 @@ export default function AddReservation() {
             name="People"
             value={people}
             onChange={(e) => onChange(setPeople, "People", e.target.value)}
-            errorMessage={validationErrors.People}
             sx={{
               width: 100,
             }}
@@ -136,7 +133,6 @@ export default function AddReservation() {
               onChange(setTable, "Table", e.target.value.toUpperCase())
             }
             value={table}
-            errorMessage={validationErrors.Table}
             sx={{
               width: 100,
             }}
@@ -146,7 +142,6 @@ export default function AddReservation() {
             name="Notes"
             onChange={(e) => onChange(setNotes, "Notes", e.target.value)}
             value={notes}
-            errorMessage={validationErrors.Notes}
             sx={{ flexGrow: 1, height: 36 }}
           />
           <Button
