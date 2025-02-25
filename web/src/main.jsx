@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./main/App.jsx";
+import App from "./App.jsx";
 import "@fontsource/inter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";

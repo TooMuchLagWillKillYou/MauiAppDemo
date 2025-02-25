@@ -1,5 +1,5 @@
 import { Box } from "@mui/joy";
-import Sidebar from "./Sidebar";
+import Sidebar from "./shared/Sidebar.jsx";
 import Reservations from "./pages/reservations/Reservations.jsx";
 import Breadcrumb from "./shared/Breadcrumb.jsx";
 

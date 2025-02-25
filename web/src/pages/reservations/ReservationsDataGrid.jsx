@@ -6,8 +6,8 @@ import {
   useDeleteReservation,
   useFetchReservationsByDate,
   useUpdateReservation,
-} from "../../../hooks/reservationHooks.js";
-import ApiStatus from "../../../utils/ApiStatus.jsx";
+} from "../../hooks/reservationHooks.js";
+import ApiStatus from "../../utils/ApiStatus.jsx";
 import { Snackbar } from "@mui/joy";
 import DeleteModal from "./DeleteModal.jsx";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
