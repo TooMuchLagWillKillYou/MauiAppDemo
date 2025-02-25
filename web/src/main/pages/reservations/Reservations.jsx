@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Pagination from "../shared/Pagination.jsx";
-import AddReservation from "../reservation/AddReservation.jsx";
-import ReservationsDataGrid from "../reservation/ReservationsDataGrid.jsx";
+import Pagination from "./Pagination.jsx";
+import AddReservation from "./AddReservation.jsx";
+import ReservationsDataGrid from "./ReservationsDataGrid.jsx";
 import { Box, Typography } from "@mui/joy";
 import dayjs from "dayjs";
 

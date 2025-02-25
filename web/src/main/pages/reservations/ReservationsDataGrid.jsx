@@ -6,10 +6,10 @@ import {
   useDeleteReservation,
   useFetchReservationsByDate,
   useUpdateReservation,
-} from "../../hooks/reservationHooks";
-import ApiStatus from "../../utils/ApiStatus";
+} from "../../../hooks/reservationHooks.js";
+import ApiStatus from "../../../utils/ApiStatus.jsx";
 import { Snackbar } from "@mui/joy";
-import DeleteModal from "./DeleteModal";
+import DeleteModal from "./DeleteModal.jsx";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
 export default function ReservationsDataGrid({ currentDate }) {

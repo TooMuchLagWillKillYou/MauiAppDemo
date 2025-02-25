@@ -4,7 +4,7 @@ import "dayjs/locale/it";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import ChevronLeft from "@mui/icons-material/ChevronLeft";
 import ChevronRight from "@mui/icons-material/ChevronRight";
-import PaginationModal from "./PaginationModal";
+import PaginationModal from "./PaginationModal.jsx";
 
 export default function Pagination({ currentDate, setCurrentDate, onChange }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { Box } from "@mui/joy";
 import Sidebar from "./Sidebar";
-import Reservations from "./pages/Reservations.jsx";
+import Reservations from "./pages/reservations/Reservations.jsx";
 import Breadcrumb from "./shared/Breadcrumb.jsx";
 
 function App() {
