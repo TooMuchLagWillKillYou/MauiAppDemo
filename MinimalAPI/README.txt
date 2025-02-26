@@ -21,7 +21,6 @@ Command to update database with last migration: update-database
 - alert (vedi notion)
 - tradurre "No rows" in "Nessun prenotazione per questo giorno"
 - messaggi di errore in italiano
-- eliminare progetti della solution non più necessari
 - il campo 'Table' dovrebbe suggerire la lista di tavoli liberi o dovrebbe controllare che vengano inseriti solamente dei valori validi (magari basandosi sulla mappa?)>
 
 +----------------------------------------------------------------------------------------------------------------------+
@@ -46,6 +45,7 @@ Command to update database with last migration: update-database
 - il campo 'People' deve essere di tipo numerico e non accettare valori inferiori a 1
 - il campo 'DateTime' deve accettare valori da 0 a 24 per le ore e da 0 a 60 per i minuti
 - controllare di aver abilitato correttamente in CORS
+- eliminare progetti della solution non più necessari
 
 +----------------------------------------------------------------------------------------------------------------------+
 |   RESOURCES                                                                                                          |
