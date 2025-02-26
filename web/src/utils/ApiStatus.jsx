@@ -1,11 +1,8 @@
-import { Box, CircularProgress } from "@mui/joy";
+import { Box, CircularProgress } from "@mui/material";
 
-const ApiStatus = (props) => {
-  const { status } = props;
-
+const ApiStatus = ({ status }) => {
   switch (status) {
     case "pending":
-      // return <div>Caricamento...</div>;
       return (
         <Box
           sx={{
