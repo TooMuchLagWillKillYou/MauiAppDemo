@@ -1,13 +1,23 @@
 import { Box } from "@mui/joy";
-import Sidebar from "./shared/Sidebar.jsx";
 import Reservations from "./pages/reservations/Reservations.jsx";
 import Breadcrumb from "./shared/Breadcrumb.jsx";
+import MiniDrawer from "./shared/MiniDrawer.jsx";
+import TableRestaurantRoundedIcon from "@mui/icons-material/TableRestaurantRounded";
+import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 
 function App() {
+  const pages = [
+    {
+      title: "Prenotazioni",
+      icon: <TableRestaurantRoundedIcon />,
+      route: "/reservations",
+    },
+    { title: "Menù", icon: <MenuBookRoundedIcon />, route: "/menu" },
+  ];
   return (
     <>
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
-        <Sidebar />
+        <MiniDrawer menuItems={pages} />
         <Box
           component="main"
           className="MainContent"
