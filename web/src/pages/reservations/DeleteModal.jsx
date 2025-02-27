@@ -1,51 +1,40 @@
 import {
-  Modal,
-  ModalDialog,
-  DialogTitle,
-  Divider,
+  Dialog,
   DialogContent,
   DialogActions,
   Button,
-} from "@mui/joy";
-import { WarningRounded } from "@mui/icons-material";
+  DialogContentText,
+} from "@mui/material";
 
-export default function DeleteModal(props) {
-  const { isOpen, setIsOpen, onClick, itemToDelete } = props;
-
+export default function DeleteModal({
+  isOpen,
+  setIsOpen,
+  onClick,
+  itemToDelete,
+}) {
   return (
-    <Modal
-      aria-labelledby="modal-title"
-      aria-describedby="modal-desc"
-      open={isOpen}
-      onClose={() => setIsOpen(false)}
-      sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
-    >
-      <ModalDialog variant="outlined" role="alertdialog">
-        <DialogTitle>
-          <WarningRounded />
-          Conferma
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
+    <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+      <DialogContent>
+        <DialogContentText>
           Sei sicuro di voler eliminare questa prenotazione?
-        </DialogContent>
-        <DialogActions>
-          <Button
-            variant="solid"
-            color="danger"
-            onClick={() => onClick(itemToDelete)}
-          >
-            Elimina
-          </Button>
-          <Button
-            variant="plain"
-            color="neutral"
-            onClick={() => setIsOpen(false)}
-          >
-            Chiudi
-          </Button>
-        </DialogActions>
-      </ModalDialog>
-    </Modal>
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="solid"
+          color="danger"
+          onClick={() => onClick(itemToDelete)}
+        >
+          Elimina
+        </Button>
+        <Button
+          variant="plain"
+          color="neutral"
+          onClick={() => setIsOpen(false)}
+        >
+          Chiudi
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }

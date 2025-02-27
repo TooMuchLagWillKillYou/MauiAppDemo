@@ -1,4 +1,4 @@
-import { Box } from "@mui/joy";
+import { Box } from "@mui/material";
 import Reservations from "./pages/reservations/Reservations.jsx";
 import Breadcrumb from "./shared/Breadcrumb.jsx";
 import MiniDrawer from "./shared/MiniDrawer.jsx";

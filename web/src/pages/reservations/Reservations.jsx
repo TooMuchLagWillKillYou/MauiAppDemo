@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Pagination from "./Pagination.jsx";
 import AddReservation from "./AddReservation.jsx";
 import ReservationsDataGrid from "./ReservationsDataGrid.jsx";
-import { Box, Typography } from "@mui/joy";
+import { Box, Typography } from "@mui/material";
 import dayjs from "dayjs";
 
 export default function Reservations() {

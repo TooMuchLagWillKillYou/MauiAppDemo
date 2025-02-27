@@ -8,7 +8,7 @@ import {
   useUpdateReservation,
 } from "../../hooks/reservationHooks.js";
 import ApiStatus from "../../utils/ApiStatus.jsx";
-import { Snackbar } from "@mui/joy";
+import { Snackbar } from "@mui/material";
 import DeleteModal from "./DeleteModal.jsx";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 
