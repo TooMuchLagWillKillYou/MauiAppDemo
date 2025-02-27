@@ -13,7 +13,7 @@ dayjs.extend(ceil);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
-export default function AddReservation() {
+export default function ReservationForm() {
   const currentTime = () => dayjs.tz(dayjs().ceil(5, "minutes"), "Europe/Rome");
   const addReservationMutation = useAddReservation();
   const [name, setName] = useState("");
