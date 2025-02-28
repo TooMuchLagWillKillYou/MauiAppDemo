@@ -3,10 +3,15 @@ import Reservations from "./pages/reservations/Reservations.jsx";
 import Breadcrumb from "./shared/Breadcrumb.jsx";
 import MiniDrawer from "./shared/MiniDrawer.jsx";
 import TableRestaurantRoundedIcon from "@mui/icons-material/TableRestaurantRounded";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Home from "./pages/Home.jsx";
+import Menu from "./pages/Menu.jsx";
 
 function App() {
   const pages = [
+    { title: "Home", icon: <HomeRoundedIcon />, route: "/" },
     {
       title: "Prenotazioni",
       icon: <TableRestaurantRoundedIcon />,
@@ -15,7 +20,7 @@ function App() {
     { title: "Menù", icon: <MenuBookRoundedIcon />, route: "/menu" },
   ];
   return (
-    <>
+    <BrowserRouter>
       <Box sx={{ display: "flex", minHeight: "100dvh" }}>
         <MiniDrawer menuItems={pages} />
         <Box
@@ -38,10 +43,14 @@ function App() {
           }}
         >
           <Breadcrumb />
-          <Reservations />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="reservations" element={<Reservations />} />
+            <Route path="menu" element={<Menu />} />
+          </Routes>
         </Box>
       </Box>
-    </>
+    </BrowserRouter>
   );
 }
 

@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import { Link } from "react-router";
 
 const drawerWidth = 240;
 const openedMixin = (theme) => ({
@@ -84,53 +85,55 @@ export default function MiniDrawer({ menuItems }) {
       <Divider />
       <List>
         {menuItems.map((item) => (
-          <ListItem key={item.title} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={[
-                {
-                  minHeight: 48,
-                  px: 2.5,
-                },
-                open
-                  ? {
-                      justifyContent: "initial",
-                    }
-                  : {
-                      justifyContent: "center",
-                    },
-              ]}
-            >
-              <ListItemIcon
+          <Link to={item.route} key={`router-link-${item.route}`}>
+            <ListItem key={item.title} disablePadding sx={{ display: "block" }}>
+              <ListItemButton
                 sx={[
                   {
-                    minWidth: 0,
-                    justifyContent: "center",
+                    minHeight: 48,
+                    px: 2.5,
                   },
                   open
                     ? {
-                        mr: 3,
+                        justifyContent: "initial",
                       }
                     : {
-                        mr: "auto",
+                        justifyContent: "center",
                       },
                 ]}
               >
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText
-                primary={item.title}
-                sx={[
-                  open
-                    ? {
-                        opacity: 1,
-                      }
-                    : {
-                        opacity: 0,
-                      },
-                ]}
-              />
-            </ListItemButton>
-          </ListItem>
+                <ListItemIcon
+                  sx={[
+                    {
+                      minWidth: 0,
+                      justifyContent: "center",
+                    },
+                    open
+                      ? {
+                          mr: 3,
+                        }
+                      : {
+                          mr: "auto",
+                        },
+                  ]}
+                >
+                  {item.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={item.title}
+                  sx={[
+                    open
+                      ? {
+                          opacity: 1,
+                        }
+                      : {
+                          opacity: 0,
+                        },
+                  ]}
+                />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         ))}
       </List>
     </Drawer>
