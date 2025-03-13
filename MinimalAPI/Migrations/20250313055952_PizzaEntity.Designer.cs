@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinimalAPI.Data;
 
@@ -11,9 +12,11 @@ using MinimalAPI.Data;
 namespace MinimalAPI.Migrations
 {
     [DbContext(typeof(ReservationDbContext))]
-    partial class ReservationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250313055952_PizzaEntity")]
+    partial class PizzaEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,44 +24,6 @@ namespace MinimalAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MinimalAPI.Data.PizzaEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Ingredients")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Page")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("money");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Pizzas");
-                });
 
             modelBuilder.Entity("MinimalAPI.Data.ReservationEntity", b =>
                 {
@@ -87,6 +52,35 @@ namespace MinimalAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reservations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Hour = new DateTime(2025, 3, 13, 6, 59, 51, 591, DateTimeKind.Local).AddTicks(5661),
+                            Name = "Mario",
+                            Notes = "",
+                            People = 5,
+                            Table = "F2"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Hour = new DateTime(2025, 3, 13, 6, 59, 51, 591, DateTimeKind.Local).AddTicks(5732),
+                            Name = "Rossi",
+                            Notes = "possibimente sui divanetti",
+                            People = 2,
+                            Table = "7"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Hour = new DateTime(2025, 3, 13, 6, 59, 51, 591, DateTimeKind.Local).AddTicks(5803),
+                            Name = "Paolo",
+                            Notes = "",
+                            People = 10,
+                            Table = "30"
+                        });
                 });
 #pragma warning restore 612, 618
         }

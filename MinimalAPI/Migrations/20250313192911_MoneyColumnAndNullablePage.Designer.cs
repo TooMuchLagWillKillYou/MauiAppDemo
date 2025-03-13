@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinimalAPI.Data;
 
@@ -11,9 +12,11 @@ using MinimalAPI.Data;
 namespace MinimalAPI.Migrations
 {
     [DbContext(typeof(ReservationDbContext))]
-    partial class ReservationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250313192911_MoneyColumnAndNullablePage")]
+    partial class MoneyColumnAndNullablePage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,11 +39,6 @@ namespace MinimalAPI.Migrations
                     b.Property<string>("Ingredients")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -87,6 +85,35 @@ namespace MinimalAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reservations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Hour = new DateTime(2025, 3, 13, 20, 29, 10, 699, DateTimeKind.Local).AddTicks(1358),
+                            Name = "Mario",
+                            Notes = "",
+                            People = 5,
+                            Table = "F2"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Hour = new DateTime(2025, 3, 13, 20, 29, 10, 699, DateTimeKind.Local).AddTicks(1425),
+                            Name = "Rossi",
+                            Notes = "possibimente sui divanetti",
+                            People = 2,
+                            Table = "7"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Hour = new DateTime(2025, 3, 13, 20, 29, 10, 699, DateTimeKind.Local).AddTicks(1429),
+                            Name = "Paolo",
+                            Notes = "",
+                            People = 10,
+                            Table = "30"
+                        });
                 });
 #pragma warning restore 612, 618
         }
