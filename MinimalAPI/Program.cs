@@ -76,29 +76,36 @@ namespace MinimalAPI
                 .Produces<ReservationDto>(StatusCodes.Status201Created);
             app.MapPut("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
             {
-                if (await repository.Get(dto.Id) == null)
-                    return Results.Problem($"Reservation {dto.Id} not found", statusCode: StatusCodes.Status404NotFound);
                 if (!MiniValidator.TryValidate(dto, out var errors))
                     return Results.ValidationProblem(errors);
 
-                var updatedReservation = await repository.Update(dto);
-                return Results.Ok(updatedReservation);
+                try
+                {
+                    var updatedReservation = await repository.Update(dto);
+                    return Results.Ok(updatedReservation);
+                }
+                catch (Exception)
+                {
+                    return Results.Problem($"Reservation {dto.Id} not found", statusCode: StatusCodes.Status404NotFound);
+                }
             }).ProducesValidationProblem()
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .Produces<ReservationDto>(StatusCodes.Status204NoContent);
             app.MapDelete("/reservations/{id:int}", async (int id, IReservationRepository repository) =>
             {
-                if (await repository.Get(id) == null)
+                try
+                {
+                    await repository.Delete(id);
+                    return Results.Ok();
+                }
+                catch (Exception)
+                {
                     return Results.Problem($"Reservation {id} not found", statusCode: StatusCodes.Status404NotFound);
-
-                await repository.Delete(id);
-                return Results.Ok();
+                }
             }).ProducesProblem(StatusCodes.Status404NotFound)
                 .Produces(StatusCodes.Status200OK);
             #endregion
-
             #region menu
-
             app.MapGet("/pizzas", (IPizzaRepository repository) => repository.GetAll());
             app.MapPost("/pizzas", async ([FromBody] PizzaDto dto, IPizzaRepository repository) =>
             {
@@ -119,7 +126,7 @@ namespace MinimalAPI
                     var updatedPizza = await repository.Update(dto);
                     return Results.Ok(updatedPizza);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return Results.Problem($"Pizza {dto.Id} not found", statusCode: StatusCodes.Status404NotFound);
                 }
@@ -133,7 +140,7 @@ namespace MinimalAPI
                     await repository.SoftDelete(id);
                     return Results.Ok();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return Results.Problem($"Pizza {id} not found", statusCode: StatusCodes.Status404NotFound);
                 }
