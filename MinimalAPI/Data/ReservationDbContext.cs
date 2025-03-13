@@ -7,6 +7,7 @@ namespace MinimalAPI.Data
         public ReservationDbContext(DbContextOptions<ReservationDbContext> options) : base(options) { }
         
         public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
+        public DbSet<PizzaEntity> Pizzas => Set<PizzaEntity>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -18,7 +19,9 @@ namespace MinimalAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            SeedData.Seed(modelBuilder);
+            modelBuilder.Entity<PizzaEntity>()
+                .Property(x => x.IsDeleted)
+                .HasDefaultValue(0);
         }
     }
 }

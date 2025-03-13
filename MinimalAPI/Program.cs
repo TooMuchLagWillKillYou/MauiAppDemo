@@ -26,6 +26,7 @@ namespace MinimalAPI
             builder.Services.AddDbContext<ReservationDbContext>(opt =>
                 opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
             builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+            builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
             builder.Services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCulture = new[]
@@ -58,14 +59,12 @@ namespace MinimalAPI
 
             app.UseAuthorization();
 
+            #region  reservations
             app.MapGet("/reservations", (IReservationRepository repository) => repository.GetAll());
-
             app.MapGet("/reservations/{date:datetime}", async (DateTime date, IReservationRepository repository) =>
                 await repository.GetByDate(date));
-
             app.MapGet("/reservation/{id:int}", async (int id, IReservationRepository repository) => 
                 await repository.Get(id));
-           
             app.MapPost("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
             {
                 if (!MiniValidator.TryValidate(dto, out var errors))
@@ -75,7 +74,6 @@ namespace MinimalAPI
                 return Results.Created();
             }).ProducesValidationProblem()
                 .Produces<ReservationDto>(StatusCodes.Status201Created);
-
             app.MapPut("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
             {
                 if (await repository.Get(dto.Id) == null)
@@ -88,7 +86,6 @@ namespace MinimalAPI
             }).ProducesValidationProblem()
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .Produces<ReservationDto>(StatusCodes.Status204NoContent);
-
             app.MapDelete("/reservations/{id:int}", async (int id, IReservationRepository repository) =>
             {
                 if (await repository.Get(id) == null)
@@ -96,8 +93,54 @@ namespace MinimalAPI
 
                 await repository.Delete(id);
                 return Results.Ok();
-            }).ProducesProblem(StatusCodes.Status404NotFound).Produces(StatusCodes.Status200OK);
+            }).ProducesProblem(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status200OK);
+            #endregion
 
+            #region menu
+
+            app.MapGet("/pizzas", (IPizzaRepository repository) => repository.GetAll());
+            app.MapPost("/pizzas", async ([FromBody] PizzaDto dto, IPizzaRepository repository) =>
+            {
+                if (!MiniValidator.TryValidate(dto, out var errors))
+                    return Results.ValidationProblem(errors);
+                
+                await repository.Add(dto);
+                return Results.Created();
+            }).ProducesValidationProblem()
+                .Produces<PizzaDto>(StatusCodes.Status201Created);
+            app.MapPut("/pizzas", async ([FromBody] PizzaDto dto, IPizzaRepository repository) =>
+            {
+                if (!MiniValidator.TryValidate(dto, out var errors))
+                    return Results.ValidationProblem(errors);
+
+                try
+                {
+                    var updatedPizza = await repository.Update(dto);
+                    return Results.Ok(updatedPizza);
+                }
+                catch (Exception e)
+                {
+                    return Results.Problem($"Pizza {dto.Id} not found", statusCode: StatusCodes.Status404NotFound);
+                }
+            }).ProducesValidationProblem()
+                .ProducesProblem(StatusCodes.Status404NotFound)
+                .Produces<PizzaDto>(StatusCodes.Status204NoContent);;
+            app.MapDelete("/pizzas/{id:int}", async (int id, IPizzaRepository repository) =>
+            {
+                try
+                {
+                    await repository.SoftDelete(id);
+                    return Results.Ok();
+                }
+                catch (Exception e)
+                {
+                    return Results.Problem($"Pizza {id} not found", statusCode: StatusCodes.Status404NotFound);
+                }
+            }).ProducesProblem(StatusCodes.Status404NotFound)
+                .Produces(StatusCodes.Status200OK);
+            #endregion
+            
             app.Run();
         }
     }
