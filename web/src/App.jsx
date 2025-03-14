@@ -7,7 +7,7 @@ import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Home from "./pages/Home.jsx";
-import Menu from "./pages/Menu.jsx";
+import Menu from "./pages/menu/Menu.jsx";
 
 function App() {
   const pages = [
