@@ -47,7 +47,7 @@ const useAddReservation = () => {
       });
     },
     onError: (error) => {
-      console.log("useAddReservation error", error.respose.data.errors);
+      console.log("useAddReservation error", error.response.data.errors);
     },
   });
 };
@@ -63,7 +63,7 @@ const useUpdateReservation = () => {
       });
     },
     onError: (error) => {
-      console.log("useUpdateReservation error", error.respose.data.errors);
+      console.log("useUpdateReservation error", error.response.data.errors);
     },
   });
 };
@@ -78,7 +78,7 @@ const useDeleteReservation = () => {
       });
     },
     onError: (error) => {
-      console.log("useDeleteReservation error", error.respose.data.errors);
+      console.log("useDeleteReservation error", error.response.data.errors);
     },
   });
 };
