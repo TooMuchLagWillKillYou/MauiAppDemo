@@ -1,5 +1,5 @@
 const config = {
-  baseApiUrl: "https://localhost:4000",
+  baseApiUrl: "https://localhost:4000/api",
 };
 
 const dateTimeFormatter = Intl.DateTimeFormat("it-IT", {

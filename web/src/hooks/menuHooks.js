@@ -7,7 +7,7 @@ const useFetchPizzas = () => {
     queryKey: ["pizzas"],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/pizzas`)
+        .get(`${config.baseApiUrl}/pizza`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchPizzas", error)),
   });
@@ -16,7 +16,7 @@ const useFetchPizzas = () => {
 const useAddPizza = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (pizza) => axios.post(`${config.baseApiUrl}/pizzas`, pizza),
+    mutationFn: (pizza) => axios.post(`${config.baseApiUrl}/pizza`, pizza),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["pizzas"],
@@ -31,7 +31,7 @@ const useAddPizza = () => {
 const useUpdatePizza = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (pizza) => axios.put(`${config.baseApiUrl}/pizzas`, pizza),
+    mutationFn: (pizza) => axios.put(`${config.baseApiUrl}/pizza`, pizza),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["pizzas"],
@@ -46,7 +46,7 @@ const useUpdatePizza = () => {
 const useDeletePizza = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/pizzas/${id}`),
+    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/pizza/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["pizzas"],

@@ -8,7 +8,7 @@ const useFetchReservations = () => {
     queryKey: ["reservations"],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/reservations`)
+        .get(`${config.baseApiUrl}/reservation`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchReservations", error)),
   });
@@ -19,7 +19,7 @@ const useFetchReservationsByDate = (date) => {
     queryKey: ["reservations", date],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/reservations/${date}`)
+        .get(`${config.baseApiUrl}/reservation/${date}`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchReservationsByDate", error)),
   });
@@ -40,7 +40,7 @@ const useAddReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (reservation) =>
-      axios.post(`${config.baseApiUrl}/reservations`, reservation),
+      axios.post(`${config.baseApiUrl}/reservation`, reservation),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],
@@ -56,7 +56,7 @@ const useUpdateReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (reservation) =>
-      axios.put(`${config.baseApiUrl}/reservations`, reservation),
+      axios.put(`${config.baseApiUrl}/reservation`, reservation),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],
@@ -71,7 +71,7 @@ const useUpdateReservation = () => {
 const useDeleteReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/reservations/${id}`),
+    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/reservation/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],

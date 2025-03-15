@@ -1,154 +1,62 @@
-
 using Microsoft.AspNetCore.Localization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MinimalAPI.Data;
-using MinimalAPI.Dtos;
-using MiniValidation;
 using System.Globalization;
 
-namespace MinimalAPI
+namespace MinimalAPI;
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Add services to the container.
+        builder.Services.AddAuthorization();
+
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddCors();
+        builder.Services.AddDbContext<ReservationDbContext>(opt =>
+            opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+        builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+        builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
+        builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
-            var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-            builder.Services.AddAuthorization();
-
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddCors();
-            builder.Services.AddDbContext<ReservationDbContext>(opt =>
-                opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
-            builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-            builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
-            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            var supportedCulture = new[]
             {
-                var supportedCulture = new[]
-                {
-                    new CultureInfo("it-IT")
-                };
+                new CultureInfo("it-IT")
+            };
 
-                options.DefaultRequestCulture = new RequestCulture(culture: "it-IT", uiCulture: "it-IT");
-                options.SupportedCultures = supportedCulture;
-                options.SupportedCultures = supportedCulture;
-            });
+            options.DefaultRequestCulture = new RequestCulture(culture: "it-IT", uiCulture: "it-IT");
+            options.SupportedCultures = supportedCulture;
+            options.SupportedCultures = supportedCulture;
+        });
+        builder.Services.AddControllers();
+        
+        var app = builder.Build();
 
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
-            app.UseRequestLocalization(locOptions.Value);
-
-            app.UseCors(policyConfig =>
-                policyConfig.WithOrigins("http://localhost:3000")
-                    .AllowAnyHeader().AllowAnyMethod());
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            #region  reservations
-            app.MapGet("/reservations", (IReservationRepository repository) => repository.GetAll());
-            app.MapGet("/reservations/{date:datetime}", async (DateTime date, IReservationRepository repository) =>
-                await repository.GetByDate(date));
-            app.MapGet("/reservation/{id:int}", async (int id, IReservationRepository repository) => 
-                await repository.Get(id));
-            app.MapPost("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
-            {
-                if (!MiniValidator.TryValidate(dto, out var errors))
-                    return Results.ValidationProblem(errors);
-                
-                await repository.Add(dto);
-                return Results.Created();
-            }).ProducesValidationProblem()
-                .Produces<ReservationDto>(StatusCodes.Status201Created);
-            app.MapPut("/reservations", async ([FromBody] ReservationDto dto, IReservationRepository repository) =>
-            {
-                if (!MiniValidator.TryValidate(dto, out var errors))
-                    return Results.ValidationProblem(errors);
-
-                try
-                {
-                    var updatedReservation = await repository.Update(dto);
-                    return Results.Ok(updatedReservation);
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"Reservation {dto.Id} not found", statusCode: StatusCodes.Status404NotFound);
-                }
-            }).ProducesValidationProblem()
-                .ProducesProblem(StatusCodes.Status404NotFound)
-                .Produces<ReservationDto>(StatusCodes.Status204NoContent);
-            app.MapDelete("/reservations/{id:int}", async (int id, IReservationRepository repository) =>
-            {
-                try
-                {
-                    await repository.Delete(id);
-                    return Results.Ok();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"Reservation {id} not found", statusCode: StatusCodes.Status404NotFound);
-                }
-            }).ProducesProblem(StatusCodes.Status404NotFound)
-                .Produces(StatusCodes.Status200OK);
-            #endregion
-            #region menu
-            app.MapGet("/pizzas", (IPizzaRepository repository) => repository.GetAll());
-            app.MapPost("/pizzas", async ([FromBody] PizzaDto dto, IPizzaRepository repository) =>
-            {
-                if (!MiniValidator.TryValidate(dto, out var errors))
-                    return Results.ValidationProblem(errors);
-                
-                await repository.Add(dto);
-                return Results.Created();
-            }).ProducesValidationProblem()
-                .Produces<PizzaDto>(StatusCodes.Status201Created);
-            app.MapPut("/pizzas", async ([FromBody] PizzaDto dto, IPizzaRepository repository) =>
-            {
-                if (!MiniValidator.TryValidate(dto, out var errors))
-                    return Results.ValidationProblem(errors);
-
-                try
-                {
-                    var updatedPizza = await repository.Update(dto);
-                    return Results.Ok(updatedPizza);
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"Pizza {dto.Id} not found", statusCode: StatusCodes.Status404NotFound);
-                }
-            }).ProducesValidationProblem()
-                .ProducesProblem(StatusCodes.Status404NotFound)
-                .Produces<PizzaDto>(StatusCodes.Status204NoContent);;
-            app.MapDelete("/pizzas/{id:int}", async (int id, IPizzaRepository repository) =>
-            {
-                try
-                {
-                    await repository.SoftDelete(id);
-                    return Results.Ok();
-                }
-                catch (Exception)
-                {
-                    return Results.Problem($"Pizza {id} not found", statusCode: StatusCodes.Status404NotFound);
-                }
-            }).ProducesProblem(StatusCodes.Status404NotFound)
-                .Produces(StatusCodes.Status200OK);
-            #endregion
-            
-            app.Run();
+        // Configure the HTTP request pipeline.
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
+
+        var locOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+        app.UseRequestLocalization(locOptions.Value);
+
+        app.UseCors(policyConfig =>
+            policyConfig.WithOrigins("http://localhost:3000")
+                .AllowAnyHeader().AllowAnyMethod());
+
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.MapControllers();
+        app.Run();
     }
 }
+
