@@ -5,9 +5,7 @@ export default function Menu() {
   return (
     <React.Fragment>
       <Box sx={{ mb: 1 }}>
-        <Typography level="h2" component="h1">
-          Menù
-        </Typography>
+        <Typography variant="h3">Menù</Typography>
       </Box>
     </React.Fragment>
   );

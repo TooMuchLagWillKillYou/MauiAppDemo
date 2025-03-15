@@ -11,9 +11,7 @@ export default function Reservations() {
   return (
     <React.Fragment>
       <Box sx={{ mb: 1 }}>
-        <Typography level="h2" component="h1">
-          Prenotazioni
-        </Typography>
+        <Typography variant="h3">Prenotazioni</Typography>
       </Box>
       <Pagination
         currentDate={currentDate}
