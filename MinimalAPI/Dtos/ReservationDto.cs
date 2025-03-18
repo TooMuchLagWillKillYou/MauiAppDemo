@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MinimalAPI.Data;
+using MinimalAPI.ValidationAttributes;
 
 namespace MinimalAPI.Dtos
 {

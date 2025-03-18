@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MinimalAPI.Data;
 using System.Globalization;
+using MinimalAPI.Data.Repositories;
 
 namespace MinimalAPI;
 public class Program

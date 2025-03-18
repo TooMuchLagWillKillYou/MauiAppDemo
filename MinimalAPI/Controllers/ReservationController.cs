@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using MinimalAPI.Data;
+using MinimalAPI.Data.Repositories;
 using MinimalAPI.Dtos;
 
 namespace MinimalAPI.Controllers;

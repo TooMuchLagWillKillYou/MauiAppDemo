@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MinimalAPI.Dtos;
 
-namespace MinimalAPI.Data
+namespace MinimalAPI.Data.Repositories
 {
     public class ReservationRepository(ReservationDbContext context) : IReservationRepository
     {

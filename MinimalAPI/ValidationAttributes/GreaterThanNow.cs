@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MinimalAPI.Data;
+namespace MinimalAPI.ValidationAttributes;
 
 public class GreaterThanNow : ValidationAttribute
 {

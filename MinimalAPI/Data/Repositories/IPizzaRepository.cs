@@ -1,6 +1,6 @@
 using MinimalAPI.Dtos;
 
-namespace MinimalAPI.Data;
+namespace MinimalAPI.Data.Repositories;
 
 public interface IPizzaRepository
 {
