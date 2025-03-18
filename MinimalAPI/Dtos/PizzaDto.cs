@@ -5,10 +5,10 @@ namespace MinimalAPI.Dtos;
 
 public record PizzaDto(
     int Id,
-    [property: Required]string Name,
-    [property: Required]string Ingredients,
-    [property: Required]decimal Price,
-    [property: Required]PizzaType Type,
+    [Required]string Name,
+    [Required]string Ingredients,
+    [Required]decimal Price,
+    [Required]PizzaCategory Category,
     int? Page,
     DateTime CreatedAt
     );

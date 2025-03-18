@@ -5,9 +5,9 @@ using MinimalAPI.ValidationAttributes;
 namespace MinimalAPI.Dtos
 {
     public record ReservationDto(int Id, 
-        [property: Required]string Name,
-        [property: Required, GreaterThanNow] DateTime Hour,
-        [property: Required, Minimum(1)] int People, 
+        [Required]string Name,
+        [Required, GreaterThanNow] DateTime Hour,
+        [Required, Minimum(1)] int People, 
         string? Table, 
         string? Notes);
 }
