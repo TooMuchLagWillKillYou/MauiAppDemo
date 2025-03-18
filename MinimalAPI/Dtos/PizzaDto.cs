@@ -8,7 +8,7 @@ public record PizzaDto(
     [Required]string Name,
     [Required]string Ingredients,
     [Required]decimal Price,
-    [Required]PizzaCategory Category,
+    [Required,EnumDataType(typeof(PizzaCategory))]PizzaCategory Category,
     int? Page,
     DateTime CreatedAt
     );
