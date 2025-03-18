@@ -1,5 +1,5 @@
 namespace MinimalAPI.Common;
-public enum PizzaType
+public enum PizzaCategory
 {
     Specialty,
     Classic
