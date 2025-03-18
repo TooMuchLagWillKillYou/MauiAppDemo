@@ -8,6 +8,10 @@ Command to update database with last migration: update-database
 +----------------------------------------------------------------------------------------------------------------------+
 |   NEXT STEPS                                                                                                         |
 +----------------------------------------------------------------------------------------------------------------------+
+- custom valueGetter per la colonna "Categoria". Non si deve vedere 1 o 0 ma "Classiche"/"Specialità"
+- l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
+- creazione di una pizza
+- delete di una pizza
 - rimuovere la dipendenza da @mui/joy
 - display dei messaggi di errore tramite <Snackbar>
 - update di una prenotazione (il componente <DataGrid> non funziona bene)
