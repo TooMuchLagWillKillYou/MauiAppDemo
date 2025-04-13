@@ -5,9 +5,11 @@ import MiniDrawer from "./shared/MiniDrawer.jsx";
 import TableRestaurantRoundedIcon from "@mui/icons-material/TableRestaurantRounded";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import MenuBookRoundedIcon from "@mui/icons-material/MenuBookRounded";
+import DescriptionRoundedIcon from "@mui/icons-material/DescriptionRounded";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Home from "./pages/Home.jsx";
 import Menu from "./pages/menu/Menu.jsx";
+import Template from "./pages/template/Template.jsx";
 
 function App() {
   const pages = [
@@ -18,6 +20,7 @@ function App() {
       route: "/reservations",
     },
     { title: "Menù", icon: <MenuBookRoundedIcon />, route: "/menu" },
+    { title: "Template", icon: <DescriptionRoundedIcon />, route: "/template" },
   ];
   return (
     <BrowserRouter>
@@ -47,6 +50,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="reservations" element={<Reservations />} />
             <Route path="menu" element={<Menu />} />
+            <Route path="template" element={<Template />} />
           </Routes>
         </Box>
       </Box>
