@@ -4,17 +4,20 @@ namespace MinimalAPI.Data
 {
     public class ReservationDbContext : DbContext
     {
-        public ReservationDbContext(DbContextOptions<ReservationDbContext> options) : base(options) { }
+        private readonly IConfiguration _configuration;
+
+        public ReservationDbContext(DbContextOptions<ReservationDbContext> options, IConfiguration configuration) :
+            base(options)
+        {
+            _configuration = configuration;
+        }
         
         public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
         public DbSet<PizzaEntity> Pizzas => Set<PizzaEntity>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=ReservationManager;Integrated Security=True");
+            optionsBuilder.UseSqlServer(_configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
