@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import CreateModal from "./CreateModal.jsx";
+import PageTitle from "../../shared/PageTitle.jsx";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -28,9 +29,7 @@ export default function Menu() {
 
   return (
     <React.Fragment>
-      <Box sx={{ mb: 1 }}>
-        <Typography variant="h3">Menù</Typography>
-      </Box>
+      <PageTitle text="Menù" />
       <Box sx={{ display: "flex", width: "100%", justifyContent: "end" }}>
         <Button
           type="submit"
