@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'BrolimoRegular';
+    src: local('BrolimoRegular'), url('./fonts/BrolimoRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0
+}
+.menuTitle {
+    font-family: 'BrolimoRegular', sans-serif;
+}

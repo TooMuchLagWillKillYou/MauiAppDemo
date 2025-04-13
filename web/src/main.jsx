@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { itIT } from "@mui/x-date-pickers/locales";
 import "@fontsource/inter";
 import App from "./App.jsx";
-import "../style.css";
+import "./style.css";
 
 const queryClient = new QueryClient();
 ReactDOM.createRoot(document.getElementById("root")).render(
