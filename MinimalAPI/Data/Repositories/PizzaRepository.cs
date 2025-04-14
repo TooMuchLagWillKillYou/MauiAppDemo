@@ -13,7 +13,6 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
             .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, p.Price, p.Category, p.Page, p.CreatedAt))
             .ToListAsync();
     }
-
     public async Task<PizzaDto?> GetByName(string name)
     {
         return await _context.Pizzas
@@ -22,7 +21,6 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
                 p.Category, p.Page, p.CreatedAt))
             .FirstOrDefaultAsync();
     }
-    
     public async Task<PizzaDto> Add(PizzaDto pizza)
     {
         var entity = new PizzaEntity();
@@ -32,7 +30,6 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
         
         return EntityToDto(entity);
     }
-
     public async Task<PizzaDto> Update(PizzaDto pizza)
     {
         var entity = await _context.Pizzas.FindAsync(pizza.Id);
@@ -46,7 +43,6 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
 
         return EntityToDto(entity);
     }
-
     public async Task SoftDelete(int id)
     {
         var entity = await _context.Pizzas.FindAsync(id);
@@ -59,10 +55,11 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
         _context.Entry(entity).State = EntityState.Modified;
         await _context.SaveChangesAsync();
     }
-
+    /// <summary>
+    /// Check if a pizza with the given name already exists
+    /// </summary>
     public async Task<bool> Exists(string name)
         => await _context.Pizzas.AnyAsync(p => p.Name == name);
-    
     private static void DtoToEntity(PizzaDto d, PizzaEntity e)
     {
         e.Id = d.Id;
@@ -75,7 +72,6 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
         e.Price = d.Price;
         e.CreatedAt = d.CreatedAt;
     }
-
     private static PizzaDto EntityToDto(PizzaEntity e)
         => new PizzaDto(
             e.Id, 
@@ -87,5 +83,4 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
             e.Category, 
             e.Page, 
             e.CreatedAt);
-    
 }
