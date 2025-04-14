@@ -10,10 +10,19 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
     public async Task<List<PizzaDto>> GetAll()
     {
         return await _context.Pizzas.Where(p => !p.IsDeleted)
-            .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.Price, p.Category, p.Page, p.CreatedAt))
+            .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, p.Price, p.Category, p.Page, p.CreatedAt))
             .ToListAsync();
     }
 
+    public async Task<PizzaDto?> GetByName(string name)
+    {
+        return await _context.Pizzas
+            .Where(p => !p.IsDeleted && p.Name == name)
+            .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, p.Price,
+                p.Category, p.Page, p.CreatedAt))
+            .FirstOrDefaultAsync();
+    }
+    
     public async Task<PizzaDto> Add(PizzaDto pizza)
     {
         var entity = new PizzaEntity();
@@ -51,11 +60,16 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<bool> Exists(string name)
+        => await _context.Pizzas.AnyAsync(p => p.Name == name);
+    
     private static void DtoToEntity(PizzaDto d, PizzaEntity e)
     {
         e.Id = d.Id;
         e.Name = d.Name;
         e.Ingredients = d.Ingredients;
+        e.EnglishTranslation = d.EnglishTranslation;
+        e.GermanTranslation = d.GermanTranslation;
         e.Price = d.Price;
         e.Category = d.Category;
         e.Price = d.Price;
@@ -63,6 +77,15 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
     }
 
     private static PizzaDto EntityToDto(PizzaEntity e)
-        => new PizzaDto(e.Id, e.Name, e.Ingredients, e.Price, e.Category, e.Page, e.CreatedAt);
+        => new PizzaDto(
+            e.Id, 
+            e.Name, 
+            e.Ingredients, 
+            e.EnglishTranslation,
+            e.GermanTranslation,
+            e.Price, 
+            e.Category, 
+            e.Page, 
+            e.CreatedAt);
     
 }
