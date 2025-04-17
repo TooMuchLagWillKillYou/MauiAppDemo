@@ -3,17 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using MinimalAPI.Common;
 using MinimalAPI.Data.Repositories;
 using MinimalAPI.Dtos;
-using System.Linq;
-using DocumentFormat.OpenXml.Office2010.Excel;
+using MinimalAPI.Services.MenuGenerator;
 
 namespace MinimalAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
-public class MenuController(IPizzaRepository pizzaRepository) : ControllerBase
+[Route("api/[controller]/[action]")]
+public class MenuController(IPizzaRepository pizzaRepository, MenuFactory menuFactory) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> UploadMenu(IFormFile file)
+    public async Task<IActionResult> UploadFromExcel(IFormFile file)
     {
         try
         {
@@ -49,5 +48,11 @@ public class MenuController(IPizzaRepository pizzaRepository) : ControllerBase
         {
             return BadRequest(e.Message);
         }
+    }
+    [HttpPost]
+    public IActionResult GenerateMenu(MenuGenerationOptions options)
+    {
+        var generatedMenus = menuFactory.GenerateMenu(options);
+        return Ok();
     }
 }
