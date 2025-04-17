@@ -27,14 +27,8 @@ public class Program
         builder.Services.AddSingleton<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
-            var supportedCulture = new[]
-            {
-                new CultureInfo("it-IT")
-            };
-
             options.DefaultRequestCulture = new RequestCulture(culture: "it-IT", uiCulture: "it-IT");
-            options.SupportedCultures = supportedCulture;
-            options.SupportedCultures = supportedCulture;
+            options.SupportedCultures = new[] { new CultureInfo("it-IT") };
         });
         builder.Services.AddControllers();
         

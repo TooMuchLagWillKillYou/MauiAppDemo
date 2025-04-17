@@ -5,7 +5,7 @@ using MinimalAPI.Dtos;
 namespace MinimalAPI.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/[controller]/[action]")]
 public class ReservationController(IReservationRepository repository) : ControllerBase
 {
     [HttpGet]
