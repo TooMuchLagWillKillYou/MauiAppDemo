@@ -1,8 +1,9 @@
 using MinimalAPI.Common;
+using MinimalAPI.Data.Repositories;
 
 namespace MinimalAPI.Services.MenuGenerator;
 
-public class MenuFactory
+public class MenuFactory(IPizzaRepository repository)
 {
     public Dictionary<string, byte[]> GenerateMenu(MenuGenerationOptions options)
     {
@@ -16,16 +17,16 @@ public class MenuFactory
                 switch (format)
                 {
                     case MenuFormat.Complete:
-                        result.TryAdd($"Complete menu - {language} - {today}", new CompleteMenuGenerator(language).Generate());
+                        result.TryAdd($"Complete menu - {language} - {today}", new CompleteMenuGenerator(language, repository).Generate());
                         break;
                     case MenuFormat.Table:
-                        result.TryAdd($"Table menu - {language} - {today}", new TableMenuGenerator(language).Generate());
+                        result.TryAdd($"Table menu - {language} - {today}", new TableMenuGenerator(language, repository).Generate());
                         break;
                     case MenuFormat.TakeAway:
-                        result.TryAdd($"TakeAway menu - {language} - {today}", new TakeAwayMenuGenerator(language).Generate());
+                        result.TryAdd($"TakeAway menu - {language} - {today}", new TakeAwayMenuGenerator(language, repository).Generate());
                         break;
                     case MenuFormat.Dessert:
-                        result.TryAdd($"Dessert menu - {language} - {today}", new DessertMenuGenerator(language).Generate());
+                        result.TryAdd($"Dessert menu - {language} - {today}", new DessertMenuGenerator(language, repository).Generate());
                         break;
                 }
             }

@@ -24,7 +24,7 @@ public class Program
             opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
         builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
         builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
-        builder.Services.AddSingleton<MenuFactory>();
+        builder.Services.AddScoped<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
             options.DefaultRequestCulture = new RequestCulture(culture: "it-IT", uiCulture: "it-IT");

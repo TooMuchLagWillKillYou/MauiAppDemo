@@ -1,8 +1,9 @@
 using MinimalAPI.Common;
+using MinimalAPI.Data.Repositories;
 
 namespace MinimalAPI.Services.MenuGenerator;
 
-public abstract class BaseMenuGenerator(MenuLanguage language)
+public abstract class BaseMenuGenerator(MenuLanguage language, IPizzaRepository repository)
 {
     private readonly MenuLanguage _language = language;
 
@@ -14,7 +15,10 @@ public abstract class BaseMenuGenerator(MenuLanguage language)
         return GeneratePdf();
     }
 
-    protected abstract void GetData();
+    protected virtual void GetData()
+    {
+        
+    }
     protected abstract void CreateCover();
     protected abstract void WriteTitle();
     protected abstract byte[] GeneratePdf();
