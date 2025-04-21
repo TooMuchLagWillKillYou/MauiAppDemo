@@ -10,7 +10,8 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
     public async Task<List<PizzaDto>> GetAll()
     {
         return await _context.Pizzas.Where(p => !p.IsDeleted)
-            .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, p.Price, p.Category, p.Page, p.CreatedAt))
+            .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, 
+                p.Price, p.Category, p.Page, p.Order, p.CreatedAt))
             .ToListAsync();
     }
     public async Task<PizzaDto?> GetByName(string name)
@@ -18,7 +19,7 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
         return await _context.Pizzas
             .Where(p => !p.IsDeleted && p.Name == name)
             .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, p.Price,
-                p.Category, p.Page, p.CreatedAt))
+                p.Category, p.Page, p.Order, p.CreatedAt))
             .FirstOrDefaultAsync();
     }
     public async Task<PizzaDto> Add(PizzaDto pizza)
@@ -82,5 +83,6 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
             e.Price, 
             e.Category, 
             e.Page, 
+            e.Order,
             e.CreatedAt);
 }

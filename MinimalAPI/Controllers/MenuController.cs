@@ -28,11 +28,12 @@ public class MenuController(IPizzaRepository pizzaRepository, MenuFactory menuFa
                 var dto = new PizzaDto(
                     0,
                     worksheet.Cell(rowIndex, "B").GetValue<string>(),
+                    worksheet.Cell(rowIndex, "C").GetValue<string>(),
                     worksheet.Cell(rowIndex, "D").GetValue<string>(),
-                    worksheet.Cell(rowIndex, "F").GetValue<string>(),
-                    worksheet.Cell(rowIndex, "G").GetValue<string>(),
-                    worksheet.Cell(rowIndex, "C").GetValue<decimal>(),
-                    (PizzaCategory)worksheet.Cell(rowIndex, "E").GetValue<int>(), 
+                    worksheet.Cell(rowIndex, "E").GetValue<string>(),
+                    worksheet.Cell(rowIndex, "F").GetValue<decimal>(),
+                    (PizzaCategory)worksheet.Cell(rowIndex, "G").GetValue<int>(), 
+                    null,
                     null,
                     DateTime.Now
                 );
@@ -52,7 +53,14 @@ public class MenuController(IPizzaRepository pizzaRepository, MenuFactory menuFa
     [HttpPost]
     public IActionResult GenerateMenu(MenuGenerationOptions options)
     {
+        string fileName = "";
+        byte[] result = new byte[0];
         var generatedMenus = menuFactory.GenerateMenu(options);
-        return Ok();
+        foreach (var menu in generatedMenus)
+        {
+            fileName = menu.Key;
+            result = menu.Value;
+        }
+        return File(result, "application/pdf", fileName);
     }
 }

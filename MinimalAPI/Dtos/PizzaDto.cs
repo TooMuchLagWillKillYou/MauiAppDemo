@@ -12,5 +12,6 @@ public record PizzaDto(
     [Required]decimal Price,
     [Required,EnumDataType(typeof(PizzaCategory))]PizzaCategory Category,
     int? Page,
+    int? Order,
     DateTime CreatedAt
     );

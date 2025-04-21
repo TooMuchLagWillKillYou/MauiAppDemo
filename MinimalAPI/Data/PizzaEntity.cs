@@ -14,6 +14,7 @@ public class PizzaEntity
     public decimal Price { get; set; }
     public PizzaCategory Category { get; set; }
     public int? Page { get; set; }
+    public int? Order { get; set; }
     public bool IsDeleted { get; set; }
     public DateTime CreatedAt { get; set; }
 }
