@@ -37,7 +37,7 @@ const Group = (props) => (
       <Typography
         sx={{ fontFamily: "Montserrat", fontSize: "17pt", fontWeight: 700 }}
       >
-        {props.title}
+        {props.name}
       </Typography>
       <Typography sx={{ fontFamily: "BrolimoRegular", fontSize: "14pt" }}>
         {props.price}

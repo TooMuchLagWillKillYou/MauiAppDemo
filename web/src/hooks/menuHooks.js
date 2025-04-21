@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import config from "../config.js";
+import config, { endpoints } from "../config.js";
 import axios from "axios";
 
 const useFetchPizzas = () => {
@@ -7,7 +7,7 @@ const useFetchPizzas = () => {
     queryKey: ["pizzas"],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/pizza`)
+        .get(`${config.baseApiUrl}${endpoints.pizza.getAll}`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchPizzas", error)),
   });
@@ -16,7 +16,8 @@ const useFetchPizzas = () => {
 const useAddPizza = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (pizza) => axios.post(`${config.baseApiUrl}/pizza`, pizza),
+    mutationFn: (pizza) =>
+      axios.post(`${config.baseApiUrl}${endpoints.pizza.add}`, pizza),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["pizzas"],
@@ -31,7 +32,8 @@ const useAddPizza = () => {
 const useUpdatePizza = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (pizza) => axios.put(`${config.baseApiUrl}/pizza`, pizza),
+    mutationFn: (pizza) =>
+      axios.put(`${config.baseApiUrl}${endpoints.pizza.update}`, pizza),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["pizzas"],

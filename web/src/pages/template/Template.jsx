@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import PageTitle from "../../shared/PageTitle.jsx";
 import { Box } from "@mui/material";
 import { Page, Title, Container, Group } from "../../utils/menuComponents.jsx";
+import { useFetchPizzas } from "../../hooks/menuHooks.js";
+import ApiStatus from "../../utils/ApiStatus.jsx";
 
 export default function Template() {
-  const dummy = {
-    title: "Title",
-    ingredients:
-      "Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod tempor incidunt ut labore et dolore magna aliqua.",
-    price: 10.5,
-  };
-
+  const { data, status, isSuccess } = useFetchPizzas();
+  if (!isSuccess) {
+    return <ApiStatus status={status} />;
+  }
   return (
     <React.Fragment>
       <PageTitle text="Template" />
@@ -18,13 +17,9 @@ export default function Template() {
         <Page className="a5-sheet" id="first-page">
           <Title>Le Specialita'</Title>
           <Container>
-            <Group {...dummy} />
-          </Container>
-        </Page>
-        <Page className="a5-sheet">
-          <Title>Le Classiche</Title>
-          <Container>
-            <Group {...dummy} />
+            {data?.map((item, index) => (
+              <Group {...item} key={index} />
+            ))}
           </Container>
         </Page>
       </Box>

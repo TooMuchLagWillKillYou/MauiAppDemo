@@ -1,4 +1,4 @@
-import config from "../config";
+import config, { endpoints } from "../config";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ const useFetchReservations = () => {
     queryKey: ["reservations"],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/reservation`)
+        .get(`${config.baseApiUrl}${endpoints.reservation.getAll}`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchReservations", error)),
   });
@@ -19,7 +19,7 @@ const useFetchReservationsByDate = (date) => {
     queryKey: ["reservations", date],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/reservation/${date}`)
+        .get(`${config.baseApiUrl}${endpoints.reservation.getByDate(date)}`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchReservationsByDate", error)),
   });
@@ -30,7 +30,7 @@ const useFetchReservation = (id) => {
     queryKey: ["reservations", id],
     queryFn: () =>
       axios
-        .get(`${config.baseApiUrl}/reservation/${id}`)
+        .get(`${config.baseApiUrl}${endpoints.reservation.get(id)}`)
         .then((response) => response.data)
         .catch((error) => console.error("useFetchReservation", error)),
   });
@@ -40,7 +40,10 @@ const useAddReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (reservation) =>
-      axios.post(`${config.baseApiUrl}/reservation`, reservation),
+      axios.post(
+        `${config.baseApiUrl}${endpoints.reservation.add}`,
+        reservation,
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],
@@ -56,7 +59,10 @@ const useUpdateReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (reservation) =>
-      axios.put(`${config.baseApiUrl}/reservation`, reservation),
+      axios.put(
+        `${config.baseApiUrl}${endpoints.reservation.update}`,
+        reservation,
+      ),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],
@@ -71,7 +77,8 @@ const useUpdateReservation = () => {
 const useDeleteReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id) => axios.delete(`${config.baseApiUrl}/reservation/${id}`),
+    mutationFn: (id) =>
+      axios.delete(`${config.baseApiUrl}${endpoints.reservation.delete(id)}`),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["reservations"],
