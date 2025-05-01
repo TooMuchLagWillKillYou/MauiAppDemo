@@ -5,18 +5,16 @@ namespace MinimalAPI.Data.Repositories;
 
 public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
 {
-    private readonly ReservationDbContext _context = context;
-
     public async Task<List<PizzaDto>> GetAll()
     {
-        return await _context.Pizzas.Where(p => !p.IsDeleted)
+        return await context.Pizzas.Where(p => !p.IsDeleted)
             .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, 
                 p.Price, p.Category, p.Page, p.Order, p.CreatedAt))
             .ToListAsync();
     }
     public async Task<PizzaDto?> GetByName(string name)
     {
-        return await _context.Pizzas
+        return await context.Pizzas
             .Where(p => !p.IsDeleted && p.Name == name)
             .Select(p => new PizzaDto(p.Id, p.Name, p.Ingredients, p.EnglishTranslation, p.GermanTranslation, p.Price,
                 p.Category, p.Page, p.Order, p.CreatedAt))
@@ -26,41 +24,41 @@ public class PizzaRepository(ReservationDbContext context) : IPizzaRepository
     {
         var entity = new PizzaEntity();
         DtoToEntity(pizza, entity);
-        _context.Pizzas.Add(entity);
-        await _context.SaveChangesAsync();
+        context.Pizzas.Add(entity);
+        await context.SaveChangesAsync();
         
         return EntityToDto(entity);
     }
     public async Task<PizzaDto> Update(PizzaDto pizza)
     {
-        var entity = await _context.Pizzas.FindAsync(pizza.Id);
+        var entity = await context.Pizzas.FindAsync(pizza.Id);
         
         if (entity is null)
             throw new ArgumentException($"Could not update pizza {pizza.Id}");
 
         DtoToEntity(pizza, entity);
-        _context.Entry(entity).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        context.Entry(entity).State = EntityState.Modified;
+        await context.SaveChangesAsync();
 
         return EntityToDto(entity);
     }
     public async Task SoftDelete(int id)
     {
-        var entity = await _context.Pizzas.FindAsync(id);
+        var entity = await context.Pizzas.FindAsync(id);
         
         if (entity == null)
             throw new ArgumentException($"Could not delete pizza {id}");
 
         entity.IsDeleted = true;
         
-        _context.Entry(entity).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
+        context.Entry(entity).State = EntityState.Modified;
+        await context.SaveChangesAsync();
     }
     /// <summary>
     /// Check if a pizza with the given name already exists
     /// </summary>
     public async Task<bool> Exists(string name)
-        => await _context.Pizzas.AnyAsync(p => p.Name == name);
+        => await context.Pizzas.AnyAsync(p => p.Name == name);
     private static void DtoToEntity(PizzaDto d, PizzaEntity e)
     {
         e.Id = d.Id;
