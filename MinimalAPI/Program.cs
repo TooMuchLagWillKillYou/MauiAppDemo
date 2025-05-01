@@ -20,10 +20,10 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors();
-        builder.Services.AddDbContext<ReservationDbContext>(opt =>
-            opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+        builder.Services.AddDbContext<ReservationDbContext>();
         builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
         builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
+        builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
         builder.Services.AddScoped<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
