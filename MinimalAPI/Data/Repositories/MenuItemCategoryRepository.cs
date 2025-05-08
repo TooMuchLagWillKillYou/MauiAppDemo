@@ -3,9 +3,13 @@ using MinimalAPI.Common;
 
 namespace MinimalAPI.Data.Repositories;
 
-public class MenuItemCategoryRepository(ReservationDbContext context) : IMenuItemCategoryRepository
+public class MenuItemCategoryRepository(ReservationDbContext context) : Repository<MenuItemCategory, int>(context), IMenuItemCategoryRepository
 {
-    public async Task<MenuItemCategory> GetCategory(int id) => await context.MenuItemCategories.FindAsync(id);
-    public async Task<MenuItemCategory> GetCategory(MenuItemCategoryType type) => await GetCategory((int)type);
-    public async Task<List<MenuItemCategory>> GetAll() => await context.MenuItemCategories.ToListAsync();
+    public async Task<MenuItemCategory> GetByNameAsync(string name)
+    {
+        var result = await context.MenuItemCategories.FirstOrDefaultAsync(x => x.Name == name);
+        if(result is null)
+            throw new KeyNotFoundException($"Item of type {typeof(MenuItemCategory).FullName} with name {name} not found");
+        return result;
+    }
 }

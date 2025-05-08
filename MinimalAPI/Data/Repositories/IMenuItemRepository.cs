@@ -3,11 +3,9 @@ using MinimalAPI.Dtos;
 
 namespace MinimalAPI.Data.Repositories;
 
-public interface IMenuItemRepository
+public interface IMenuItemRepository : IRepository<MenuItem, int>
 {
-    Task<List<MenuItemDto>> GetByCategory(MenuItemCategoryType categoryType);
-    Task<List<MenuItemDto>> GetByMenu(MenuType menuType);
-    Task<MenuItemDto> Add(MenuItemDto menuItem);
-    Task<MenuItemDto> Update(MenuItemDto menuItem);
-    Task Delete(int id);
+    Task<List<MenuItemForListDto>> GetByCategory(MenuItemCategoryType categoryType);
+    Task<List<MenuItemForListDto>> GetByMenu(MenuType menuType);
+    Task SoftDeleteAsync(int id);
 }
