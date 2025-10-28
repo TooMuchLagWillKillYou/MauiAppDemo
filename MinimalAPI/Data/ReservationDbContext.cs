@@ -32,6 +32,9 @@ namespace MinimalAPI.Data
             modelBuilder.Entity<MenuItem>()
                 .Property(x => x.IsDeleted)
                 .HasDefaultValue(0);
+            modelBuilder.Entity<MenuItem>()
+                .HasIndex(x => x.Name)
+                .IsUnique();
         }
     }
 }

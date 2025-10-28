@@ -24,6 +24,9 @@ public class Program
         builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
         builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
         builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+        builder.Services.AddScoped<IMenuItemCategoryRepository, MenuItemCategoryRepository>();
+        builder.Services.AddScoped<IMenuItemSubCategoryRepository, MenuItemSubCategoryRepository>();
+        builder.Services.AddScoped<IMenuRepository, MenuRepository>();
         builder.Services.AddScoped<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {

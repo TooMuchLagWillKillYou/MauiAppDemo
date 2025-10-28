@@ -8,6 +8,9 @@ Command to update database with last migration: update-database
 +----------------------------------------------------------------------------------------------------------------------+
 |   NEXT STEPS                                                                                                         |
 +----------------------------------------------------------------------------------------------------------------------+
+- testare caricamento, create/update dei menu item tramite il nuovo endpoint
+- una volta che abbiamo tutte le voci del menu, possiamo generarlo nel frontend
+- chiamata alle API a cui viene passato l'html + generazione dei pdf
 - custom valueGetter per la colonna "Categoria". Non si deve vedere 1 o 0 ma "Classiche"/"Specialità"
 - l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
 - creazione di una pizza

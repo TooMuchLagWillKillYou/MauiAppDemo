@@ -5,11 +5,11 @@ namespace MinimalAPI.Data.Repositories;
 
 public class MenuItemCategoryRepository(ReservationDbContext context) : Repository<MenuItemCategory, int>(context), IMenuItemCategoryRepository
 {
-    public async Task<MenuItemCategory> GetByNameAsync(string name)
+    public async Task<MenuItemCategory> Get(int id)
     {
-        var result = await context.MenuItemCategories.FirstOrDefaultAsync(x => x.Name == name);
+        var result = await context.MenuItemCategories.FindAsync(id);
         if(result is null)
-            throw new KeyNotFoundException($"Item of type {typeof(MenuItemCategory).FullName} with name {name} not found");
+            throw new KeyNotFoundException($"Item of type {typeof(MenuItemCategory).FullName} with id {id} not found");
         return result;
     }
 }

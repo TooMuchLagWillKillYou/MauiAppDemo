@@ -16,16 +16,16 @@ public class MenuFactory(IPizzaRepository repository)
             {
                 switch (format)
                 {
-                    case MenuFormat.Complete:
+                    case MenuType.Complete:
                         result.TryAdd($"Complete menu - {language} - {today}", new CompleteMenuGenerator(language, repository).Generate());
                         break;
-                    case MenuFormat.Table:
+                    case MenuType.Table:
                         result.TryAdd($"Table menu - {language} - {today}", new TableMenuGenerator(language, repository).Generate());
                         break;
-                    case MenuFormat.TakeAway:
+                    case MenuType.TakeAway:
                         result.TryAdd($"TakeAway menu - {language} - {today}", new TakeAwayMenuGenerator(language, repository).Generate());
                         break;
-                    case MenuFormat.Dessert:
+                    case MenuType.Dessert:
                         result.TryAdd($"Dessert menu - {language} - {today}", new DessertMenuGenerator(language, repository).Generate());
                         break;
                 }
