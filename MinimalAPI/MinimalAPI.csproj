@@ -28,8 +28,4 @@
     <EditorConfigFiles Remove="C:\Users\Diego Barbaresco\source\repos\TooMuchLagWillKillYou\MauiAppDemo\MinimalAPI\.editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="C:\Users\Diego Barbaresco\source\repos\TooMuchLagWillKillYou\MauiAppDemo\MinimalAPI\.editorconfig" />
-  </ItemGroup>
-
 </Project>
