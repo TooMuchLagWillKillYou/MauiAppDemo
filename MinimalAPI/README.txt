@@ -8,27 +8,30 @@ Command to update database with last migration: update-database
 +----------------------------------------------------------------------------------------------------------------------+
 |   NEXT STEPS                                                                                                         |
 +----------------------------------------------------------------------------------------------------------------------+
-- testare caricamento, create/update dei menu item tramite il nuovo endpoint
-- una volta che abbiamo tutte le voci del menu, possiamo generarlo nel frontend
-- chiamata alle API a cui viene passato l'html + generazione dei pdf
+// BE
+- versionare il menù in modo da poter recuperare il menù di una data specifica, facendo attenzione a recuperare la corretta versione del menù quando serve. 
+	Voglio essere in grado di recuperare ongi modifica di ogni elemento del menù. Hint: system-versioned tables
+- generazione dei pdf secondo le options inserite dall'utente
 - custom valueGetter per la colonna "Categoria". Non si deve vedere 1 o 0 ma "Classiche"/"Specialità"
-- l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
-- creazione di una pizza
-- delete di una pizza
-- rimuovere la dipendenza da @mui/joy
+- aggiornare a EF Core 9?
+
+// FE
+- riprendere in mano il frontend una volta completate le API. Decidere se continuare con MUI o usare un altra libreria grafica
+- nuova sezione "worked hours" per tenere traccia delle ore lavorate dai dipendenti. Teoricamente saranno i dipendenti a inserire le loro ore di lavoro
+- modifica del menù dal fronted
+	- l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
+	- update di una prenotazione (il componente <DataGrid> non funziona bene)
 - display dei messaggi di errore tramite <Snackbar>
-- update di una prenotazione (il componente <DataGrid> non funziona bene)
 - implementare le rotte con react-router
-- creare i .pdf del menù partendo dall'html tramite il pacchetto nuget itext
 - controllare di usare gli Effect nel modo corretto
 - eliminazione di una prenotazione anche per giorni futuri
 - impedire di aggiungere e modificare prenotazioni in giorni passati 
-- fare altri test per salvataggio, modifica, e messaggi di errore
 - timeout che reimposta la data di oggi dopo un intervallo di tempo
 - alert (vedi notion)
 - tradurre "No rows" in "Nessun prenotazione per questo giorno"
 - messaggi di errore in italiano
 - il campo 'Table' dovrebbe suggerire la lista di tavoli liberi o dovrebbe controllare che vengano inseriti solamente dei valori validi (magari basandosi sulla mappa?)>
+- validare che non si possano fare prenotazioni in orari in cui il ristorante è chiuso
 
 +----------------------------------------------------------------------------------------------------------------------+
 |   DONE STEPS                                                                                                         |
@@ -53,6 +56,8 @@ Command to update database with last migration: update-database
 - il campo 'DateTime' deve accettare valori da 0 a 24 per le ore e da 0 a 60 per i minuti
 - controllare di aver abilitato correttamente in CORS
 - eliminare progetti della solution non più necessari
+- testare caricamento, create/update dei menu item tramite il nuovo endpoint
+- rimuovere la dipendenza da @mui/joy
 
 +----------------------------------------------------------------------------------------------------------------------+
 |   RESOURCES                                                                                                          |
