@@ -292,3 +292,91 @@ GO
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+GO
+
+DECLARE @var3 sysname;
+SELECT @var3 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Pizzas]') AND [c].[name] = N'GermanTranslation');
+IF @var3 IS NOT NULL EXEC(N'ALTER TABLE [Pizzas] DROP CONSTRAINT [' + @var3 + '];');
+ALTER TABLE [Pizzas] ALTER COLUMN [GermanTranslation] nvarchar(max) NULL;
+GO
+
+DECLARE @var4 sysname;
+SELECT @var4 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Pizzas]') AND [c].[name] = N'EnglishTranslation');
+IF @var4 IS NOT NULL EXEC(N'ALTER TABLE [Pizzas] DROP CONSTRAINT [' + @var4 + '];');
+ALTER TABLE [Pizzas] ALTER COLUMN [EnglishTranslation] nvarchar(max) NULL;
+GO
+
+CREATE TABLE [MenuItemCategories] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_MenuItemCategories] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE TABLE [MenuItemSubCategories] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_MenuItemSubCategories] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE TABLE [Menus] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    CONSTRAINT [PK_Menus] PRIMARY KEY ([Id])
+);
+GO
+
+CREATE TABLE [MenuItems] (
+    [Id] int NOT NULL IDENTITY,
+    [Name] nvarchar(max) NOT NULL,
+    [Ingredients] nvarchar(max) NULL,
+    [EnglishTranslation] nvarchar(max) NULL,
+    [GermanTranslation] nvarchar(max) NULL,
+    [FirstPrice] money NOT NULL,
+    [SecondPrice] money NULL,
+    [Page] int NULL,
+    [Order] int NULL,
+    [IsDeleted] bit NOT NULL DEFAULT CAST(0 AS bit),
+    [CreatedAt] datetime2 NOT NULL,
+    [UpdatedAt] datetime2 NULL,
+    [CategoryId] int NOT NULL,
+    [SubCategoryId] int NULL,
+    CONSTRAINT [PK_MenuItems] PRIMARY KEY ([Id]),
+    CONSTRAINT [FK_MenuItems_MenuItemCategories_CategoryId] FOREIGN KEY ([CategoryId]) REFERENCES [MenuItemCategories] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_MenuItems_MenuItemSubCategories_SubCategoryId] FOREIGN KEY ([SubCategoryId]) REFERENCES [MenuItemSubCategories] ([Id])
+);
+GO
+
+CREATE TABLE [MenuMenuItem] (
+    [MenuItemsId] int NOT NULL,
+    [MenusId] int NOT NULL,
+    CONSTRAINT [PK_MenuMenuItem] PRIMARY KEY ([MenuItemsId], [MenusId]),
+    CONSTRAINT [FK_MenuMenuItem_MenuItems_MenuItemsId] FOREIGN KEY ([MenuItemsId]) REFERENCES [MenuItems] ([Id]) ON DELETE CASCADE,
+    CONSTRAINT [FK_MenuMenuItem_Menus_MenusId] FOREIGN KEY ([MenusId]) REFERENCES [Menus] ([Id]) ON DELETE CASCADE
+);
+GO
+
+CREATE INDEX [IX_MenuItems_CategoryId] ON [MenuItems] ([CategoryId]);
+GO
+
+CREATE INDEX [IX_MenuItems_SubCategoryId] ON [MenuItems] ([SubCategoryId]);
+GO
+
+CREATE INDEX [IX_MenuMenuItem_MenusId] ON [MenuMenuItem] ([MenusId]);
+GO
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20250428204804_MenuItems', N'8.0.4');
+GO
+
+COMMIT;
+GO
+

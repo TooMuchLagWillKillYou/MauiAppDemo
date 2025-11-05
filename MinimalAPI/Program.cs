@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MinimalAPI.Data;
-using System.Globalization;
 using MinimalAPI.Data.Repositories;
 using MinimalAPI.Services.MenuGenerator;
+using System.Globalization;
 
 namespace MinimalAPI;
 public class Program
@@ -20,10 +19,12 @@ public class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors();
-        builder.Services.AddDbContext<ReservationDbContext>(opt =>
-            opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking));
+        builder.Services.AddDbContext<ReservationDbContext>();
         builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-        builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
+        builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
+        builder.Services.AddScoped<IMenuItemCategoryRepository, MenuItemCategoryRepository>();
+        builder.Services.AddScoped<IMenuItemSubCategoryRepository, MenuItemSubCategoryRepository>();
+        builder.Services.AddScoped<IMenuRepository, MenuRepository>();
         builder.Services.AddScoped<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
@@ -31,7 +32,7 @@ public class Program
             options.SupportedCultures = new[] { new CultureInfo("it-IT") };
         });
         builder.Services.AddControllers();
-        
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

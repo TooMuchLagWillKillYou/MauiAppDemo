@@ -1,8 +1,8 @@
 namespace MinimalAPI.Common;
 
-public enum MenuFormat
+public enum MenuType
 {
-    Complete,
+    Complete = 1,
     Table,
     TakeAway,
     Dessert
