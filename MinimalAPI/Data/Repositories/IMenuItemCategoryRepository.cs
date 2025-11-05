@@ -1,6 +1,5 @@
 namespace MinimalAPI.Data.Repositories;
 
-public interface IMenuItemCategoryRepository
+public interface IMenuItemCategoryRepository : IRepository<MenuItemCategory>
 {
-    Task<MenuItemCategory> Get(int id);
 }

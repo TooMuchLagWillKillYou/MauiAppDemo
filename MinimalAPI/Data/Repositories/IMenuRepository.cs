@@ -1,11 +1,5 @@
-using MinimalAPI.Common;
-using MinimalAPI.Dtos;
-
 namespace MinimalAPI.Data.Repositories;
 
-public interface IMenuRepository
+public interface IMenuRepository : IRepository<Menu>
 {
-    Task<MenuDto> Get(int id);
-    Task<MenuDto> GetMenu(MenuType type);
-    Task<List<MenuDto>> GetAll();
 }

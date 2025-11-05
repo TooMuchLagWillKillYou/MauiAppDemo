@@ -14,7 +14,7 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
     IMenuItemSubCategoryRepository menuItemSubCategoryRepository, IMenuRepository menuRepository, MenuFactory menuFactory) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> UploadFromExcel2(IFormFile file)
+    public async Task<IActionResult> UploadFromExcel(IFormFile file)
     {
         try
         {
@@ -40,22 +40,22 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
 
                 foreach (var format in menuFormats)
                 {
-                    var menu = await menuRepository.Get(format);
+                    var menu = await menuRepository.GetById(format);
 
                     if (menu == null)
                     {
                         return BadRequest($"Menu with ID {format} does not exist.");
                     }
 
-                    menus.Add(new Menu { Id = menu.Id, Name = menu.Name });
+                    menus.Add(menu);
                 }
 
-                var sectionDto = await menuItemCategoryRepository.Get(sectionId);
+                var sectionDto = await menuItemCategoryRepository.GetById(sectionId);
                 var section = new MenuItemCategory { Id = sectionDto.Id, Name = sectionDto.Name };
 
-                if (await menuItemRepository.ExistsAsync(id))
+                if (await menuItemRepository.Exists(id))
                 {
-                    var menuItem = await menuItemRepository.GetByIdAsync(id);
+                    var menuItem = await menuItemRepository.GetById(id);
                     menuItem.Name = name;
                     menuItem.Ingredients = ingredients;
                     menuItem.EnglishTranslation = englishTranslation;
@@ -66,7 +66,7 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
                     menuItem.Category = section;
                     menuItem.Menus = menus;
                     menuItem.UpdatedAt = DateTime.Now;
-                    await menuItemRepository.UpdateAsync(menuItem);
+                    await menuItemRepository.Update(menuItem);
                 }
                 else
                 {
@@ -83,7 +83,7 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
                         Menus = menus,
                         CreatedAt = DateTime.Now
                     };
-                    await menuItemRepository.AddAsync(menuItem);
+                    await menuItemRepository.Add(menuItem);
                 }
             }
 
@@ -95,81 +95,81 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UploadFromExcel(IFormFile file)
-    {
-        await using var stream = file.OpenReadStream();
-        var workbook = new XLWorkbook(stream);
+    //[HttpPost]
+    //public async Task<IActionResult> UploadFromExcel(IFormFile file)
+    //{
+    //    await using var stream = file.OpenReadStream();
+    //    var workbook = new XLWorkbook(stream);
 
-        var worksheet = workbook.Worksheet(1);
-        var rowIndex = 2;
-        var idCell = worksheet.Cell(rowIndex, "A");
+    //    var worksheet = workbook.Worksheet(1);
+    //    var rowIndex = 2;
+    //    var idCell = worksheet.Cell(rowIndex, "A");
 
-        while (idCell.GetValue<int>() != -1)
-        {
-            var id = worksheet.Cell(rowIndex, "A").GetValue<int>();
-            var name = worksheet.Cell(rowIndex, "B").GetValue<string>();
-            var ingredients = worksheet.Cell(rowIndex, "C").GetValue<string>();
-            var englishTranslation = worksheet.Cell(rowIndex, "D").GetValue<string>();
-            var germanTranslation = worksheet.Cell(rowIndex, "E").GetValue<string>();
-            var firstPrice = worksheet.Cell(rowIndex, "F").GetValue<decimal>();
-            var secondPrice = worksheet.Cell(rowIndex, "G").GetValue<decimal?>();
-            var order = worksheet.Cell(rowIndex, "H").GetValue<int>();
-            var categoryId = worksheet.Cell(rowIndex, "I").GetValue<int>();
-            var category = await menuItemCategoryRepository.Get(categoryId);
-            //var subCategoryName = worksheet.Cell(rowIndex, "J").GetValue<string?>();
-            //var subCategory = await menuItemSubCategoryRepository.GetByNameAsync(subCategoryName);
-            var menusIds = worksheet.Cell(rowIndex, "L").GetValue<string>().Split(',').Select(i => Convert.ToInt32(i)).ToList();
-            var menuDtos = new List<MenuDto>();
+    //    while (idCell.GetValue<int>() != -1)
+    //    {
+    //        var id = worksheet.Cell(rowIndex, "A").GetValue<int>();
+    //        var name = worksheet.Cell(rowIndex, "B").GetValue<string>();
+    //        var ingredients = worksheet.Cell(rowIndex, "C").GetValue<string>();
+    //        var englishTranslation = worksheet.Cell(rowIndex, "D").GetValue<string>();
+    //        var germanTranslation = worksheet.Cell(rowIndex, "E").GetValue<string>();
+    //        var firstPrice = worksheet.Cell(rowIndex, "F").GetValue<decimal>();
+    //        var secondPrice = worksheet.Cell(rowIndex, "G").GetValue<decimal?>();
+    //        var order = worksheet.Cell(rowIndex, "H").GetValue<int>();
+    //        var categoryId = worksheet.Cell(rowIndex, "I").GetValue<int>();
+    //        var category = await menuItemCategoryRepository.GetById(categoryId);
+    //        //var subCategoryName = worksheet.Cell(rowIndex, "J").GetValue<string?>();
+    //        //var subCategory = await menuItemSubCategoryRepository.GetByNameAsync(subCategoryName);
+    //        var menusIds = worksheet.Cell(rowIndex, "L").GetValue<string>().Split(',').Select(i => Convert.ToInt32(i)).ToList();
+    //        var menuDtos = new List<MenuDto>();
 
-            foreach (var menuId in menusIds)
-            {
-                var menuDto = await menuRepository.Get(menuId);
-                menuDtos.Add(menuDto);
-            }
+    //        foreach (var menuId in menusIds)
+    //        {
+    //            var menuDto = await menuRepository.GetById(menuId);
+    //            menuDtos.Add(menuDto);
+    //        }
 
-            if (await menuItemRepository.ExistsAsync(id))
-            {
-                var menuItem = await menuItemRepository.GetByIdAsync(id);
-                menuItem.Name = name;
-                menuItem.Ingredients = ingredients;
-                menuItem.EnglishTranslation = englishTranslation;
-                menuItem.GermanTranslation = germanTranslation;
-                menuItem.FirstPrice = firstPrice;
-                menuItem.SecondPrice = secondPrice;
-                menuItem.Order = order;
-                menuItem.CategoryId = category.Id;
-                //menuItem.SubCategoryId = subCategory.Id;
-                menuItem.Menus = menuDtos.Select(m => new Menu { Id = m.Id, Name = m.Name }).ToList();
-                menuItem.UpdatedAt = DateTime.Now;
-                await menuItemRepository.UpdateAsync(menuItem);
-            }
-            else
-            {
-                var menuItem = new MenuItem
-                {
-                    //Id = id,
-                    Name = name,
-                    Ingredients = ingredients,
-                    EnglishTranslation = englishTranslation,
-                    GermanTranslation = germanTranslation,
-                    FirstPrice = firstPrice,
-                    SecondPrice = secondPrice,
-                    Order = order,
-                    CategoryId = category.Id,
-                    //SubCategoryId = subCategory.Id,
-                    Menus = menuDtos.Select(m => new Menu { Name = m.Name }).ToList(),
-                    CreatedAt = DateTime.Now
-                };
-                await menuItemRepository.AddAsync(menuItem);
-            }
+    //        if (await menuItemRepository.Exists(id))
+    //        {
+    //            var menuItem = await menuItemRepository.GetById(id);
+    //            menuItem.Name = name;
+    //            menuItem.Ingredients = ingredients;
+    //            menuItem.EnglishTranslation = englishTranslation;
+    //            menuItem.GermanTranslation = germanTranslation;
+    //            menuItem.FirstPrice = firstPrice;
+    //            menuItem.SecondPrice = secondPrice;
+    //            menuItem.Order = order;
+    //            menuItem.CategoryId = category.Id;
+    //            //menuItem.SubCategoryId = subCategory.Id;
+    //            menuItem.Menus = menuDtos.Select(m => new Menu { Id = m.Id, Name = m.Name }).ToList();
+    //            menuItem.UpdatedAt = DateTime.Now;
+    //            await menuItemRepository.Update(menuItem);
+    //        }
+    //        else
+    //        {
+    //            var menuItem = new MenuItem
+    //            {
+    //                //Id = id,
+    //                Name = name,
+    //                Ingredients = ingredients,
+    //                EnglishTranslation = englishTranslation,
+    //                GermanTranslation = germanTranslation,
+    //                FirstPrice = firstPrice,
+    //                SecondPrice = secondPrice,
+    //                Order = order,
+    //                CategoryId = category.Id,
+    //                //SubCategoryId = subCategory.Id,
+    //                Menus = menuDtos.Select(m => new Menu { Name = m.Name }).ToList(),
+    //                CreatedAt = DateTime.Now
+    //            };
+    //            await menuItemRepository.Add(menuItem);
+    //        }
 
-            idCell = worksheet.Cell(rowIndex, "A");
-            rowIndex++;
-        }
+    //        idCell = worksheet.Cell(rowIndex, "A");
+    //        rowIndex++;
+    //    }
 
-        return NoContent();
-    }
+    //    return NoContent();
+    //}
     [HttpPost]
     public IActionResult GenerateMenu(MenuGenerationOptions options)
     {

@@ -1,8 +1,9 @@
+using MinimalAPI.Data.Repositories;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinimalAPI.Data;
 
-public class MenuItem
+public class MenuItem : IEntity
 {
     public int Id { get; set; }
     public string Name { get; set; }

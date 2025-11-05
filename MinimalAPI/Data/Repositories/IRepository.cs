@@ -1,10 +1,11 @@
 namespace MinimalAPI.Data.Repositories;
 
-public interface IRepository<TEntity, TId>
+public interface IRepository<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllAsync();
-    Task<TEntity> GetByIdAsync(TId id);
-    Task<TEntity> AddAsync(TEntity e);
-    Task<bool> ExistsAsync(TId id);
-    Task<TEntity> UpdateAsync(TEntity e);
+    IQueryable<TEntity> Query();
+    Task<TEntity> GetById(int id, CancellationToken token = default);
+    Task<TEntity> Add(TEntity e, CancellationToken token = default);
+    Task<bool> Exists(int id, CancellationToken token = default);
+    Task<TEntity> Update(TEntity e, CancellationToken token = default);
+    Task Delete(int id, CancellationToken token = default);
 }

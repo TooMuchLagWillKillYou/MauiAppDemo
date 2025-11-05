@@ -1,11 +1,8 @@
-using MinimalAPI.Common;
-using MinimalAPI.Dtos;
+using System.Linq.Expressions;
 
 namespace MinimalAPI.Data.Repositories;
 
-public interface IMenuItemRepository : IRepository<MenuItem, int>
+public interface IMenuItemRepository : IRepository<MenuItem>
 {
-    Task<List<MenuItemForListDto>> GetByCategory(MenuItemCategoryType categoryType);
-    Task<List<MenuItemForListDto>> GetByMenu(MenuType menuType);
-    Task SoftDeleteAsync(int id);
+    Task<bool> Exists(Expression<Func<MenuItem, bool>> predicate);
 }

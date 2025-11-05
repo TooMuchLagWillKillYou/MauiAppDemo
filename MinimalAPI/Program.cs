@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MinimalAPI.Data;
-using System.Globalization;
 using MinimalAPI.Data.Repositories;
 using MinimalAPI.Services.MenuGenerator;
+using System.Globalization;
 
 namespace MinimalAPI;
 public class Program
@@ -22,7 +21,6 @@ public class Program
         builder.Services.AddCors();
         builder.Services.AddDbContext<ReservationDbContext>();
         builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-        builder.Services.AddScoped<IPizzaRepository, PizzaRepository>();
         builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
         builder.Services.AddScoped<IMenuItemCategoryRepository, MenuItemCategoryRepository>();
         builder.Services.AddScoped<IMenuItemSubCategoryRepository, MenuItemSubCategoryRepository>();
@@ -34,7 +32,7 @@ public class Program
             options.SupportedCultures = new[] { new CultureInfo("it-IT") };
         });
         builder.Services.AddControllers();
-        
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

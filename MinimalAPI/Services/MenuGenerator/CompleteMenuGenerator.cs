@@ -3,6 +3,6 @@ using MinimalAPI.Data.Repositories;
 
 namespace MinimalAPI.Services.MenuGenerator;
 
-public class CompleteMenuGenerator(MenuLanguage language, IPizzaRepository repository) : BaseMenuGenerator(language, repository)
+public class CompleteMenuGenerator(MenuLanguage language) : BaseMenuGenerator(language)
 {
 }
