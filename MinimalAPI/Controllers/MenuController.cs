@@ -1,9 +1,9 @@
 using ClosedXML.Excel;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MinimalAPI.Common;
 using MinimalAPI.Data;
 using MinimalAPI.Data.Repositories;
-using MinimalAPI.Dtos;
 using MinimalAPI.Services.MenuGenerator;
 
 namespace MinimalAPI.Controllers;
@@ -16,82 +16,88 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
     [HttpPost]
     public async Task<IActionResult> UploadFromExcel(IFormFile file)
     {
+        if (file == null || file.Length == 0)
+            return BadRequest("No file uploaded or file is empty.");
+
         try
         {
             await using var stream = file.OpenReadStream();
             var workbook = new XLWorkbook(stream);
             var sheet = workbook.Worksheet(1);
-            var usedRows = sheet.RowsUsed(x => x.RowNumber() > 1);
+            var usedRows = sheet.RowsUsed().Skip(1);
+
+            var allMenus = menuRepository.Query().ToList();
+            var allCategories = menuItemCategoryRepository.Query().ToDictionary(c => c.Id);
+            var existingItems = menuItemRepository.Query().Include(e => e.Menus).ToDictionary(i => i.Name);
+
+            int added = 0, updated = 0;
 
             foreach (var row in usedRows)
             {
-                var id = row.Cell("A").GetValue<int>();
-                var name = row.Cell("B").GetValue<string>();
-                var ingredients = row.Cell("C").GetValue<string?>();
-                var englishTranslation = row.Cell("D").GetValue<string?>();
-                var germanTranslation = row.Cell("E").GetValue<string?>();
-                var firstPrice = row.Cell("F").GetValue<decimal>();
-                var secondPrice = row.Cell("G").GetValue<decimal?>();
-                var order = row.Cell("H").GetValue<int?>();
-                var sectionId = row.Cell("I").GetValue<int>();
-                var menuFormats = row.Cell("L").GetValue<string>().Split(',').Select(i => Convert.ToInt32(i)).ToList();
-
-                var menus = new List<Menu>();
-
-                foreach (var format in menuFormats)
+                try
                 {
-                    var menu = await menuRepository.GetById(format);
+                    var name = row.Cell("B").GetValue<string>();
+                    var ingredients = row.Cell("C").GetValue<string?>();
+                    var englishTranslation = row.Cell("D").GetValue<string?>();
+                    var germanTranslation = row.Cell("E").GetValue<string?>();
+                    var firstPrice = row.Cell("F").GetValue<decimal>();
+                    var secondPrice = row.Cell("G").GetValue<decimal?>();
+                    var order = row.Cell("H").GetValue<int?>();
+                    var sectionId = row.Cell("I").GetValue<int>();
+                    var menuFormats = row.Cell("L").GetValue<string>().Split(',').Select(i => Convert.ToInt32(i)).ToList();
 
-                    if (menu == null)
+                    var menus = allMenus.Where(m => menuFormats.Contains(m.Id)).ToList();
+
+                    if (!allCategories.TryGetValue(sectionId, out var section))
+                        continue;
+
+                    if (existingItems.TryGetValue(name, out var menuItem))
                     {
-                        return BadRequest($"Menu with ID {format} does not exist.");
+                        menuItem.Name = name;
+                        menuItem.Ingredients = ingredients;
+                        menuItem.EnglishTranslation = englishTranslation;
+                        menuItem.GermanTranslation = germanTranslation;
+                        menuItem.FirstPrice = firstPrice;
+                        menuItem.SecondPrice = secondPrice;
+                        menuItem.Order = order;
+                        menuItem.Category = section;
+
+                        menuItem.Menus.Clear();
+                        foreach (var m in menus)
+                            menuItem.Menus.Add(m);
+
+                        menuItem.UpdatedAt = DateTime.UtcNow;
+                        await menuItemRepository.Update(menuItem);
+                        updated++;
                     }
-
-                    menus.Add(menu);
-                }
-
-                var sectionDto = await menuItemCategoryRepository.GetById(sectionId);
-                var section = new MenuItemCategory { Id = sectionDto.Id, Name = sectionDto.Name };
-
-                if (await menuItemRepository.Exists(id))
-                {
-                    var menuItem = await menuItemRepository.GetById(id);
-                    menuItem.Name = name;
-                    menuItem.Ingredients = ingredients;
-                    menuItem.EnglishTranslation = englishTranslation;
-                    menuItem.GermanTranslation = germanTranslation;
-                    menuItem.FirstPrice = firstPrice;
-                    menuItem.SecondPrice = secondPrice;
-                    menuItem.Order = order;
-                    menuItem.Category = section;
-                    menuItem.Menus = menus;
-                    menuItem.UpdatedAt = DateTime.Now;
-                    await menuItemRepository.Update(menuItem);
-                }
-                else
-                {
-                    var menuItem = new MenuItem
+                    else
                     {
-                        Name = name,
-                        Ingredients = ingredients,
-                        EnglishTranslation = englishTranslation,
-                        GermanTranslation = germanTranslation,
-                        FirstPrice = firstPrice,
-                        SecondPrice = secondPrice,
-                        Order = order,
-                        Category = section,
-                        Menus = menus,
-                        CreatedAt = DateTime.Now
-                    };
-                    await menuItemRepository.Add(menuItem);
+                        await menuItemRepository.Add(new MenuItem
+                        {
+                            Name = name,
+                            Ingredients = ingredients,
+                            EnglishTranslation = englishTranslation,
+                            GermanTranslation = germanTranslation,
+                            FirstPrice = firstPrice,
+                            SecondPrice = secondPrice,
+                            Order = order,
+                            Category = section,
+                            Menus = menus,
+                            CreatedAt = DateTime.UtcNow
+                        });
+                        added++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest($"Error on row {row.RowNumber()}: {ex.Message}");
                 }
             }
-
-            return NoContent();
+            return Ok(new { added, updated });
         }
         catch (Exception ex)
         {
-            return BadRequest(ex);
+            return StatusCode(500, "An unexpected error occurred while processing the file.");
         }
     }
 

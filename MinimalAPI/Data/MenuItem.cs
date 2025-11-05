@@ -24,5 +24,5 @@ public class MenuItem : IEntity
     public MenuItemCategory Category { get; set; }
     public int? SubCategoryId { get; set; }
     public MenuItemSubCategory? SubCategory { get; set; }
-    public ICollection<Menu> Menus { get; set; }
+    public ICollection<Menu> Menus { get; set; } = new List<Menu>();
 }

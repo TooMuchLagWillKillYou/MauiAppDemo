@@ -11,7 +11,7 @@ namespace MinimalAPI.Data
         {
             _configuration = configuration;
         }
-        
+
         public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
         public DbSet<MenuItemCategory> MenuItemCategories => Set<MenuItemCategory>();
         public DbSet<MenuItemSubCategory> MenuItemSubCategories => Set<MenuItemSubCategory>();
@@ -31,6 +31,15 @@ namespace MinimalAPI.Data
             modelBuilder.Entity<MenuItem>()
                 .HasIndex(x => x.Name)
                 .IsUnique();
+            modelBuilder.Entity<MenuItemCategory>()
+                .Property(x => x.IsDeleted)
+                .HasDefaultValue(0);
+            modelBuilder.Entity<MenuItemSubCategory>()
+                .Property(x => x.IsDeleted)
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Menu>()
+                .Property(x => x.IsDeleted)
+                .HasDefaultValue(0);
         }
     }
 }

@@ -1,15 +1,18 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace MinimalAPI.Data.Repositories;
 
-public class Repository<TEntity>(ReservationDbContext ctx) : IRepository<TEntity> where TEntity : class, IEntity
+public class Repository<TEntity>(ReservationDbContext ctx) 
+    : IRepository<TEntity> where TEntity : class, IEntity
 {
     public IQueryable<TEntity> Query() => ctx.Set<TEntity>().Where(e => !e.IsDeleted);
-    public async Task<TEntity> GetById(int id, CancellationToken token = default)
+    public async Task<TEntity> Get(int id, CancellationToken token = default)
     {
         var result = await Query().FirstAsync(e => e.Id == id, token);
 
-        if (result is null) throw new KeyNotFoundException($"Item of type {typeof(TEntity).FullName} with id {id} not found");
+        if (result is null) 
+            throw new KeyNotFoundException($"Item of type {typeof(TEntity).FullName} with id {id} not found");
 
         return result;
     }
@@ -32,7 +35,7 @@ public class Repository<TEntity>(ReservationDbContext ctx) : IRepository<TEntity
     }
     public async Task Delete(int id, CancellationToken token = default)
     {
-        var e = await GetById(id, token);
+        var e = await Get(id, token);
         e.IsDeleted = true;
 
         ctx.Entry(e).State = EntityState.Modified;
