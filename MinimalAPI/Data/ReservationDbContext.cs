@@ -13,7 +13,6 @@ namespace MinimalAPI.Data
         }
         
         public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
-        public DbSet<PizzaEntity> Pizzas => Set<PizzaEntity>();
         public DbSet<MenuItemCategory> MenuItemCategories => Set<MenuItemCategory>();
         public DbSet<MenuItemSubCategory> MenuItemSubCategories => Set<MenuItemSubCategory>();
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
@@ -26,9 +25,6 @@ namespace MinimalAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<PizzaEntity>()
-                .Property(x => x.IsDeleted)
-                .HasDefaultValue(0);
             modelBuilder.Entity<MenuItem>()
                 .Property(x => x.IsDeleted)
                 .HasDefaultValue(0);
