@@ -1,6 +1,4 @@
 using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Drawing.Diagrams;
-using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using MinimalAPI.Common;
 using MinimalAPI.Data;
@@ -12,7 +10,7 @@ namespace MinimalAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCategoryRepository menuItemCategoryRepository, 
+public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCategoryRepository menuItemCategoryRepository,
     IMenuItemSubCategoryRepository menuItemSubCategoryRepository, IMenuRepository menuRepository, MenuFactory menuFactory) : ControllerBase
 {
     [HttpPost]
@@ -29,14 +27,31 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
             {
                 var id = row.Cell("A").GetValue<int>();
                 var name = row.Cell("B").GetValue<string>();
-                var ingredients = row.Cell("C").GetValue<string>();
-                var englishTranslation = row.Cell("D").GetValue<string>();
-                var germanTranslation = row.Cell("E").GetValue<string>();
+                var ingredients = row.Cell("C").GetValue<string?>();
+                var englishTranslation = row.Cell("D").GetValue<string?>();
+                var germanTranslation = row.Cell("E").GetValue<string?>();
                 var firstPrice = row.Cell("F").GetValue<decimal>();
-                var secondPrice = row.Cell("G").GetValue<decimal>();
-                var order = row.Cell("H").GetValue<int>();
-                var menuSection = row.Cell("I").GetValue<int>();
+                var secondPrice = row.Cell("G").GetValue<decimal?>();
+                var order = row.Cell("H").GetValue<int?>();
+                var sectionId = row.Cell("I").GetValue<int>();
                 var menuFormats = row.Cell("L").GetValue<string>().Split(',').Select(i => Convert.ToInt32(i)).ToList();
+
+                var menus = new List<Menu>();
+
+                foreach (var format in menuFormats)
+                {
+                    var menu = await menuRepository.Get(format);
+
+                    if (menu == null)
+                    {
+                        return BadRequest($"Menu with ID {format} does not exist.");
+                    }
+
+                    menus.Add(new Menu { Id = menu.Id, Name = menu.Name });
+                }
+
+                var sectionDto = await menuItemCategoryRepository.Get(sectionId);
+                var section = new MenuItemCategory { Id = sectionDto.Id, Name = sectionDto.Name };
 
                 if (await menuItemRepository.ExistsAsync(id))
                 {
@@ -48,8 +63,8 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
                     menuItem.FirstPrice = firstPrice;
                     menuItem.SecondPrice = secondPrice;
                     menuItem.Order = order;
-                    menuItem.CategoryId = menuSection;
-                    menuItem.Menus = menuFormats.Select(m => new Menu { Id = m }).ToList();
+                    menuItem.Category = section;
+                    menuItem.Menus = menus;
                     menuItem.UpdatedAt = DateTime.Now;
                     await menuItemRepository.UpdateAsync(menuItem);
                 }
@@ -64,8 +79,8 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
                         FirstPrice = firstPrice,
                         SecondPrice = secondPrice,
                         Order = order,
-                        CategoryId = menuSection,
-                        Menus = menuFormats.Select(m => new Menu { Id = m }).ToList(),
+                        Category = section,
+                        Menus = menus,
                         CreatedAt = DateTime.Now
                     };
                     await menuItemRepository.AddAsync(menuItem);
@@ -104,7 +119,7 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
             var category = await menuItemCategoryRepository.Get(categoryId);
             //var subCategoryName = worksheet.Cell(rowIndex, "J").GetValue<string?>();
             //var subCategory = await menuItemSubCategoryRepository.GetByNameAsync(subCategoryName);
-            var menusIds = worksheet.Cell(rowIndex, "L").GetValue<string>().Split(',').Select(i  => Convert.ToInt32(i)).ToList();
+            var menusIds = worksheet.Cell(rowIndex, "L").GetValue<string>().Split(',').Select(i => Convert.ToInt32(i)).ToList();
             var menuDtos = new List<MenuDto>();
 
             foreach (var menuId in menusIds)
@@ -112,7 +127,7 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
                 var menuDto = await menuRepository.Get(menuId);
                 menuDtos.Add(menuDto);
             }
-            
+
             if (await menuItemRepository.ExistsAsync(id))
             {
                 var menuItem = await menuItemRepository.GetByIdAsync(id);
@@ -148,11 +163,11 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
                 };
                 await menuItemRepository.AddAsync(menuItem);
             }
-            
+
             idCell = worksheet.Cell(rowIndex, "A");
             rowIndex++;
         }
-        
+
         return NoContent();
     }
     [HttpPost]
