@@ -14,6 +14,11 @@ Command to update database with last migration: update-database
 - generazione dei pdf secondo le options inserite dall'utente
 - custom valueGetter per la colonna "Categoria". Non si deve vedere 1 o 0 ma "Classiche"/"Specialità"
 - aggiornare a EF Core 9?
+- nuova feature che tramite AI dispone i tavoli nella maniera corretta in base al numero di persone e alle prenotazioni già esistenti
+
+// DB
+- inserire dei CHECK nel database dove necessario
+- di tanto in tanto eseguire il comando DBCC CHECKCONSTRAINTS
 
 // FE
 - riprendere in mano il frontend una volta completate le API. Decidere se continuare con MUI o usare un altra libreria grafica
@@ -58,11 +63,3 @@ Command to update database with last migration: update-database
 - eliminare progetti della solution non più necessari
 - testare caricamento, create/update dei menu item tramite il nuovo endpoint
 - rimuovere la dipendenza da @mui/joy
-
-+----------------------------------------------------------------------------------------------------------------------+
-|   RESOURCES                                                                                                          |
-+----------------------------------------------------------------------------------------------------------------------+
-1. CORS: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-2. Icons: https://mui.com/material-ui/material-icons/
-3. Pluralsight: https://app.pluralsight.com/library/courses/asp-dot-net-core-6-web-api-react-building-end-to-end-spa/table-of-contents
-

@@ -31,6 +31,8 @@ namespace MinimalAPI.Data
             modelBuilder.Entity<MenuItem>()
                 .HasIndex(x => x.Name)
                 .IsUnique();
+            modelBuilder.Entity<MenuItem>()
+                .ToTable("MenuItems", b => b.IsTemporal());
             modelBuilder.Entity<MenuItemCategory>()
                 .Property(x => x.IsDeleted)
                 .HasDefaultValue(0);
