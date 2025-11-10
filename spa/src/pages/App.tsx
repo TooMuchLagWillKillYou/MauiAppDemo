@@ -1,27 +1,31 @@
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
+import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '../components/ui/app-sidebar';
 import { BrowserRouter, Routes, Route } from 'react-router';
-import Map from './Map';
-import Menu from './Menu';
-import Settings from './Settings';
-import Reservations from './Reservations';
-import WorkedHours from './WorkedHours';
+import { SiteHeader } from '@/components/ui/site-header';
+import routes from '@/routes/routes';
 
 function App() {
   return (
-    <SidebarProvider>
+    <SidebarProvider
+      style={
+        {
+          '--sidebar-width': 'calc(var(--spacing) * 72)',
+          '--header-height': 'calc(var(--spacing) * 12)',
+        } as React.CSSProperties
+      }
+    >
       <BrowserRouter>
         <AppSidebar />
-        <main>
-          <SidebarTrigger />
-          <Routes>
-            <Route path="/reservations" element={<Reservations />} />
-            <Route path="/map" element={<Map />} />
-            <Route path="/menu" element={<Menu />} />
-            <Route path="/hours" element={<WorkedHours />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
-        </main>
+        <SidebarInset>
+          <main>
+            <SiteHeader />
+            <Routes>
+              {routes.map((route) => (
+                <Route path={route.path} element={route.element} />
+              ))}
+            </Routes>
+          </main>
+        </SidebarInset>
       </BrowserRouter>
     </SidebarProvider>
   );

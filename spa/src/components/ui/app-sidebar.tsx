@@ -1,57 +1,45 @@
-import { BookMarked, Map, Utensils, NotebookPen, Settings } from 'lucide-react';
+import { ChefHat } from 'lucide-react';
 import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { Link } from 'react-router';
-
-// Menu items.
-const items = [
-  {
-    title: 'Reservations',
-    url: '/reservations',
-    icon: BookMarked,
-  },
-  {
-    title: 'Map',
-    url: '/map',
-    icon: Map,
-  },
-  {
-    title: 'Menu',
-    url: '/menu',
-    icon: Utensils,
-  },
-  {
-    title: 'Worked hours',
-    url: 'hours',
-    icon: NotebookPen,
-  },
-  {
-    title: 'Settings',
-    url: 'settings',
-    icon: Settings,
-  },
-];
+import routes from '@/routes/routes';
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar variant="inset">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              className="data-[slot=sidebar-menu-button]:p-1.5!"
+            >
+              <Link to="/reservations">
+                <ChefHat className="size-5!" />
+                <span className="text-base font-semibold">
+                  Restaurant Manager
+                </span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Restaurant Manager</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {routes.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url}>
+                    <Link to={item.path}>
                       <item.icon />
                       <span>{item.title}</span>
                     </Link>
