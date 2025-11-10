@@ -9,11 +9,8 @@ Command to update database with last migration: update-database
 |   NEXT STEPS                                                                                                         |
 +----------------------------------------------------------------------------------------------------------------------+
 // BE
-- versionare il menù in modo da poter recuperare il menù di una data specifica, facendo attenzione a recuperare la corretta versione del menù quando serve. 
-	Voglio essere in grado di recuperare ongi modifica di ogni elemento del menù. Hint: system-versioned tables
 - generazione dei pdf secondo le options inserite dall'utente
 - custom valueGetter per la colonna "Categoria". Non si deve vedere 1 o 0 ma "Classiche"/"Specialità"
-- aggiornare a EF Core 9?
 - nuova feature che tramite AI dispone i tavoli nella maniera corretta in base al numero di persone e alle prenotazioni già esistenti
 
 // DB
@@ -63,3 +60,6 @@ Command to update database with last migration: update-database
 - eliminare progetti della solution non più necessari
 - testare caricamento, create/update dei menu item tramite il nuovo endpoint
 - rimuovere la dipendenza da @mui/joy
+- aggiornare a EF Core 9? non necessario
+- versionare il menù in modo da poter recuperare il menù di una data specifica, facendo attenzione a recuperare la corretta versione del menù quando serve. 
+	Voglio essere in grado di recuperare ongi modifica di ogni elemento del menù. Hint: system-versioned tables

@@ -27,7 +27,6 @@ public class MenuController(IMenuItemRepository menuItemRepository, IMenuItemCat
             var usedRows = sheet.RowsUsed().Skip(1);
 
             var allMenus = menuRepository.Query().ToList();
-            var t = menuItemRepository.Query().
             var allCategories = menuItemCategoryRepository.Query().ToDictionary(c => c.Id);
             var existingItems = menuItemRepository.Query().Include(e => e.Menus).ToDictionary(i => i.Name);
 
