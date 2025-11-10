@@ -46,7 +46,7 @@ public class Program
         app.UseRequestLocalization(locOptions.Value);
 
         app.UseCors(policyConfig =>
-            policyConfig.WithOrigins("http://localhost:3000")
+            policyConfig.WithOrigins("http://localhost:5173")
                 .AllowAnyHeader().AllowAnyMethod());
 
         app.UseHttpsRedirection();
