@@ -1,8 +1,8 @@
 import { useLocation } from 'react-router';
-import { Button } from './button';
-import { Separator } from './separator';
-import { SidebarTrigger } from './sidebar';
 import routes from '@/routes/routes';
+import { SidebarTrigger } from './ui/sidebar';
+import { Separator } from './ui/separator';
+import { Button } from './ui/button';
 
 export function SiteHeader() {
   const { pathname } = useLocation();

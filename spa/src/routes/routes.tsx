@@ -1,6 +1,6 @@
 import Map from '@/pages/Map';
 import Menu from '@/pages/Menu';
-import Reservations from '@/pages/Reservations';
+import Reservations from '@/pages/reservation/Reservations';
 import Settings from '@/pages/Settings';
 import WorkedHours from '@/pages/WorkedHours';
 import {

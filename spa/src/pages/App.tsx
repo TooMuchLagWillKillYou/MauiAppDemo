@@ -1,7 +1,7 @@
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
-import { AppSidebar } from '../components/ui/app-sidebar';
+import { AppSidebar } from '../components/app-sidebar';
 import { BrowserRouter, Routes, Route } from 'react-router';
-import { SiteHeader } from '@/components/ui/site-header';
+import { SiteHeader } from '@/components/site-header';
 import routes from '@/routes/routes';
 
 function App() {
