@@ -4,7 +4,7 @@ import { columns } from './columns';
 
 export default function Reservations() {
   const { data, isLoading, isError } = useReservationsByDate('2025-11-10');
-  console.log('data', data);
+
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading reservations</p>;
 
