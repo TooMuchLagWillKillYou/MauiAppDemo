@@ -20,15 +20,20 @@ import {
 } from '@/components/ui/table';
 import { useState } from 'react';
 import { Input } from './input';
+import Pagination from '../pagination';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  date: Date;
+  setDate: (value: Date) => void;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  date,
+  setDate,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -48,19 +53,20 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex items-center justify-between py-4">
+        <Pagination date={date} setDate={setDate} classNames="w-1/3" />
         <Input
-          placeholder="Filter..."
+          placeholder="Filter by name..."
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
           onChange={(event) =>
             table.getColumn('name')?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="w-1/3"
         />
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table className="w-full table-fixed">
-          <TableHeader>
+          <TableHeader className="bg-muted sticky top-0 z-10">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
