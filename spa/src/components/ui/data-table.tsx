@@ -24,6 +24,7 @@ import Pagination from '../pagination';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
+  defaultColumn: Partial<ColumnDef<TData>>;
   data: TData[];
   date: Date;
   setDate: (value: Date) => void;
@@ -31,6 +32,7 @@ interface DataTableProps<TData, TValue> {
 
 export function DataTable<TData, TValue>({
   columns,
+  defaultColumn,
   data,
   date,
   setDate,
@@ -42,6 +44,7 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    defaultColumn,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),

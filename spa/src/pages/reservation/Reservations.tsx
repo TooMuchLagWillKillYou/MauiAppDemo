@@ -1,6 +1,6 @@
 import { DataTable } from '@/components/ui/data-table';
 import { useReservationsByDate } from '@/hooks/reservationHooks';
-import { columns } from './columns';
+import { columns, defaultColumn } from './columns';
 import { useState } from 'react';
 
 export default function Reservations() {
@@ -12,7 +12,13 @@ export default function Reservations() {
 
   return (
     <div className="container mx-auto py-10 px-6">
-      <DataTable columns={columns} data={data!} date={date} setDate={setDate} />
+      <DataTable
+        columns={columns}
+        defaultColumn={defaultColumn}
+        data={data!}
+        date={date}
+        setDate={setDate}
+      />
     </div>
   );
 }

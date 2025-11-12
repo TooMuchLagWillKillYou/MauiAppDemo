@@ -7,6 +7,8 @@ import type { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { formatInTimeZone } from 'date-fns-tz';
 import { parseISO } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 const sortableHeader = (column: Column<Reservation>, title: string) => (
   <Button
@@ -18,7 +20,7 @@ const sortableHeader = (column: Column<Reservation>, title: string) => (
     <ArrowUpDown className="ml-2 h-4 w-4" />
   </Button>
 );
-export const columns: ColumnDef<Reservation>[] = [
+const columns: ColumnDef<Reservation>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -69,3 +71,27 @@ export const columns: ColumnDef<Reservation>[] = [
   },
   { accessorKey: 'notes', header: 'Notes', meta: { width: '45%' } },
 ];
+
+const defaultColumn: Partial<ColumnDef<Reservation>> = {
+  cell: ({ getValue }) => {
+    const initialValue = getValue();
+    const [value, setValue] = useState(initialValue);
+
+    const onBlur = () => console.log(value);
+
+    useEffect(() => {
+      setValue(initialValue);
+    }, [initialValue]);
+
+    return (
+      <Input
+        value={value as string}
+        onChange={(e) => setValue(e.target.value)}
+        onBlur={onBlur}
+        variant="flat"
+      />
+    );
+  },
+};
+
+export { columns, defaultColumn };
