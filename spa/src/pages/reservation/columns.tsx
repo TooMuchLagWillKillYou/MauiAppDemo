@@ -12,7 +12,7 @@ const sortableHeader = (column: Column<Reservation>, title: string) => (
   <Button
     variant="ghost"
     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-    className="cursor-pointer has-[>svg]:px-0"
+    className="has-[>svg]:px-0"
   >
     {title}
     <ArrowUpDown className="ml-2 h-4 w-4" />
