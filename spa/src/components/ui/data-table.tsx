@@ -21,6 +21,7 @@ import {
 import { useState } from 'react';
 import { Input } from './input';
 import Pagination from '../pagination';
+import { Spinner } from './spinner';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,6 +29,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   date: Date;
   setDate: (value: Date) => void;
+  isLoading: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -36,6 +38,7 @@ export function DataTable<TData, TValue>({
   data,
   date,
   setDate,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -53,6 +56,46 @@ export function DataTable<TData, TValue>({
     onRowSelectionChange: setRowSelection,
     state: { sorting, columnFilters, rowSelection },
   });
+
+  const renderBody = () => {
+    if (isLoading) {
+      return (
+        <TableRow>
+          <TableCell colSpan={columns.length} className="h-24">
+            <div className="flex items-center justify-center">
+              <Spinner className="size-6" />
+            </div>
+          </TableCell>
+        </TableRow>
+      );
+    }
+
+    if (table.getRowModel().rows?.length) {
+      return table.getRowModel().rows.map((row) => (
+        <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+          {row.getVisibleCells().map((cell) => {
+            const width =
+              (cell.column.columnDef.meta as { width?: string })?.width ??
+              'auto';
+
+            return (
+              <TableCell key={cell.id} style={{ width }}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            );
+          })}
+        </TableRow>
+      ));
+    }
+
+    return (
+      <TableRow>
+        <TableCell colSpan={columns.length} className="h-24 text-center">
+          No results.
+        </TableCell>
+      </TableRow>
+    );
+  };
 
   return (
     <div>
@@ -90,40 +133,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
-                  {row.getVisibleCells().map((cell) => {
-                    const width =
-                      (cell.column.columnDef.meta as { width?: string })
-                        ?.width ?? 'auto';
-
-                    return (
-                      <TableCell key={cell.id} style={{ width }}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    );
-                  })}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+          <TableBody>{renderBody()}</TableBody>
         </Table>
       </div>
       <div className="flex items-center justify-between p-4">

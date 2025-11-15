@@ -4,13 +4,13 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
 const useReservationsByDate = (date: Date) => {
+  // can we improve performance by pre-fetching reservations for other days like in this article: https://tkdodo.eu/blog/practical-react-query ?
   return useQuery<Reservation[]>({
     queryKey: ['reservations', date],
     queryFn: async () => {
       const response = await axios.get(
         `${apiConfig.baseURL}/reservation/getByDate/${date.toDateString()}`
       );
-
       return (Array.isArray(response.data) ? response.data : []).map(
         (r): Reservation => ({
           id: Number(r.id),
