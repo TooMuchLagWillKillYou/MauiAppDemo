@@ -69,7 +69,7 @@ const columns: ColumnDef<Reservation>[] = [
     header: ({ column }) => sortableHeader(column, 'Table'),
     meta: { width: '10%' },
   },
-  { accessorKey: 'notes', header: 'Notes', meta: { width: '45%' } },
+  { accessorKey: 'notes', header: 'Notes', meta: { width: '47%' } },
 ];
 
 const defaultColumn: Partial<ColumnDef<Reservation>> = {
