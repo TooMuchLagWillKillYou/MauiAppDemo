@@ -25,7 +25,7 @@ namespace MinimalAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MinimalAPI.Data.ReservationEntity", b =>
+            modelBuilder.Entity("MinimalAPI.Data.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

@@ -186,7 +186,7 @@ namespace MinimalAPI.Migrations
                     b.ToTable("MenuItemSubCategories");
                 });
 
-            modelBuilder.Entity("MinimalAPI.Data.ReservationEntity", b =>
+            modelBuilder.Entity("MinimalAPI.Data.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,6 +197,11 @@ namespace MinimalAPI.Migrations
                     b.Property<DateTime>("Hour")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -206,6 +211,11 @@ namespace MinimalAPI.Migrations
 
                     b.Property<int>("People")
                         .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("Table")
                         .HasColumnType("nvarchar(max)");

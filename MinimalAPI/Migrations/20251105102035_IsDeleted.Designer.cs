@@ -168,7 +168,7 @@ namespace MinimalAPI.Migrations
                     b.ToTable("MenuItemSubCategories");
                 });
 
-            modelBuilder.Entity("MinimalAPI.Data.ReservationEntity", b =>
+            modelBuilder.Entity("MinimalAPI.Data.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

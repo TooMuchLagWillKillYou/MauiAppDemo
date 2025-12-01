@@ -63,7 +63,7 @@ namespace MinimalAPI.Migrations
                     b.ToTable("Pizzas");
                 });
 
-            modelBuilder.Entity("MinimalAPI.Data.ReservationEntity", b =>
+            modelBuilder.Entity("MinimalAPI.Data.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
