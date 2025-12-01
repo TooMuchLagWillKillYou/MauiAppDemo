@@ -6,7 +6,7 @@ namespace MinimalAPI.Data
     {
         public static void Seed(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ReservationEntity>().HasData(new List<ReservationEntity>()
+            modelBuilder.Entity<Reservation>().HasData(new List<Reservation>()
             {
                 new()
                 {

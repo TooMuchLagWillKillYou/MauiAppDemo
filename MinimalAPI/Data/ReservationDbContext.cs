@@ -12,7 +12,7 @@ namespace MinimalAPI.Data
             _configuration = configuration;
         }
 
-        public DbSet<ReservationEntity> Reservations => Set<ReservationEntity>();
+        public DbSet<Reservation> Reservations => Set<Reservation>();
         public DbSet<MenuItemCategory> MenuItemCategories => Set<MenuItemCategory>();
         public DbSet<MenuItemSubCategory> MenuItemSubCategories => Set<MenuItemSubCategory>();
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();

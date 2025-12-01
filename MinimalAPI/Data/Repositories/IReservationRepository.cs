@@ -2,13 +2,8 @@
 
 namespace MinimalAPI.Data.Repositories
 {
-    public interface IReservationRepository
+    public interface IReservationRepository : IRepository<Reservation>
     {
-        Task<List<ReservationDto>> GetAll();
         Task<List<ReservationDto>> GetByDate(DateTime date);
-        Task<ReservationDto> Get(int id);
-        Task<ReservationDto> Add(ReservationDto reservation);
-        Task<ReservationDto> Update(ReservationDto reservation);
-        Task Delete(int id);
     }
 }

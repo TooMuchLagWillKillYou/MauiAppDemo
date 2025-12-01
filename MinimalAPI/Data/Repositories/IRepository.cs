@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace MinimalAPI.Data.Repositories;
 
-public interface IRepository<TEntity>
+public interface IRepository<TEntity> where TEntity : IEntity 
 {
     IQueryable<TEntity> Query();
     Task<TEntity> Get(int id, CancellationToken token = default);
