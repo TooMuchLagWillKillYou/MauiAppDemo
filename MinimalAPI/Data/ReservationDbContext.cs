@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MinimalAPI.Common;
 
 namespace MinimalAPI.Data
 {
@@ -42,6 +43,12 @@ namespace MinimalAPI.Data
             modelBuilder.Entity<Menu>()
                 .Property(x => x.IsDeleted)
                 .HasDefaultValue(0);
+            modelBuilder.Entity<Reservation>()
+                .Property(x => x.IsDeleted) 
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Reservation>()
+                .Property(x => x.Status)
+                .HasDefaultValue(ReservationStatus.NotArrived);
         }
     }
 }

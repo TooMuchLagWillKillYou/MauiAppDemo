@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using MinimalAPI.Common;
+using MinimalAPI.Data;
 using MinimalAPI.Data.Repositories;
 using MinimalAPI.Dtos;
 
@@ -9,7 +12,7 @@ namespace MinimalAPI.Controllers;
 public class ReservationController(IReservationRepository repository) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll() => Ok(await repository.GetAll());
+    public async Task<IActionResult> GetAll() => Ok(await repository.Query().ToListAsync());
     [HttpGet("{date:datetime}")]
     public async Task<IActionResult> GetByDate(DateTime date) => Ok(await repository.GetByDate(date));
     [HttpGet("{id:int}")]
@@ -18,7 +21,14 @@ public class ReservationController(IReservationRepository repository) : Controll
     public async Task<IActionResult> Add([FromBody] ReservationDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        await repository.Add(dto);
+        await repository.Add(new Reservation
+        {
+            Name = dto.Name,
+            Hour = dto.Hour,
+            People = dto.People,
+            Table = dto.Table,
+            Notes = dto.Notes,
+        });
         return Created();
     }
     [HttpPut]
@@ -27,12 +37,37 @@ public class ReservationController(IReservationRepository repository) : Controll
         try
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-            var result = await repository.Update(dto);
+
+            var reservation = await repository.Get(dto.Id);
+            reservation.Name = dto.Name;
+            reservation.Hour = dto.Hour;
+            reservation.People = dto.People;
+            reservation.Table = dto.Table;
+            reservation.Notes = dto.Notes;
+
+            var result = await repository.Update(reservation);
             return Ok(result);
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
+        }
+    }
+    public async Task<IActionResult> UpdateStatus(int id, ReservationStatus status)
+    {
+        try
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var reservation = await repository.Get(id);
+            reservation.Status = status;
+
+            var result = await repository.Update(reservation);
+            return Ok(result);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e);
         }
     }
     [HttpDelete("{id:int}")]
