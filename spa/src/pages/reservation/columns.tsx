@@ -5,10 +5,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import type { Reservation } from '@/types/reservation';
 import type { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
-import { formatInTimeZone } from 'date-fns-tz';
-import { parseISO } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input';
+import { format, parseISO, setHours, setMinutes } from 'date-fns';
+import InputCell from './InputCell';
+import CheckboxCell from './CheckboxCells';
+import { ReservationStatus } from '@/types/ReservationStatus';
 
 const sortableHeader = (column: Column<Reservation>, title: string) => (
   <Button
@@ -20,6 +20,17 @@ const sortableHeader = (column: Column<Reservation>, title: string) => (
     <ArrowUpDown className="ml-2 h-4 w-4" />
   </Button>
 );
+
+const formatInput = (v: string) => format(parseISO(v), 'HH:mm');
+const transformInput = (raw: string, original: Reservation) => {
+  const date = parseISO(original.hour);
+  const [h, m] = raw.split(':').map(Number);
+
+  const updated = setMinutes(setHours(date, h), m);
+
+  return format(updated, "yyyy-MM-dd'T'HH:mm:ss");
+};
+
 const columns: ColumnDef<Reservation>[] = [
   {
     id: 'select',
@@ -47,51 +58,41 @@ const columns: ColumnDef<Reservation>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => sortableHeader(column, 'Name'),
+    cell: (info) => <InputCell {...info} />,
     meta: { width: '20%' },
   },
   {
-    accessorKey: 'hour',
+    id: 'hour',
+    accessorFn: (row) => row.hour,
     header: ({ column }) => sortableHeader(column, 'Hour'),
-    cell: ({ getValue }) => {
-      const value = getValue() as string;
-      if (!value) return '';
-      return formatInTimeZone(parseISO(value), 'Europe/Rome', 'HH:mm');
-    },
+    cell: (info) => (
+      <InputCell
+        {...info}
+        className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+        formatValue={formatInput}
+        transformInput={transformInput}
+      />
+    ),
     meta: { width: '10%' },
   },
   {
     accessorKey: 'people',
     header: ({ column }) => sortableHeader(column, 'People'),
+    cell: (info) => <InputCell {...info} inputType="number" />,
     meta: { width: '10%' },
   },
   {
     accessorKey: 'table',
     header: ({ column }) => sortableHeader(column, 'Table'),
+    cell: (info) => <InputCell {...info} />,
     meta: { width: '10%' },
   },
-  { accessorKey: 'notes', header: 'Notes', meta: { width: '47%' } },
+  {
+    accessorKey: 'notes',
+    header: 'Notes',
+    cell: (info) => <InputCell {...info} />,
+    meta: { width: '47%' },
+  },
 ];
 
-const defaultColumn: Partial<ColumnDef<Reservation>> = {
-  cell: ({ getValue }) => {
-    const initialValue = getValue();
-    const [value, setValue] = useState(initialValue);
-
-    const onBlur = () => console.log(value);
-
-    useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
-
-    return (
-      <Input
-        value={value as string}
-        onChange={(e) => setValue(e.target.value)}
-        onBlur={onBlur}
-        variant="flat"
-      />
-    );
-  },
-};
-
-export { columns, defaultColumn };
+export { columns };
