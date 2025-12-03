@@ -53,14 +53,15 @@ public class ReservationController(IReservationRepository repository) : Controll
             return BadRequest(e.Message);
         }
     }
-    public async Task<IActionResult> UpdateStatus(int id, ReservationStatus status)
+    [HttpPatch("{id:int}/status")]
+    public async Task<IActionResult> ChangeStatus(int id, [FromBody]ChangeStatusDto dto)
     {
         try
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var reservation = await repository.Get(id);
-            reservation.Status = status;
+            reservation.Status = dto.Status;
 
             var result = await repository.Update(reservation);
             return Ok(result);

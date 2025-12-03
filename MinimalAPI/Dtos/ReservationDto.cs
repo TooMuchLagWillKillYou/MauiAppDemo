@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using MinimalAPI.Common;
 using MinimalAPI.Data;
 using MinimalAPI.ValidationAttributes;
 
@@ -9,5 +10,6 @@ namespace MinimalAPI.Dtos
         [Required, GreaterThanNow] DateTime Hour,
         [Required, Minimum(1)] int People, 
         string? Table, 
-        string? Notes);
+        string? Notes,
+        ReservationStatus status);
 }

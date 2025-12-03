@@ -1,5 +1,6 @@
 import apiConfig from '@/api/config';
 import type { Reservation } from '@/types/reservation';
+import { ReservationStatus } from '@/types/ReservationStatus';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -21,6 +22,7 @@ const useReservationsByDate = (date: Date) => {
             r.table === null || r.table === undefined ? null : String(r.table),
           notes:
             r.notes === null || r.notes === undefined ? null : String(r.notes),
+          status: Number(r.status) as ReservationStatus,
         })
       );
     },
@@ -37,20 +39,20 @@ const useAddReservation = () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
     onError: (error) => {
-      console.log(`useAddReservation error: ${error.message}`);
+      console.error(`useAddReservation error: ${error.message}`);
     },
   });
 };
 const useUpdateReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (reservation: Reservation) =>
-      axios.put(`${apiConfig.baseURL}/reservation/update`, reservation),
+    mutationFn: async (reservation: Reservation) =>
+      await axios.put(`${apiConfig.baseURL}/reservation/update`, reservation),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
     onError: (error) => {
-      console.log(`useUpdateReservation error: ${error.message}`);
+      console.error(`useUpdateReservation error: ${error.message}`);
     },
   });
 };
@@ -63,7 +65,23 @@ const useDeleteReservation = () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
     onError: (error) => {
-      console.log(`useDeleteReservation error: ${error.message}`);
+      console.error(`useDeleteReservation error: ${error.message}`);
+    },
+  });
+};
+const useChangeReservationStatus = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, status }: { id: number; status: number }) =>
+      await axios.patch(
+        `${apiConfig.baseURL}/reservation/ChangeStatus/${id}/status`,
+        { status }
+      ),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    },
+    onError: (error) => {
+      console.error(`useChangeReservationStatus error: ${error.message}`);
     },
   });
 };
@@ -72,4 +90,5 @@ export {
   useAddReservation,
   useUpdateReservation,
   useDeleteReservation,
+  useChangeReservationStatus,
 };

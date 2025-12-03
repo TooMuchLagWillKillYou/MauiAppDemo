@@ -34,10 +34,10 @@ const columns: ColumnDef<Reservation>[] = [
       />
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
+      <CheckboxCell
+        id={row.original.id}
+        checked={row.original.status == ReservationStatus.Arrived}
+        toggleRowSelection={(value) => row.toggleSelected(!!value)}
       />
     ),
     enableSorting: false,

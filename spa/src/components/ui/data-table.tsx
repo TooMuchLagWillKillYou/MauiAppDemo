@@ -9,6 +9,7 @@ import {
   type ColumnDef,
   type ColumnFiltersState,
   getFilteredRowModel,
+  type RowSelectionState,
 } from '@tanstack/react-table';
 import {
   Table,
@@ -18,42 +19,48 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from './input';
 import Pagination from '../pagination';
 import { Spinner } from './spinner';
+import type { TableData } from '@/types/TableData';
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends TableData, TValue> {
   columns: ColumnDef<TData, TValue>[];
-  defaultColumn: Partial<ColumnDef<TData>>;
   data: TData[];
   date: Date;
   setDate: (value: Date) => void;
   isLoading: boolean;
+  defaultSelectedRows: RowSelectionState;
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends TableData, TValue>({
   columns,
-  defaultColumn,
   data,
   date,
   setDate,
   isLoading,
+  defaultSelectedRows,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] =
+    useState<RowSelectionState>(defaultSelectedRows);
+
+  useEffect(() => {
+    setRowSelection(defaultSelectedRows);
+  }, [defaultSelectedRows]);
 
   const table = useReactTable({
     data,
     columns,
-    defaultColumn,
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onRowSelectionChange: setRowSelection,
+    getRowId: (row) => String(row.id),
     state: { sorting, columnFilters, rowSelection },
   });
 

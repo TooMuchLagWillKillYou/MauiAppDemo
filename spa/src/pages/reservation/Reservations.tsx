@@ -1,7 +1,10 @@
 import { DataTable } from '@/components/ui/data-table';
 import { useReservationsByDate } from '@/hooks/reservationHooks';
-import { columns, defaultColumn } from './columns';
+import { columns } from './columns';
 import { useState } from 'react';
+import { ReservationStatus } from '@/types/ReservationStatus';
+import type { Reservation } from '@/types/reservation';
+import type { RowSelectionState } from '@tanstack/react-table';
 
 export default function Reservations() {
   const [date, setDate] = useState<Date>(new Date());
@@ -11,15 +14,25 @@ export default function Reservations() {
     return <p>Error loading reservations</p>;
   }
 
+  const getSelectedRows = (): RowSelectionState => {
+    const arrivedReservations: Reservation[] = Array.from(data ?? []).filter(
+      (r) => r.status == ReservationStatus.Arrived
+    );
+    return arrivedReservations.reduce<Record<string, boolean>>((acc, id) => {
+      acc[String(id.id)] = true;
+      return acc;
+    }, {});
+  };
+
   return (
     <div className="container mx-auto py-10 px-6">
       <DataTable
         columns={columns}
-        defaultColumn={defaultColumn}
         data={data ?? []}
         date={date}
         setDate={setDate}
         isLoading={isLoading}
+        defaultSelectedRows={getSelectedRows()}
       />
     </div>
   );
