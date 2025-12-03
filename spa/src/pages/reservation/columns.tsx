@@ -68,9 +68,9 @@ const columns: ColumnDef<Reservation>[] = [
     cell: (info) => (
       <InputCell
         {...info}
-        className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
         formatValue={formatInput}
         transformInput={transformInput}
+        inputType="time"
       />
     ),
     meta: { width: '10%' },

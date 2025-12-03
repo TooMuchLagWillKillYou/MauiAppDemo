@@ -18,6 +18,7 @@ function CheckboxCell({ id, checked, toggleRowSelection }: CheckboxCellProps) {
       checked={checked}
       onCheckedChange={(value) => handleChange(value)}
       aria-label="Select row"
+      className="cursor-pointer"
     />
   );
 }

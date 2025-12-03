@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 interface InputCellProps<TValue> {
   row: Row<Reservation>;
   column: Column<Reservation>;
-  inputType?: 'text' | 'number';
+  inputType?: 'text' | 'number' | 'time';
   className?: string;
   formatValue?: (value: TValue) => TValue;
   transformInput?: (raw: string, original: Reservation) => TValue;
