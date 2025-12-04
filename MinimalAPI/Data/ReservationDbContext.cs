@@ -19,6 +19,7 @@ namespace MinimalAPI.Data
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
         public DbSet<Menu> Menus => Set<Menu>();
         public DbSet<ClosureDay> ClosureDays => Set<ClosureDay>();
+        public DbSet<WorkedHours> WorkedHours => Set<WorkedHours>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
