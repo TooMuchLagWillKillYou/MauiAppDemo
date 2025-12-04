@@ -1,9 +1,8 @@
 ﻿using MinimalAPI.Common;
-using MinimalAPI.Data.Repositories;
 
 namespace MinimalAPI.Data
 {
-    public class Reservation : IEntity
+    public class Reservation : IEntity, ICanBeDeleted
     {
         public int Id { get; set; }
         public string Name { get; set; }

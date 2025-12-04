@@ -1,8 +1,6 @@
-using MinimalAPI.Data.Repositories;
-
 namespace MinimalAPI.Data;
 
-public class MenuItemSubCategory : IEntity
+public class MenuItemSubCategory : IEntity, ICanBeDeleted
 {
     public int Id { get; set; }
     public string Name { get; set; }

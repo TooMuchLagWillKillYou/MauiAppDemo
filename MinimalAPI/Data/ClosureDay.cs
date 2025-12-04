@@ -2,7 +2,7 @@
 
 namespace MinimalAPI.Data
 {
-    public class ClosureDay : IEntity
+    public class ClosureDay : IEntity, ICanBeDeleted
     {
         public int Id { get; set; }
         public DateTime From { get; set; }

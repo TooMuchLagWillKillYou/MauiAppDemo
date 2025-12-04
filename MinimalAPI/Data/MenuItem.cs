@@ -1,9 +1,8 @@
-using MinimalAPI.Data.Repositories;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MinimalAPI.Data;
 
-public class MenuItem : IEntity
+public class MenuItem : IEntity, ICanBeDeleted
 {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -19,7 +18,7 @@ public class MenuItem : IEntity
     public bool IsDeleted { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
-    
+
     public int CategoryId { get; set; }
     public MenuItemCategory Category { get; set; }
     public int? SubCategoryId { get; set; }

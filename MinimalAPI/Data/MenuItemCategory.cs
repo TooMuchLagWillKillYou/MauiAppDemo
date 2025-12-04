@@ -2,7 +2,7 @@ using MinimalAPI.Data.Repositories;
 
 namespace MinimalAPI.Data;
 
-public class MenuItemCategory : IEntity
+public class MenuItemCategory : IEntity, ICanBeDeleted
 {
     public int Id { get; set; }
     public string Name { get; set; }

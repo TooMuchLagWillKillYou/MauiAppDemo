@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 namespace MinimalAPI.Data.Repositories;
 
 public class Repository<TEntity>(ReservationDbContext ctx) 
-    : IRepository<TEntity> where TEntity : class, IEntity
+    : IRepository<TEntity> where TEntity : class, IEntity, ICanBeDeleted
 {
     public IQueryable<TEntity> Query() => ctx.Set<TEntity>().Where(e => !e.IsDeleted);
     public async Task<TEntity> Get(int id, CancellationToken token = default)
