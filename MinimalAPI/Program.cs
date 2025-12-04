@@ -25,6 +25,7 @@ public class Program
         builder.Services.AddScoped<IMenuItemCategoryRepository, MenuItemCategoryRepository>();
         builder.Services.AddScoped<IMenuItemSubCategoryRepository, MenuItemSubCategoryRepository>();
         builder.Services.AddScoped<IMenuRepository, MenuRepository>();
+        builder.Services.AddScoped<IClosureDayRepository, ClosureDayRepository>();
         builder.Services.AddScoped<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {

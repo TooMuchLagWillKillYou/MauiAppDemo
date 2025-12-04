@@ -18,6 +18,7 @@ namespace MinimalAPI.Data
         public DbSet<MenuItemSubCategory> MenuItemSubCategories => Set<MenuItemSubCategory>();
         public DbSet<MenuItem> MenuItems => Set<MenuItem>();
         public DbSet<Menu> Menus => Set<Menu>();
+        public DbSet<ClosureDay> ClosureDays => Set<ClosureDay>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,6 +50,9 @@ namespace MinimalAPI.Data
             modelBuilder.Entity<Reservation>()
                 .Property(x => x.Status)
                 .HasDefaultValue(ReservationStatus.NotArrived);
+            modelBuilder.Entity<ClosureDay>()
+                .Property(x => x.IsDeleted)
+                .HasDefaultValue(0);
         }
     }
 }
