@@ -11,5 +11,5 @@ namespace MinimalAPI.Dtos
         [Required, Minimum(1)] int People, 
         string? Table, 
         string? Notes,
-        ReservationStatus status);
+        ReservationStatus Status);
 }
