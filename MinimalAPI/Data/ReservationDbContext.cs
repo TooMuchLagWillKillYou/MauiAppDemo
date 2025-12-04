@@ -31,28 +31,20 @@ namespace MinimalAPI.Data
                 .Property(x => x.IsDeleted)
                 .HasDefaultValue(0);
             modelBuilder.Entity<MenuItem>()
+                .HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<MenuItem>()
                 .HasIndex(x => x.Name)
                 .IsUnique();
             modelBuilder.Entity<MenuItem>()
                 .ToTable("MenuItems", b => b.IsTemporal());
-            modelBuilder.Entity<MenuItemCategory>()
-                .Property(x => x.IsDeleted)
-                .HasDefaultValue(0);
-            modelBuilder.Entity<MenuItemSubCategory>()
-                .Property(x => x.IsDeleted)
-                .HasDefaultValue(0);
-            modelBuilder.Entity<Menu>()
-                .Property(x => x.IsDeleted)
-                .HasDefaultValue(0);
             modelBuilder.Entity<Reservation>()
                 .Property(x => x.IsDeleted) 
                 .HasDefaultValue(0);
             modelBuilder.Entity<Reservation>()
                 .Property(x => x.Status)
                 .HasDefaultValue(ReservationStatus.NotArrived);
-            modelBuilder.Entity<ClosureDay>()
-                .Property(x => x.IsDeleted)
-                .HasDefaultValue(0);
+            modelBuilder.Entity<Reservation>()
+                .HasQueryFilter(e => !e.IsDeleted);
         }
     }
 }

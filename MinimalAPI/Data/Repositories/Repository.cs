@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 namespace MinimalAPI.Data.Repositories;
 
 public class Repository<TEntity>(ReservationDbContext ctx) 
-    : IRepository<TEntity> where TEntity : class, IEntity, ICanBeDeleted
+    : IRepository<TEntity> where TEntity : class, IEntity
 {
-    public IQueryable<TEntity> Query() => ctx.Set<TEntity>().Where(e => !e.IsDeleted);
+    public IQueryable<TEntity> Query() => ctx.Set<TEntity>();
     public async Task<TEntity> Get(int id, CancellationToken token = default)
     {
         var result = await Query().FirstAsync(e => e.Id == id, token);
@@ -36,9 +36,7 @@ public class Repository<TEntity>(ReservationDbContext ctx)
     public async Task Delete(int id, CancellationToken token = default)
     {
         var e = await Get(id, token);
-        e.IsDeleted = true;
-
-        ctx.Entry(e).State = EntityState.Modified;
+        ctx.Remove(e);
         await ctx.SaveChangesAsync(token);
     }
 }

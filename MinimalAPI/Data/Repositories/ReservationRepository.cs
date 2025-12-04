@@ -8,5 +8,14 @@ public class ReservationRepository(ReservationDbContext ctx) : Repository<Reserv
     public async Task<List<ReservationDto>> GetByDate(DateTime date)
         => await Query().Where(r => DateOnly.FromDateTime(r.Hour) == DateOnly.FromDateTime(date))
             .Select(r => new ReservationDto(r.Id, r.Name, r.Hour, r.People, r.Table, r.Notes, r.Status)).ToListAsync();
+
+    public new async Task Delete(int id, CancellationToken token = default)
+    {
+        var e = await Get(id, token);
+        e.IsDeleted = true;
+
+        ctx.Entry(e).State = EntityState.Modified;
+        await ctx.SaveChangesAsync(token);
+    }
 }
 
