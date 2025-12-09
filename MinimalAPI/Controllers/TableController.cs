@@ -10,7 +10,7 @@ namespace MinimalAPI.Controllers
     public class TableController(ITableRepository repository) : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await repository.Query().ToListAsync());
+        public async Task<IActionResult> GetByDate(DateTime date) => Ok(await repository.GetByDate(date));
 
         [HttpGet]
         public async Task<IActionResult> GetTablesForDropdown() => Ok(await repository.Query()

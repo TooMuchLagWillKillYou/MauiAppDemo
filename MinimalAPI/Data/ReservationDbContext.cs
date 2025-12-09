@@ -38,6 +38,7 @@ namespace MinimalAPI.Data
                 .IsUnique();
             modelBuilder.Entity<MenuItem>()
                 .ToTable("MenuItems", b => b.IsTemporal());
+
             modelBuilder.Entity<Reservation>()
                 .Property(x => x.IsDeleted) 
                 .HasDefaultValue(0);
@@ -46,6 +47,12 @@ namespace MinimalAPI.Data
                 .HasDefaultValue(ReservationStatus.NotArrived);
             modelBuilder.Entity<Reservation>()
                 .HasQueryFilter(e => !e.IsDeleted);
+
+            modelBuilder.Entity<Table>()
+                .ToTable("Tables", b => b.IsTemporal());
+            modelBuilder.Entity<Table>()
+                .Property(x => x.Shift)
+                .HasDefaultValue(1);
         }
     }
 }

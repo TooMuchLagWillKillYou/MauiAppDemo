@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MinimalAPI.Data;
 
@@ -11,9 +12,11 @@ using MinimalAPI.Data;
 namespace MinimalAPI.Migrations
 {
     [DbContext(typeof(ReservationDbContext))]
-    partial class ReservationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251209134747_TemporalTables")]
+    partial class TemporalTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,9 +265,6 @@ namespace MinimalAPI.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("PeriodStart");
 
-                    b.Property<int>("Shift")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("Tables", (string)null);
@@ -339,7 +339,7 @@ namespace MinimalAPI.Migrations
             modelBuilder.Entity("MinimalAPI.Data.Reservation", b =>
                 {
                     b.HasOne("MinimalAPI.Data.Table", "Table")
-                        .WithMany("Reservations")
+                        .WithMany()
                         .HasForeignKey("TableId");
 
                     b.Navigation("Table");
@@ -353,11 +353,6 @@ namespace MinimalAPI.Migrations
             modelBuilder.Entity("MinimalAPI.Data.MenuItemSubCategory", b =>
                 {
                     b.Navigation("MenuItems");
-                });
-
-            modelBuilder.Entity("MinimalAPI.Data.Table", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }
