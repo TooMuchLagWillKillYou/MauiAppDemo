@@ -1,19 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MinimalAPI.Common;
-using MinimalAPI.Data;
+﻿using MinimalAPI.Data;
 using MinimalAPI.Data.Repositories;
 using MinimalAPI.ValidationAttributes;
+using System.ComponentModel.DataAnnotations;
 
-namespace MinimalAPI.Dtos
+namespace MinimalAPI.Dtos.Reservation
 {
     public record ReservationDto(int Id,
         [Required] string Name,
         [Required, GreaterThanNow] DateTime Hour,
         [Required, Minimum(1)] int People,
-        string? Table,
-        string? Notes,
-        ReservationStatus Status) : IValidatableObject
-    { 
+        int? TableId,
+        string? Notes) : IValidatableObject
+    {
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             var repository = validationContext.GetService<IClosureDayRepository>();

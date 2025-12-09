@@ -1,9 +1,9 @@
-﻿using MinimalAPI.Dtos;
+﻿using MinimalAPI.Dtos.Reservation;
 
 namespace MinimalAPI.Data.Repositories
 {
     public interface IReservationRepository : IRepository<Reservation>
     {
-        Task<List<ReservationDto>> GetByDate(DateTime date);
+        Task<List<ReservationForListDto>> GetByDate(DateTime date);
     }
 }

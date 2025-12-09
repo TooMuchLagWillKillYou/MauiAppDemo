@@ -1,32 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MinimalAPI.Common;
 using MinimalAPI.Data;
 using MinimalAPI.Data.Repositories;
-using MinimalAPI.Dtos;
+using MinimalAPI.Dtos.Reservation;
 
 namespace MinimalAPI.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]
-public class ReservationController(IReservationRepository repository) : ControllerBase
+public class ReservationController(IReservationRepository reservations, ITableRepository tables) : ControllerBase
 {
     [HttpGet]
-    public async Task<IActionResult> GetAll() => Ok(await repository.Query().ToListAsync());
+    public async Task<IActionResult> GetAll() => Ok(await reservations.Query().ToListAsync());
     [HttpGet("{date:datetime}")]
-    public async Task<IActionResult> GetByDate(DateTime date) => Ok(await repository.GetByDate(date));
+    public async Task<IActionResult> GetByDate(DateTime date) => Ok(await reservations.GetByDate(date));
     [HttpGet("{id:int}")]
-    public async Task<IActionResult> Get(int id) => Ok(await repository.Get(id));
+    public async Task<IActionResult> Get(int id) => Ok(await reservations.Get(id));
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] ReservationDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
-        await repository.Add(new Reservation
+
+        var table = dto.TableId is null ? null : await tables.Get((int)dto.TableId);
+
+        await reservations.Add(new Reservation
         {
             Name = dto.Name,
             Hour = dto.Hour,
             People = dto.People,
-            Table = dto.Table,
+            Table = table,
             Notes = dto.Notes,
         });
         return Created();
@@ -38,14 +40,16 @@ public class ReservationController(IReservationRepository repository) : Controll
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var reservation = await repository.Get(dto.Id);
+            var table = dto.TableId is null ? null : await tables.Get((int)dto.TableId);
+
+            var reservation = await reservations.Get(dto.Id);
             reservation.Name = dto.Name;
             reservation.Hour = dto.Hour;
             reservation.People = dto.People;
-            reservation.Table = dto.Table;
+            reservation.Table = table;
             reservation.Notes = dto.Notes;
 
-            var result = await repository.Update(reservation);
+            var result = await reservations.Update(reservation);
             return Ok(result);
         }
         catch (Exception e)
@@ -53,17 +57,17 @@ public class ReservationController(IReservationRepository repository) : Controll
             return BadRequest(e.Message);
         }
     }
-    [HttpPatch("{id:int}/status")]
-    public async Task<IActionResult> ChangeStatus(int id, [FromBody]ChangeStatusDto dto)
+    [HttpPatch]
+    public async Task<IActionResult> ChangeStatus([FromBody] ChangeReservationStatusDto dto)
     {
         try
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var reservation = await repository.Get(id);
+            var reservation = await reservations.Get(dto.Id);
             reservation.Status = dto.Status;
 
-            var result = await repository.Update(reservation);
+            var result = await reservations.Update(reservation);
             return Ok(result);
         }
         catch (Exception e)
@@ -76,7 +80,7 @@ public class ReservationController(IReservationRepository repository) : Controll
     {
         try
         {
-            await repository.Delete(id);
+            await reservations.Delete(id);
             return Ok();
         }
         catch (Exception e)
