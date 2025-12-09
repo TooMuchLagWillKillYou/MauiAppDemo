@@ -1,15 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using MinimalAPI.Common;
 using MinimalAPI.Data;
+using MinimalAPI.Data.Repositories;
 using MinimalAPI.ValidationAttributes;
 
 namespace MinimalAPI.Dtos
 {
-    public record ReservationDto(int Id, 
-        [Required]string Name,
+    public record ReservationDto(int Id,
+        [Required] string Name,
         [Required, GreaterThanNow] DateTime Hour,
-        [Required, Minimum(1)] int People, 
-        string? Table, 
+        [Required, Minimum(1)] int People,
+        string? Table,
         string? Notes,
-        ReservationStatus Status);
+        ReservationStatus Status) : IValidatableObject
+    { 
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var repository = validationContext.GetService<IClosureDayRepository>();
+            var date = DateOnly.FromDateTime(Hour);
+            var closureDays = repository!.Query().ToList();
+
+            foreach (var closureDay in closureDays)
+            {
+                if (date >= DateOnly.FromDateTime(closureDay.From) && date <= DateOnly.FromDateTime(closureDay.To))
+                {
+                    yield return new ValidationResult($"The date {date} falls within a closure period from {DateOnly.FromDateTime(closureDay.From)} to {DateOnly.FromDateTime(closureDay.To)}.", new[] { nameof(Hour) });
+                }
+            }
+        }
+    }
 }
