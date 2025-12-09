@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
 using MinimalAPI.Data;
 using MinimalAPI.Data.Repositories;
+using MinimalAPI.Services;
 using MinimalAPI.Services.MenuGenerator;
 using System.Globalization;
 
@@ -20,13 +21,7 @@ public class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddCors();
         builder.Services.AddDbContext<ReservationDbContext>();
-        builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
-        builder.Services.AddScoped<IMenuItemRepository, MenuItemRepository>();
-        builder.Services.AddScoped<IMenuItemCategoryRepository, MenuItemCategoryRepository>();
-        builder.Services.AddScoped<IMenuItemSubCategoryRepository, MenuItemSubCategoryRepository>();
-        builder.Services.AddScoped<IMenuRepository, MenuRepository>();
-        builder.Services.AddScoped<IClosureDayRepository, ClosureDayRepository>();
-        builder.Services.AddScoped<IWorkedHoursRepository, WorkedHoursRepository>();
+        builder.Services.AddRepositories();
         builder.Services.AddScoped<MenuFactory>();
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {
