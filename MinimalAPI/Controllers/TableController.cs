@@ -15,5 +15,9 @@ namespace MinimalAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetTablesForDropdown() => Ok(await repository.Query()
                 .Select(t => new TableForDropdownDto(t.Id, t.Description)).ToListAsync());
+
+        [HttpGet]
+        public async Task<IActionResult> GetTablesMapSnapshot(DateTime from, DateTime to)
+            => Ok(await repository.QueryTemporal(from, to));
     }
 }
