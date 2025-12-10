@@ -18,13 +18,15 @@ Command to update database with last migration: update-database
 - di tanto in tanto eseguire il comando DBCC CHECKCONSTRAINTS
 
 // FE
-- riprendere in mano il frontend una volta completate le API. Decidere se continuare con MUI o usare un altra libreria grafica
+- creazione di una prenotazione
+- cambio di stato di una prenotazione (Cancelled, Gone)
 - nuova sezione "worked hours" per tenere traccia delle ore lavorate dai dipendenti. Teoricamente saranno i dipendenti a inserire le loro ore di lavoro
+- sezione "calendario" per definire i giorni di chiusura del locale
+- meteo e ora in alto a destra
 - modifica del menù dal fronted
 	- l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
 	- update di una prenotazione (il componente <DataGrid> non funziona bene)
 - display dei messaggi di errore tramite <Snackbar>
-- implementare le rotte con react-router
 - controllare di usare gli Effect nel modo corretto
 - eliminazione di una prenotazione anche per giorni futuri
 - impedire di aggiungere e modificare prenotazioni in giorni passati 
@@ -63,3 +65,5 @@ Command to update database with last migration: update-database
 - aggiornare a EF Core 9? non necessario
 - versionare il menù in modo da poter recuperare il menù di una data specifica, facendo attenzione a recuperare la corretta versione del menù quando serve. 
 	Voglio essere in grado di recuperare ongi modifica di ogni elemento del menù. Hint: system-versioned tables
+- riprendere in mano il frontend una volta completate le API. Decidere se continuare con MUI o usare un altra libreria grafica
+- implementare le rotte con react-router
