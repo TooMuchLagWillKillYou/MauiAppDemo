@@ -3,6 +3,8 @@
     public enum ReservationStatus
     {
         NotArrived, 
-        Arrived
+        Arrived,
+        Gone,
+        Cancelled
     }
 }

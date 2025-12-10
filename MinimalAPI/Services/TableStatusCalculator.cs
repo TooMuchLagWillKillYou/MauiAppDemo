@@ -7,7 +7,10 @@ namespace MinimalAPI.Services
     {
         public static TableStatus Calculate(Table table, DateTime day)
         {
-            var reservations = table.Reservations.Where(r => r.Hour.Date == day.Date).ToList();
+            var reservations = table.Reservations.Where(r => r.Hour.Date == day.Date 
+                && r.Status != ReservationStatus.Gone 
+                && r.Status != ReservationStatus.Cancelled)
+                .ToList();
 
             if (reservations.Any(r => r.Status == ReservationStatus.Arrived))
                 return TableStatus.Occupied;
