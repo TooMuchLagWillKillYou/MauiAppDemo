@@ -60,7 +60,7 @@ export type MiniCalendarProps = HTMLAttributes<HTMLDivElement> & {
   onValueChange?: (date: Date | undefined) => void;
   startDate?: Date;
   defaultStartDate?: Date;
-  onStartDateChange?: (date: Date | undefined) => void;
+  onStartDateChange?: (date: Date) => void;
   days?: number;
 };
 
@@ -195,12 +195,14 @@ export const MiniCalendarDays = ({
 export type MiniCalendarDayProps = ComponentProps<typeof Button> & {
   date: Date;
   onClick: (date: Date) => void;
+  isClosureDay: boolean;
 };
 
 export const MiniCalendarDay = ({
   date,
   className,
   onClick,
+  isClosureDay,
   ...props
 }: MiniCalendarDayProps) => {
   const { selectedDate, onDateSelect } = useMiniCalendar();
@@ -218,6 +220,7 @@ export const MiniCalendarDay = ({
       className={cn(
         'h-auto min-w-[3rem] flex-col gap-0 p-2 text-xs',
         isTodayDate && !isSelected && 'bg-accent',
+        isClosureDay && 'bg-muted',
         className
       )}
       onClick={handleClick}
