@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { ReservationStatus } from '@/types/ReservationStatus';
 import type { Reservation } from '@/types/reservation';
 import type { RowSelectionState } from '@tanstack/react-table';
+import Pagination from '@/components/pagination';
 
 export default function Reservations() {
   const [date, setDate] = useState<Date>(new Date());
@@ -26,11 +27,10 @@ export default function Reservations() {
 
   return (
     <div className="container mx-auto py-10 px-6">
+      <Pagination setDate={setDate} />
       <DataTable
         columns={columns}
         data={data ?? []}
-        date={date}
-        setDate={setDate}
         isLoading={isLoading}
         defaultSelectedRows={getSelectedRows()}
       />

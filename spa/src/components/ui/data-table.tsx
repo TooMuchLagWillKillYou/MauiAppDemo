@@ -21,15 +21,12 @@ import {
 } from '@/components/ui/table';
 import { useEffect, useState } from 'react';
 import { Input } from './input';
-import Pagination from '../pagination';
 import { Spinner } from './spinner';
 import type { TableData } from '@/types/TableData';
 
 interface DataTableProps<TData extends TableData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  date: Date;
-  setDate: (value: Date) => void;
   isLoading: boolean;
   defaultSelectedRows: RowSelectionState;
 }
@@ -37,8 +34,6 @@ interface DataTableProps<TData extends TableData, TValue> {
 export function DataTable<TData extends TableData, TValue>({
   columns,
   data,
-  date,
-  setDate,
   isLoading,
   defaultSelectedRows,
 }: DataTableProps<TData, TValue>) {
@@ -107,7 +102,6 @@ export function DataTable<TData extends TableData, TValue>({
   return (
     <div>
       <div className="flex items-center justify-between py-4">
-        <Pagination date={date} setDate={setDate} classNames="w-1/3" />
         <Input
           placeholder="Filter by name..."
           value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}

@@ -1,35 +1,31 @@
-import { Button } from '@/components/ui/button';
-import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
-import { sub, add, format, isToday } from 'date-fns';
-import { TypographyH1 } from './ui/typography-h1';
-import { cn } from '@/lib/utils';
+import {
+  MiniCalendar,
+  MiniCalendarDay,
+  MiniCalendarDays,
+  MiniCalendarNavigation,
+} from './ui/shadcn-io/mini-calendar';
 
 interface PaginationProps {
-  date: Date;
   setDate: (value: Date) => void;
-  classNames?: string;
 }
-function Pagination({ date, setDate, classNames }: PaginationProps) {
+function Pagination({ setDate }: PaginationProps) {
+  const today = new Date();
+  today.setDate(today.getDate() - 10);
+
   return (
-    <div className={cn('flex justify-between', classNames)}>
-      <Button
-        variant="outline"
-        size="icon"
-        aria-label="Pagination left"
-        onClick={() => setDate(sub(date, { days: 1 }))}
-      >
-        <ArrowLeftIcon />
-      </Button>
-      <TypographyH1 text={isToday(date) ? 'Today' : format(date, 'eeee d')} />
-      <Button
-        variant="outline"
-        size="icon"
-        aria-label="Pagination right"
-        onClick={() => setDate(add(date, { days: 1 }))}
-      >
-        <ArrowRightIcon />
-      </Button>
-    </div>
+    <MiniCalendar defaultStartDate={today} days={24}>
+      <MiniCalendarNavigation direction="prev" />
+      <MiniCalendarDays>
+        {(date) => (
+          <MiniCalendarDay
+            date={date}
+            key={date.toISOString()}
+            onClick={() => setDate(date)}
+          />
+        )}
+      </MiniCalendarDays>
+      <MiniCalendarNavigation direction="next" />
+    </MiniCalendar>
   );
 }
 
