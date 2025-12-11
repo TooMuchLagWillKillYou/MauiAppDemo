@@ -20,9 +20,9 @@ namespace MinimalAPI.Dtos.Reservation
 
             foreach (var closureDay in closureDays)
             {
-                if (date >= DateOnly.FromDateTime(closureDay.From) && date <= DateOnly.FromDateTime(closureDay.To))
+                if (date >= closureDay.From && date <= closureDay.To)
                 {
-                    yield return new ValidationResult($"The date {date} falls within a closure period from {DateOnly.FromDateTime(closureDay.From)} to {DateOnly.FromDateTime(closureDay.To)}.", new[] { nameof(Hour) });
+                    yield return new ValidationResult($"The date {date} falls within a closure period from {closureDay.From} to {closureDay.To}.", new[] { nameof(Hour) });
                 }
             }
         }

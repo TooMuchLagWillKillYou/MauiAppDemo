@@ -14,6 +14,8 @@ namespace MinimalAPI.Controllers
         public async Task<IActionResult> GetAll() => Ok(await repository.Query().ToListAsync());
         [HttpGet]
         public async Task<IActionResult> GetByMonth(int year, int month) => Ok(await repository.GetByMonth(year, month));
+        [HttpGet]
+        public async Task<IActionResult> GetRange(DateOnly from, DateOnly to) => Ok(await repository.GetRange(from, to));
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] ClosureDayDto dto)
         {

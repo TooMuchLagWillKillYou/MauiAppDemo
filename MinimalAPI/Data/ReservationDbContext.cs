@@ -27,33 +27,40 @@ namespace MinimalAPI.Data
             optionsBuilder.UseSqlServer(_configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<MenuItem>()
+            builder.Entity<MenuItem>()
                 .Property(x => x.IsDeleted)
                 .HasDefaultValue(0);
-            modelBuilder.Entity<MenuItem>()
+            builder.Entity<MenuItem>()
                 .HasQueryFilter(e => !e.IsDeleted);
-            modelBuilder.Entity<MenuItem>()
+            builder.Entity<MenuItem>()
                 .HasIndex(x => x.Name)
                 .IsUnique();
-            modelBuilder.Entity<MenuItem>()
+            builder.Entity<MenuItem>()
                 .ToTable("MenuItems", b => b.IsTemporal());
 
-            modelBuilder.Entity<Reservation>()
+            builder.Entity<Reservation>()
                 .Property(x => x.IsDeleted) 
                 .HasDefaultValue(0);
-            modelBuilder.Entity<Reservation>()
+            builder.Entity<Reservation>()
                 .Property(x => x.Status)
                 .HasDefaultValue(ReservationStatus.NotArrived);
-            modelBuilder.Entity<Reservation>()
+            builder.Entity<Reservation>()
                 .HasQueryFilter(e => !e.IsDeleted);
 
-            modelBuilder.Entity<Table>()
+            builder.Entity<Table>()
                 .ToTable("Tables", b => b.IsTemporal());
-            modelBuilder.Entity<Table>()
+            builder.Entity<Table>()
                 .Property(x => x.Shift)
                 .HasDefaultValue(1);
+
+            builder.Entity<ClosureDay>()
+                .Property("From")
+                .HasColumnType("date");
+            builder.Entity<ClosureDay>()
+                .Property("To")
+                .HasColumnType("date");
         }
     }
 }

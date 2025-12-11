@@ -3,8 +3,8 @@
 namespace MinimalAPI.Dtos
 {
     public record ClosureDayDto(int Id,
-        [Required] DateTime From, 
-        DateTime To, 
+        [Required] DateOnly From, 
+        DateOnly To, 
         string? Reason);
     
 }

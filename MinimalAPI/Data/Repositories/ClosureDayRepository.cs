@@ -7,7 +7,7 @@ namespace MinimalAPI.Data.Repositories
     {
         public async Task<List<ClosureDayDto>> GetByMonth(int year, int month)
         {
-            var start = new DateTime(year, month, 1);
+            var start = DateOnly.FromDateTime(new DateTime(year, month, 1));
             var next = start.AddMonths(1);
 
             return await Query()
@@ -15,5 +15,10 @@ namespace MinimalAPI.Data.Repositories
                 .Select(x => new ClosureDayDto(x.Id, x.From, x.To, x.Reason))
                 .ToListAsync();
         }
+        public async Task<List<ClosureDayDto>> GetRange(DateOnly from, DateOnly to)
+            => await Query()
+            .Where(x => x.From < to && x.To >= from)
+            .Select(x => new ClosureDayDto(x.Id, x.From, x.To, x.Reason))
+            .ToListAsync();
     }
 }
