@@ -6,6 +6,7 @@ import { ReservationStatus } from '@/types/ReservationStatus';
 import type { Reservation } from '@/types/reservation';
 import type { RowSelectionState } from '@tanstack/react-table';
 import Pagination from '@/components/pagination';
+import AddReservationForm from './AddReservationForm';
 
 export default function Reservations() {
   const [date, setDate] = useState<Date>(new Date());
@@ -33,6 +34,7 @@ export default function Reservations() {
         data={data ?? []}
         isLoading={isLoading}
         defaultSelectedRows={getSelectedRows()}
+        formComponent={<AddReservationForm />}
       />
     </div>
   );

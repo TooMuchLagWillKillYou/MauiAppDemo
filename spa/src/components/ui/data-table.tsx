@@ -29,6 +29,7 @@ interface DataTableProps<TData extends TableData, TValue> {
   data: TData[];
   isLoading: boolean;
   defaultSelectedRows: RowSelectionState;
+  formComponent: React.ReactNode;
 }
 
 export function DataTable<TData extends TableData, TValue>({
@@ -36,6 +37,7 @@ export function DataTable<TData extends TableData, TValue>({
   data,
   isLoading,
   defaultSelectedRows,
+  formComponent,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -110,6 +112,7 @@ export function DataTable<TData extends TableData, TValue>({
           }
           className="w-1/3"
         />
+        {formComponent}
       </div>
       <div className="overflow-hidden rounded-md border">
         <Table className="w-full table-fixed">
