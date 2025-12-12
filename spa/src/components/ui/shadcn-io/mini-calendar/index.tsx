@@ -15,6 +15,12 @@ import {
 } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import type { DayForMiniCalendar } from '@/types/DayForMiniCalendar';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 // Context for sharing state between components
 type MiniCalendarContextType = {
@@ -37,21 +43,13 @@ const useMiniCalendar = () => {
   return context;
 };
 
-// Helper function to get array of consecutive dates
-const getDays = (startDate: Date, count: number): Date[] => {
-  const days: Date[] = [];
-  for (let i = 0; i < count; i++) {
-    days.push(addDays(startDate, i));
-  }
-  return days;
-};
-
 // Helper function to format date
 const formatDate = (date: Date) => {
   const month = format(date, 'MMM');
   const day = format(date, 'd');
+  const dayOfWeek = format(date, 'EEE');
 
-  return { month, day };
+  return { month, day, dayOfWeek };
 };
 
 export type MiniCalendarProps = HTMLAttributes<HTMLDivElement> & {
@@ -171,17 +169,16 @@ export type MiniCalendarDaysProps = Omit<
   HTMLAttributes<HTMLDivElement>,
   'children'
 > & {
-  children: (date: Date) => ReactNode;
+  children: (date: DayForMiniCalendar) => ReactNode;
+  days: DayForMiniCalendar[];
 };
 
 export const MiniCalendarDays = ({
   className,
   children,
+  days,
   ...props
 }: MiniCalendarDaysProps) => {
-  const { startDate, days: dayCount } = useMiniCalendar();
-  const days = getDays(startDate, dayCount);
-
   return (
     <div
       className={cn('flex items-center gap-1', className)}
@@ -193,34 +190,67 @@ export const MiniCalendarDays = ({
 };
 
 export type MiniCalendarDayProps = ComponentProps<typeof Button> & {
-  date: Date;
+  date: DayForMiniCalendar;
   onClick: (date: Date) => void;
-  isClosureDay: boolean;
 };
 
 export const MiniCalendarDay = ({
   date,
   className,
   onClick,
-  isClosureDay,
   ...props
 }: MiniCalendarDayProps) => {
   const { selectedDate, onDateSelect } = useMiniCalendar();
-  const { month, day } = formatDate(date);
-  const isSelected = selectedDate && isSameDay(date, selectedDate);
-  const isTodayDate = isToday(date);
+  const { month, day, dayOfWeek } = formatDate(date.day);
+  const isSelected = selectedDate && isSameDay(date.day, selectedDate);
+  const isTodayDate = isToday(date.day);
 
   const handleClick = () => {
-    onDateSelect(date);
-    onClick(date);
+    onDateSelect(date.day);
+    onClick(date.day);
   };
 
+  if (date.isClosed) {
+    return (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <span className={!date.isClosed ? 'pointer-events-none' : undefined}>
+            <Button
+              disabled
+              className={cn(
+                'h-auto min-w-[3rem] flex-col gap-0 p-2 text-xs',
+                className
+              )}
+              onClick={handleClick}
+              size="sm"
+              type="button"
+              variant="ghost"
+              {...(props as any)}
+            >
+              <span
+                className={cn('font-medium text-[10px] text-muted-foreground')}
+              >
+                {dayOfWeek}
+              </span>
+              <span className="font-semibold text-sm">{day}</span>
+              <span className="font-medium text-[10px] text-muted-foreground">
+                {month}
+              </span>
+            </Button>
+          </span>
+        </TooltipTrigger>
+
+        <TooltipContent>
+          <p>{date.reason}</p>
+        </TooltipContent>
+      </Tooltip>
+    );
+  }
   return (
     <Button
       className={cn(
         'h-auto min-w-[3rem] flex-col gap-0 p-2 text-xs',
         isTodayDate && !isSelected && 'bg-accent',
-        isClosureDay && 'bg-muted',
         className
       )}
       onClick={handleClick}
@@ -235,9 +265,12 @@ export const MiniCalendarDay = ({
           isSelected && 'text-primary-foreground/70'
         )}
       >
-        {month}
+        {dayOfWeek}
       </span>
       <span className="font-semibold text-sm">{day}</span>
+      <span className="font-medium text-[10px] text-muted-foreground">
+        {month}
+      </span>
     </Button>
   );
 };

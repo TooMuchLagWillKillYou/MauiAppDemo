@@ -6,8 +6,9 @@ import {
   MiniCalendarNavigation,
 } from './ui/shadcn-io/mini-calendar';
 import { Spinner } from './ui/spinner';
-import { addDays, isAfter, isBefore, isSameDay, subDays } from 'date-fns';
+import { addDays, subDays } from 'date-fns';
 import { useState } from 'react';
+import { getDays } from '@/lib/utils';
 
 interface PaginationProps {
   setDate: (value: Date) => void;
@@ -17,14 +18,6 @@ function Pagination({ setDate }: PaginationProps) {
   const [from, setFrom] = useState<Date>(subDays(new Date(), 10));
   const [to, setTo] = useState<Date>(addDays(from, numberOfDaysDisplayed));
   const { data, isLoading, isError } = useGetRange(from, to);
-
-  const isClosureDay = (d: Date) => {
-    return data!.some(
-      (r) =>
-        (isAfter(d, r.from) || isSameDay(d, r.from)) &&
-        (isBefore(d, r.to) || isSameDay(d, r.to))
-    );
-  };
 
   const handleStartDateChange = (d: Date) => {
     setFrom(d);
@@ -48,13 +41,12 @@ function Pagination({ setDate }: PaginationProps) {
       onStartDateChange={handleStartDateChange}
     >
       <MiniCalendarNavigation direction="prev" />
-      <MiniCalendarDays>
+      <MiniCalendarDays days={getDays(from, numberOfDaysDisplayed, data!)}>
         {(date) => (
           <MiniCalendarDay
             date={date}
-            key={date.toISOString()}
-            onClick={() => setDate(date)}
-            isClosureDay={isClosureDay(date)}
+            key={date.day.toISOString()}
+            onClick={() => setDate(date.day)}
           />
         )}
       </MiniCalendarDays>
