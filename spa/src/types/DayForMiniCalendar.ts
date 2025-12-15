@@ -1,5 +1,5 @@
 export type DayForMiniCalendar = {
-  day: Date;
+  day: string;
   isClosed: boolean;
   reason: string | undefined;
 };

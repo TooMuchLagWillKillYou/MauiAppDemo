@@ -28,7 +28,7 @@ const getDays = (
     const range = closureDays?.find((r) => isWithinRange(day, r));
 
     return {
-      day,
+      day: format(day, 'yyyy-MM-dd'),
       isClosed: range ? true : false,
       reason: range?.reason,
     };

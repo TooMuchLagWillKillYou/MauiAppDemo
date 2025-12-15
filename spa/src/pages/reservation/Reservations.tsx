@@ -3,18 +3,17 @@ import { useReservationsByDate } from '@/hooks/reservationHooks';
 import { columns } from './columns';
 import { useState } from 'react';
 import { ReservationStatus } from '@/types/ReservationStatus';
-import type { Reservation } from '@/types/reservation';
+import type { Reservation } from '@/types/Reservation';
 import type { RowSelectionState } from '@tanstack/react-table';
 import Pagination from '@/components/pagination';
 import AddReservationForm from './AddReservationForm';
+import { format } from 'date-fns';
 
 export default function Reservations() {
-  const [date, setDate] = useState<Date>(new Date());
-  const { data, isLoading, isError } = useReservationsByDate(date);
+  const [day, setDay] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
+  const { data, isLoading, isError } = useReservationsByDate(day);
 
-  if (isError) {
-    return <p>Error loading reservations</p>;
-  }
+  if (isError) return <p>Error loading reservations</p>;
 
   const getSelectedRows = (): RowSelectionState => {
     const arrivedReservations: Reservation[] = Array.from(data ?? []).filter(
@@ -28,7 +27,7 @@ export default function Reservations() {
 
   return (
     <div className="container mx-auto py-10 px-6">
-      <Pagination setDate={setDate} />
+      <Pagination setDay={setDay} />
       <DataTable
         columns={columns}
         data={data ?? []}

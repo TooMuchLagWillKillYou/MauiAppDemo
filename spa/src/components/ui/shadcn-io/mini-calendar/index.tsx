@@ -115,7 +115,7 @@ export const MiniCalendar = ({
           'flex items-center gap-2 rounded-lg border bg-background p-2',
           className
         )}
-        {...(props as any)}
+        {...props}
       >
         {children}
       </div>
@@ -146,7 +146,7 @@ export const MiniCalendarNavigation = ({
 
   if (asChild) {
     return (
-      <Slot.Root onClick={handleClick} {...(props as any)}>
+      <Slot.Root onClick={handleClick} {...props}>
         {children}
       </Slot.Root>
     );
@@ -158,7 +158,7 @@ export const MiniCalendarNavigation = ({
       size={asChild ? undefined : 'icon'}
       type="button"
       variant={asChild ? undefined : 'ghost'}
-      {...(props as any)}
+      {...props}
     >
       {children ?? <Icon className="size-4" />}
     </Button>
@@ -180,10 +180,7 @@ export const MiniCalendarDays = ({
   ...props
 }: MiniCalendarDaysProps) => {
   return (
-    <div
-      className={cn('flex items-center gap-1', className)}
-      {...(props as any)}
-    >
+    <div className={cn('flex items-center gap-1', className)} {...props}>
       {days.map((date) => children(date))}
     </div>
   );
@@ -191,7 +188,7 @@ export const MiniCalendarDays = ({
 
 export type MiniCalendarDayProps = ComponentProps<typeof Button> & {
   date: DayForMiniCalendar;
-  onClick: (date: Date) => void;
+  onClick: (date: string) => void;
 };
 
 export const MiniCalendarDay = ({
@@ -201,12 +198,12 @@ export const MiniCalendarDay = ({
   ...props
 }: MiniCalendarDayProps) => {
   const { selectedDate, onDateSelect } = useMiniCalendar();
-  const { month, day, dayOfWeek } = formatDate(date.day);
+  const { month, day, dayOfWeek } = formatDate(new Date(date.day));
   const isSelected = selectedDate && isSameDay(date.day, selectedDate);
   const isTodayDate = isToday(date.day);
 
   const handleClick = () => {
-    onDateSelect(date.day);
+    onDateSelect(new Date(date.day));
     onClick(date.day);
   };
 
@@ -225,7 +222,7 @@ export const MiniCalendarDay = ({
               size="sm"
               type="button"
               variant="ghost"
-              {...(props as any)}
+              {...props}
             >
               <span
                 className={cn('font-medium text-[10px] text-muted-foreground')}
@@ -257,7 +254,7 @@ export const MiniCalendarDay = ({
       size="sm"
       type="button"
       variant={isSelected ? 'default' : 'ghost'}
-      {...(props as any)}
+      {...props}
     >
       <span
         className={cn(

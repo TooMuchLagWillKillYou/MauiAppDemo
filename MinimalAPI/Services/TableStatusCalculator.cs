@@ -5,9 +5,9 @@ namespace MinimalAPI.Services
 {
     public static class TableStatusCalculator
     {
-        public static TableStatus Calculate(Table table, DateTime day)
+        public static TableStatus Calculate(Table table, DateOnly day)
         {
-            var reservations = table.Reservations.Where(r => r.Hour.Date == day.Date 
+            var reservations = table.Reservations.Where(r => r.Day == day
                 && r.Status != ReservationStatus.Gone 
                 && r.Status != ReservationStatus.Cancelled)
                 .ToList();

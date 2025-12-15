@@ -1,4 +1,4 @@
-import apiConfig from '@/api/config';
+import { apiConfig } from '@/lib/constants';
 import type { ClosureDay } from '@/types/closureDay';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';

@@ -4,7 +4,8 @@ namespace MinimalAPI.Dtos.Reservation
 {
     public record ReservationForListDto(int Id, 
         string Name, 
-        DateTime Hour, 
+        DateOnly Day,
+        TimeOnly Hour, 
         int People, 
         string? Table, 
         string? Notes, 

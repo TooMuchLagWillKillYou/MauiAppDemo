@@ -12,12 +12,12 @@ public class ReservationController(IReservationRepository reservations, ITableRe
 {
     [HttpGet]
     public async Task<IActionResult> GetAll() => Ok(await reservations.Query().ToListAsync());
-    [HttpGet("{date:datetime}")]
-    public async Task<IActionResult> GetByDate(DateTime date) => Ok(await reservations.GetByDate(date));
+    [HttpGet("{date}")]
+    public async Task<IActionResult> GetByDate(DateOnly date) => Ok(await reservations.GetByDate(date));
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Get(int id) => Ok(await reservations.Get(id));
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] ReservationDto dto)
+    public async Task<IActionResult> Add([FromBody] AddReservationDto dto)
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -26,6 +26,7 @@ public class ReservationController(IReservationRepository reservations, ITableRe
         await reservations.Add(new Reservation
         {
             Name = dto.Name,
+            Day = dto.Day,
             Hour = dto.Hour,
             People = dto.People,
             Table = table,
@@ -44,6 +45,7 @@ public class ReservationController(IReservationRepository reservations, ITableRe
 
             var reservation = await reservations.Get(dto.Id);
             reservation.Name = dto.Name;
+            reservation.Day = dto.Day;
             reservation.Hour = dto.Hour;
             reservation.People = dto.People;
             reservation.Table = table;

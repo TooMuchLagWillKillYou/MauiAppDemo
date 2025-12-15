@@ -5,10 +5,10 @@ namespace MinimalAPI.Data.Repositories;
 
 public class ReservationRepository(ReservationDbContext ctx) : Repository<Reservation>(ctx), IReservationRepository
 {
-    public async Task<List<ReservationForListDto>> GetByDate(DateTime date)
+    public async Task<List<ReservationForListDto>> GetByDate(DateOnly date)
         => await Query()
-            .Where(r => DateOnly.FromDateTime(r.Hour) == DateOnly.FromDateTime(date))
-            .Select(r => new ReservationForListDto(r.Id, r.Name, r.Hour, r.People, r.Table.Description, r.Notes, r.Status))
+            .Where(r => r.Day == date)
+            .Select(r => new ReservationForListDto(r.Id, r.Name, r.Day, r.Hour, r.People, r.Table.Description, r.Notes, r.Status))
             .ToListAsync();
 
     public new async Task Delete(int id, CancellationToken token = default)

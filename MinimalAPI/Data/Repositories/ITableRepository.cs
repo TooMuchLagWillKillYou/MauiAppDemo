@@ -4,7 +4,7 @@ namespace MinimalAPI.Data.Repositories
 {
     public interface ITableRepository : IRepository<Table>
     {
-        Task<List<TableForMapDto>> GetByDate(DateTime date);
-        Task<List<TableForMapDto>> QueryTemporal(DateTime from, DateTime to);
+        Task<List<TableForMapDto>> GetByDate(DateOnly date);
+        Task<List<TableForMapDto>> QueryTemporal(DateOnly from, DateOnly to);
     }
 }

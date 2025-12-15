@@ -5,13 +5,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MinimalAPI.Dtos.Reservation
 {
-    public record ReservationDto(int Id,
-        [Required] string Name,
-        [Required, GreaterThanOrEqualToToday] DateOnly Day, 
-        [Required] TimeOnly Hour, 
+    public record AddReservationDto([Required] string Name,
+        [Required, GreaterThanOrEqualToToday] DateOnly Day,
+        [Required] TimeOnly Hour,
         [Required, Minimum(1)] int People,
-        int? TableId,
-        string? Notes) : IValidatableObject
+        int? TableId = null,
+        string? Notes = null) : IValidatableObject
     {
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

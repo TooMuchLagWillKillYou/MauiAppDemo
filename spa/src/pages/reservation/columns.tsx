@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import type { Reservation } from '@/types/reservation';
+import type { Reservation } from '@/types/Reservation';
 import type { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { format, parseISO, setHours, setMinutes } from 'date-fns';
