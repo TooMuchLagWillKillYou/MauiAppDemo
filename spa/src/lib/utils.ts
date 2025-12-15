@@ -42,4 +42,11 @@ const buildLocalDateTime = (date: string, time: string): Date => {
 
   return result;
 };
-export { cn, isWithinRange, getDays, buildLocalDateTime };
+const formatAxiosErrors = (validationErrors: any) =>
+  Object.entries(validationErrors)
+    .flatMap(([field, messages]) =>
+      // The structure is errors: { FieldName: ['message 1', 'message 2'] }
+      (messages as string[]).map((m) => `${field}: ${m}`)
+    )
+    .join('\n'); // Join messages with a newline
+export { cn, isWithinRange, getDays, buildLocalDateTime, formatAxiosErrors };

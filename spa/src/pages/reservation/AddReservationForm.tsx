@@ -30,7 +30,7 @@ import {
 } from '@/components/ui/select';
 import { useAddReservation } from '@/hooks/reservationHooks';
 import { timeRegex } from '@/lib/constants';
-import { buildLocalDateTime } from '@/lib/utils';
+import { buildLocalDateTime, formatAxiosErrors } from '@/lib/utils';
 import { format, isBefore, isSameDay } from 'date-fns';
 import type { AddReservation } from '@/types/AddReservation';
 import { useState } from 'react';
@@ -92,17 +92,9 @@ function AddReservationForm({ day }: AddReservationFormProps) {
           const validationErrors = error.response.data.errors;
 
           if (validationErrors) {
-            // Format the errors for the toast
-            const formattedErrorMessages = Object.entries(validationErrors)
-              .flatMap(([field, messages]) =>
-                // The structure is errors: { FieldName: ['message 1', 'message 2'] }
-                (messages as string[]).map((msg) => `**${field}**: ${msg}`)
-              )
-              .join('\n'); // Join messages with a newline
-
             toast.error(
               <div style={{ whiteSpace: 'pre-wrap' }}>
-                {formattedErrorMessages ||
+                {formatAxiosErrors(validationErrors) ||
                   'An unknown validation error occurred.'}
               </div>,
               {
