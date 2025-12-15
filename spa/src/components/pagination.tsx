@@ -11,9 +11,9 @@ import { useState } from 'react';
 import { getDays } from '@/lib/utils';
 
 interface PaginationProps {
-  setDate: (value: Date) => void;
+  setDay: (value: string) => void;
 }
-function Pagination({ setDate }: PaginationProps) {
+function Pagination({ setDay }: PaginationProps) {
   const numberOfDaysDisplayed = 24;
   const [from, setFrom] = useState<Date>(subDays(new Date(), 10));
   const [to, setTo] = useState<Date>(addDays(from, numberOfDaysDisplayed));
@@ -45,8 +45,8 @@ function Pagination({ setDate }: PaginationProps) {
         {(date) => (
           <MiniCalendarDay
             date={date}
-            key={date.day.toISOString()}
-            onClick={() => setDate(date.day)}
+            key={date.day}
+            onClick={() => setDay(date.day)}
           />
         )}
       </MiniCalendarDays>

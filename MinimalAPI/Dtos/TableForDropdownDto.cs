@@ -1,4 +1,4 @@
 ﻿namespace MinimalAPI.Dtos
 {
-    public record TableForDropdownDto(int Id, string Description);
+    public record TableForDropdownDto(int Value, string Label);
 }

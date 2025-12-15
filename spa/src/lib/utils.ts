@@ -1,7 +1,7 @@
 import type { ClosureDay } from '@/types/closureDay';
 import type { DayForMiniCalendar } from '@/types/DayForMiniCalendar';
 import { clsx, type ClassValue } from 'clsx';
-import { addDays, isAfter, isBefore, isSameDay } from 'date-fns';
+import { addDays, format, isAfter, isBefore, isSameDay } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 function cn(...inputs: ClassValue[]) {
@@ -34,5 +34,12 @@ const getDays = (
     };
   });
 };
+const buildLocalDateTime = (date: string, time: string): Date => {
+  const [hours, minutes] = time.split(':').map(Number);
+  const result = new Date(date);
+  result.setHours(hours);
+  result.setMinutes(minutes);
 
-export { cn, isWithinRange, getDays };
+  return result;
+};
+export { cn, isWithinRange, getDays, buildLocalDateTime };

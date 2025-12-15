@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { useUpdateReservation } from '@/hooks/reservationHooks';
-import type { Reservation } from '@/types/reservation';
+import type { Reservation } from '@/types/Reservation';
 import type { Column, Row } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
@@ -9,7 +9,6 @@ interface InputCellProps<TValue> {
   column: Column<Reservation>;
   inputType?: 'text' | 'number' | 'time';
   className?: string;
-  formatValue?: (value: TValue) => TValue;
   transformInput?: (raw: string, original: Reservation) => TValue;
 }
 
@@ -18,7 +17,6 @@ function InputCell<TValue extends string | number>({
   column,
   inputType = 'text',
   className,
-  formatValue,
   transformInput,
 }: InputCellProps<TValue>) {
   const reservation = row.original;
@@ -53,7 +51,7 @@ function InputCell<TValue extends string | number>({
   };
   return (
     <Input
-      value={formatValue ? formatValue(value) : value}
+      value={value}
       onChange={(e) => onChange(e)}
       variant="flat"
       type={inputType}

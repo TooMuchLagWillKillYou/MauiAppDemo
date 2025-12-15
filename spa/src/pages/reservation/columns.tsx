@@ -21,14 +21,13 @@ const sortableHeader = (column: Column<Reservation>, title: string) => (
   </Button>
 );
 
-const formatInput = (v: string) => format(parseISO(v), 'HH:mm');
 const transformInput = (raw: string, original: Reservation) => {
   const date = parseISO(original.hour);
   const [h, m] = raw.split(':').map(Number);
 
   const updated = setMinutes(setHours(date, h), m);
 
-  return format(updated, "yyyy-MM-dd'T'HH:mm:ss");
+  return format(updated, "yyyy-MM-dd'T'HH:mm:ss"); // TODO: surely need fix
 };
 
 const columns: ColumnDef<Reservation>[] = [
@@ -66,12 +65,7 @@ const columns: ColumnDef<Reservation>[] = [
     accessorFn: (row) => row.hour,
     header: ({ column }) => sortableHeader(column, 'Hour'),
     cell: (info) => (
-      <InputCell
-        {...info}
-        formatValue={formatInput}
-        transformInput={transformInput}
-        inputType="time"
-      />
+      <InputCell {...info} transformInput={transformInput} inputType="time" />
     ),
     meta: { width: '10%' },
   },

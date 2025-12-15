@@ -9,14 +9,90 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Field, FieldGroup, FieldLabel } from '@/components/ui/field';
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
+import { useForm } from '@tanstack/react-form';
+import * as z from 'zod';
+import { toast } from 'sonner';
+import { useTablesForDropdown } from '@/hooks/tableHooks';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { useAddReservation } from '@/hooks/reservationHooks';
+import { timeRegex } from '@/lib/constants';
+import { buildLocalDateTime } from '@/lib/utils';
+import { format, isBefore, isSameDay } from 'date-fns';
+import type { AddReservation } from '@/types/AddReservation';
 
-function AddReservationForm() {
+interface AddReservationFormProps {
+  day: string;
+}
+function AddReservationForm({ day }: AddReservationFormProps) {
+  const { data } = useTablesForDropdown();
+  const addReservationMutation = useAddReservation();
+  const formSchema = z
+    .object({
+      name: z.string(),
+      hour: z.string().regex(timeRegex, 'Invalid time format'),
+      people: z
+        .number()
+        .min(1, 'There must be at least 1 person for this reservation'),
+      tableId: z.number(),
+      notes: z.string(),
+    })
+    .superRefine((data, ctx) => {
+      const reservationDatetime = buildLocalDateTime(day, data.hour);
+
+      if (isBefore(reservationDatetime, new Date())) {
+        ctx.addIssue({
+          path: ['hour'],
+          code: z.ZodIssueCode.custom,
+          message: 'The selected time is already in the past',
+        });
+      }
+    });
+  const form = useForm({
+    defaultValues: {
+      name: '',
+      hour: '',
+      people: 2,
+      tableId: -1,
+      notes: '',
+    },
+    validators: {
+      onChange: formSchema,
+    },
+    onSubmit: async (e) => {
+      const parsed = formSchema.parse(e.value);
+
+      addReservationMutation.mutate({
+        ...parsed,
+        day,
+      } as AddReservation);
+
+      toast.success('Reservation created successfully!');
+    },
+  });
+
   return (
     <Dialog>
-      <form>
+      <form
+        id="add-reservation-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit();
+        }}
+      >
         <DialogTrigger asChild>
           <Button>
             <Plus /> New
@@ -28,39 +104,178 @@ function AddReservationForm() {
             <DialogDescription>Click Save when you're done</DialogDescription>
           </DialogHeader>
           <FieldGroup>
-            <Field>
-              <FieldLabel htmlFor="name">Name</FieldLabel>
-              <Input id="name" placeholder="Name" required />
-            </Field>
+            <form.Field
+              name="name"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>Name</FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      placeholder="Name"
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            />
             <div className="grid grid-cols-3 gap-4">
-              <Field>
-                <FieldLabel htmlFor="hour">Hour</FieldLabel>
-                <Input id="hour" placeholder="Hour" required />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="people">People</FieldLabel>
-                <Input id="people" placeholder="People" required />
-              </Field>
-              <Field>
-                <FieldLabel htmlFor="table">Table</FieldLabel>
-                <Input id="table" placeholder="Table" />
-              </Field>
+              <form.Field
+                name="hour"
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>Hour</FieldLabel>
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        type="time"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        aria-invalid={isInvalid}
+                        placeholder="Hour"
+                        min={
+                          isSameDay(day, new Date())
+                            ? format(new Date(), 'HH:mm')
+                            : undefined
+                        }
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              />
+
+              <form.Field
+                name="people"
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>People</FieldLabel>
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        type="number"
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) =>
+                          field.handleChange(parseInt(e.target.value))
+                        }
+                        aria-invalid={isInvalid}
+                        placeholder="People"
+                      />
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              />
+
+              <form.Field
+                name="tableId"
+                children={(field) => {
+                  const isInvalid =
+                    field.state.meta.isTouched && !field.state.meta.isValid;
+
+                  return (
+                    <Field data-invalid={isInvalid}>
+                      <FieldLabel htmlFor={field.name}>Table</FieldLabel>
+                      <Select
+                        name={field.name}
+                        value={field.state.value}
+                        onValueChange={(e) => field.handleChange(parseInt(e))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choose table" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {data?.map((x, i) => (
+                            <SelectItem
+                              key={`option-table-${i}`}
+                              value={x.value}
+                            >
+                              {x.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      {isInvalid && (
+                        <FieldError errors={field.state.meta.errors} />
+                      )}
+                    </Field>
+                  );
+                }}
+              />
             </div>
-            <Field>
-              <FieldLabel htmlFor="notes">Notes</FieldLabel>
-              <Input id="notes" placeholder="Notes" />
-            </Field>
+
+            <form.Field
+              name="notes"
+              children={(field) => {
+                const isInvalid =
+                  field.state.meta.isTouched && !field.state.meta.isValid;
+
+                return (
+                  <Field data-invalid={isInvalid}>
+                    <FieldLabel htmlFor={field.name}>Notes</FieldLabel>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      aria-invalid={isInvalid}
+                      placeholder="Notes"
+                    />
+                    {isInvalid && (
+                      <FieldError errors={field.state.meta.errors} />
+                    )}
+                  </Field>
+                );
+              }}
+            />
           </FieldGroup>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="outline" onClick={() => form.reset()}>
+                Cancel
+              </Button>
             </DialogClose>
-            <Button type="submit">Save</Button>
+            <Button type="submit" form="add-reservation-form">
+              Save
+            </Button>
           </DialogFooter>
         </DialogContent>
       </form>
     </Dialog>
   );
 }
+
+// TODO:
+// - show error emssage from backend
+// - resert form after submit but only if successful
+// - close dialog after submit but only if successful
+// - handle hour correctly
+// - refactor via ChatGPT
+// - create a new dto just for creating the reservation, I shouldn't be passing the id and status fields
 
 export default AddReservationForm;

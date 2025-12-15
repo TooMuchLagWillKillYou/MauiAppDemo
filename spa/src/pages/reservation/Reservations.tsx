@@ -33,7 +33,7 @@ export default function Reservations() {
         data={data ?? []}
         isLoading={isLoading}
         defaultSelectedRows={getSelectedRows()}
-        formComponent={<AddReservationForm />}
+        formComponent={<AddReservationForm day={day} />}
       />
     </div>
   );

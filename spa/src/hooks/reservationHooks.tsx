@@ -34,7 +34,7 @@ const useReservationsByDate = (date: string) => {
 const useAddReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (reservation: Reservation) =>
+    mutationFn: (reservation: AddReservation) =>
       axios.post(`${apiConfig.baseURL}/reservation/add`, reservation),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
