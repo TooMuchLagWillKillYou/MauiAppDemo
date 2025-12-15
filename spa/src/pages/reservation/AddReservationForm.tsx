@@ -33,11 +33,13 @@ import { timeRegex } from '@/lib/constants';
 import { buildLocalDateTime } from '@/lib/utils';
 import { format, isBefore, isSameDay } from 'date-fns';
 import type { AddReservation } from '@/types/AddReservation';
+import { useState } from 'react';
 
 interface AddReservationFormProps {
   day: string;
 }
 function AddReservationForm({ day }: AddReservationFormProps) {
+  const [open, setOpen] = useState<boolean>(false);
   const { data } = useTablesForDropdown();
   const addReservationMutation = useAddReservation();
   const formSchema = z
@@ -83,9 +85,16 @@ function AddReservationForm({ day }: AddReservationFormProps) {
       toast.success('Reservation created successfully!');
     },
   });
-
+  const handleOpen = (open: boolean) => {
+    form.reset();
+    setOpen(open);
+  };
+  const handleClose = () => {
+    form.reset();
+    setOpen(false);
+  };
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={handleOpen}>
       <form
         id="add-reservation-form"
         onSubmit={(e) => {
@@ -94,7 +103,7 @@ function AddReservationForm({ day }: AddReservationFormProps) {
         }}
       >
         <DialogTrigger asChild>
-          <Button>
+          <Button onClick={() => setOpen(true)}>
             <Plus /> New
           </Button>
         </DialogTrigger>
@@ -256,7 +265,7 @@ function AddReservationForm({ day }: AddReservationFormProps) {
           </FieldGroup>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline" onClick={() => form.reset()}>
+              <Button variant="outline" onClick={handleClose}>
                 Cancel
               </Button>
             </DialogClose>
