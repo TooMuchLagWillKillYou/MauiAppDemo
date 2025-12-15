@@ -34,6 +34,7 @@ import { buildLocalDateTime } from '@/lib/utils';
 import { format, isBefore, isSameDay } from 'date-fns';
 import type { AddReservation } from '@/types/AddReservation';
 import { useState } from 'react';
+import axios from 'axios';
 
 interface AddReservationFormProps {
   day: string;
@@ -44,13 +45,13 @@ function AddReservationForm({ day }: AddReservationFormProps) {
   const addReservationMutation = useAddReservation();
   const formSchema = z
     .object({
-      name: z.string(),
+      name: z.string().min(1, 'Name field in mandatory'),
       hour: z.string().regex(timeRegex, 'Invalid time format'),
       people: z
         .number()
         .min(1, 'There must be at least 1 person for this reservation'),
-      tableId: z.number(),
-      notes: z.string(),
+      tableId: z.number().nullable(),
+      notes: z.string().nullable(),
     })
     .superRefine((data, ctx) => {
       const reservationDatetime = buildLocalDateTime(day, data.hour);
@@ -68,21 +69,53 @@ function AddReservationForm({ day }: AddReservationFormProps) {
       name: '',
       hour: '',
       people: 2,
-      tableId: -1,
-      notes: '',
+      tableId: null,
+      notes: null,
     },
     validators: {
       onChange: formSchema,
     },
     onSubmit: async (e) => {
-      const parsed = formSchema.parse(e.value);
+      try {
+        const parsed = formSchema.parse(e.value);
 
-      addReservationMutation.mutate({
-        ...parsed,
-        day,
-      } as AddReservation);
+        await addReservationMutation.mutateAsync({
+          ...parsed,
+          day,
+        } as AddReservation);
 
-      toast.success('Reservation created successfully!');
+        form.reset();
+        setOpen(false);
+        toast.success('Reservation created successfully!');
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const validationErrors = error.response.data.errors;
+
+          if (validationErrors) {
+            // Format the errors for the toast
+            const formattedErrorMessages = Object.entries(validationErrors)
+              .flatMap(([field, messages]) =>
+                // The structure is errors: { FieldName: ['message 1', 'message 2'] }
+                (messages as string[]).map((msg) => `**${field}**: ${msg}`)
+              )
+              .join('\n'); // Join messages with a newline
+
+            toast.error(
+              <div style={{ whiteSpace: 'pre-wrap' }}>
+                {formattedErrorMessages ||
+                  'An unknown validation error occurred.'}
+              </div>,
+              {
+                duration: 5000,
+              }
+            );
+          } else {
+            toast.error('An unexpected error occurred. Please try again.');
+          }
+        } else {
+          toast.error('A critical error occurred.');
+        }
+      }
     },
   });
   const handleOpen = (open: boolean) => {
@@ -211,7 +244,7 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                       <FieldLabel htmlFor={field.name}>Table</FieldLabel>
                       <Select
                         name={field.name}
-                        value={field.state.value}
+                        value={field.state.value?.toString() ?? ''}
                         onValueChange={(e) => field.handleChange(parseInt(e))}
                       >
                         <SelectTrigger>
@@ -249,7 +282,7 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                     <Input
                       id={field.name}
                       name={field.name}
-                      value={field.state.value}
+                      value={field.state.value ?? ''}
                       onBlur={field.handleBlur}
                       onChange={(e) => field.handleChange(e.target.value)}
                       aria-invalid={isInvalid}
@@ -280,10 +313,6 @@ function AddReservationForm({ day }: AddReservationFormProps) {
 }
 
 // TODO:
-// - show error message from backend
-// - resert form after submit but only if successful
-// - close dialog after submit but only if successful
-// - refactor via ChatGPT
 // - fix update reservation operation
 // - tableId validation: should be an existing table
 
