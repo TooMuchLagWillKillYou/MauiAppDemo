@@ -216,6 +216,7 @@ export const MiniCalendarDay = ({
               disabled
               className={cn(
                 'h-auto min-w-[3rem] flex-col gap-0 p-2 text-xs',
+                isTodayDate && !isSelected && 'bg-accent',
                 className
               )}
               onClick={handleClick}

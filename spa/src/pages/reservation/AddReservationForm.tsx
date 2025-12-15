@@ -271,11 +271,11 @@ function AddReservationForm({ day }: AddReservationFormProps) {
 }
 
 // TODO:
-// - show error emssage from backend
+// - show error message from backend
 // - resert form after submit but only if successful
 // - close dialog after submit but only if successful
-// - handle hour correctly
 // - refactor via ChatGPT
-// - create a new dto just for creating the reservation, I shouldn't be passing the id and status fields
+// - fix update reservation operation
+// - tableId validation: should be an existing table
 
 export default AddReservationForm;
