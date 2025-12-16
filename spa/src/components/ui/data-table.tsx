@@ -30,6 +30,7 @@ interface DataTableProps<TData extends TableData, TValue> {
   isLoading: boolean;
   defaultSelectedRows: RowSelectionState;
   formComponent: React.ReactNode;
+  unseatedGuests?: number;
 }
 
 export function DataTable<TData extends TableData, TValue>({
@@ -38,6 +39,7 @@ export function DataTable<TData extends TableData, TValue>({
   isLoading,
   defaultSelectedRows,
   formComponent,
+  unseatedGuests,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -144,7 +146,10 @@ export function DataTable<TData extends TableData, TValue>({
         <div className="text-muted-foreground hidden flex-1 text-sm lg:flex">
           {table.getFilteredRowModel().rows.length -
             table.getFilteredSelectedRowModel().rows.length}{' '}
-          table(s) remaining.
+          table(s) remaining.{' '}
+          {unseatedGuests !== undefined && (
+            <> — {unseatedGuests} guests yet to arrive.</>
+          )}
         </div>
       </div>
     </div>

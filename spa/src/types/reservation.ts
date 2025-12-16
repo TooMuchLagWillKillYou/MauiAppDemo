@@ -1,4 +1,4 @@
-import type { ReservationStatus } from './ReservationStatus';
+import { ReservationStatus } from './ReservationStatus';
 import type { Table } from './Table';
 import type { TableData } from './TableData';
 

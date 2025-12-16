@@ -24,6 +24,9 @@ export default function Reservations() {
       return acc;
     }, {});
   };
+  const unseatedGuests = data
+    ?.filter((x) => x.status == ReservationStatus.NotArrived)
+    .reduce((acc, curr) => acc + curr.people, 0);
 
   return (
     <div className="container mx-auto py-10 px-6">
@@ -34,6 +37,7 @@ export default function Reservations() {
         isLoading={isLoading}
         defaultSelectedRows={getSelectedRows()}
         formComponent={<AddReservationForm day={day} />}
+        unseatedGuests={unseatedGuests}
       />
     </div>
   );
