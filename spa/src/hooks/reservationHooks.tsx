@@ -74,10 +74,10 @@ const useChangeReservationStatus = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, status }: { id: number; status: number }) =>
-      await axios.patch(
-        `${apiConfig.baseURL}/reservation/ChangeStatus/${id}/status`,
-        { status }
-      ),
+      await axios.patch(`${apiConfig.baseURL}/reservation/ChangeStatus`, {
+        id,
+        status,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
     },
