@@ -304,8 +304,4 @@ function AddReservationForm({ day }: AddReservationFormProps) {
   );
 }
 
-// TODO:
-// - fix update reservation operation
-// - tableId validation: should be an existing table
-
 export default AddReservationForm;

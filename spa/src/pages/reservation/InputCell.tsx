@@ -39,7 +39,6 @@ function InputCell<TValue extends string | number>({
     return () => clearTimeout(handler);
   }, [value]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
     let v = e.target.value;
 
