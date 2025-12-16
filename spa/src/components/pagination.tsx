@@ -39,6 +39,7 @@ function Pagination({ setDay }: PaginationProps) {
       defaultStartDate={from}
       days={numberOfDaysDisplayed}
       onStartDateChange={handleStartDateChange}
+      defaultValue={new Date()}
     >
       <MiniCalendarNavigation direction="prev" />
       <MiniCalendarDays days={getDays(from, numberOfDaysDisplayed, data!)}>
