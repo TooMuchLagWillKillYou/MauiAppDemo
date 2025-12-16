@@ -26,7 +26,7 @@ namespace MinimalAPI.Dtos.Reservation
                 }
             }
 
-            // check that the hour is in the if the day is today
+            // check that the hour is in the future if the day is today
             if (Day == DateOnly.FromDateTime(DateTime.Today))
             {
                 var now = TimeOnly.FromDateTime(DateTime.Now);

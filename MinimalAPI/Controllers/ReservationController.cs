@@ -35,7 +35,7 @@ public class ReservationController(IReservationRepository reservations, ITableRe
         return Created();
     }
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] ReservationDto dto)
+    public async Task<IActionResult> Update([FromBody] UpdateReservationDto dto)
     {
         try
         {
