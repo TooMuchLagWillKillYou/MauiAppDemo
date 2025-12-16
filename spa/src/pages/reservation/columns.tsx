@@ -9,6 +9,7 @@ import { format, parseISO, setHours, setMinutes } from 'date-fns';
 import InputCell from './InputCell';
 import CheckboxCell from './CheckboxCells';
 import { ReservationStatus } from '@/types/ReservationStatus';
+import SelectCell from './SelectCell';
 
 const sortableHeader = (column: Column<Reservation>, title: string) => (
   <Button
@@ -78,7 +79,7 @@ const columns: ColumnDef<Reservation>[] = [
   {
     accessorKey: 'table',
     header: ({ column }) => sortableHeader(column, 'Table'),
-    cell: (info) => <InputCell {...info} />,
+    cell: (info) => <SelectCell {...info} />,
     meta: { width: '10%' },
   },
   {
