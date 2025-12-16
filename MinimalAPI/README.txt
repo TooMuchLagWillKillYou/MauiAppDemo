@@ -18,7 +18,10 @@ Command to update database with last migration: update-database
 - di tanto in tanto eseguire il comando DBCC CHECKCONSTRAINTS
 
 // FE
-- creazione di una prenotazione
+- dare la possibilità all'utente di rimuovere il tavolo da uan prenotazione con una option vuota, sia in fase di creazione che in fase di aggiornamento
+- migliorare la validazione con Zod quando si crea una prenotazione, Alcuni campi devono essere required, il campo tableId, se presente, deve essere un tavolo esistente
+- sistemare l'update di una prenotazione
+- impedire la modifica di una prenotazione passata o già arrivata
 - cambio di stato di una prenotazione (Cancelled, Gone)
 - nuova sezione "worked hours" per tenere traccia delle ore lavorate dai dipendenti. Teoricamente saranno i dipendenti a inserire le loro ore di lavoro
 - sezione "calendario" per definire i giorni di chiusura del locale
@@ -26,7 +29,6 @@ Command to update database with last migration: update-database
 - modifica del menù dal fronted
 	- l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
 	- update di una prenotazione (il componente <DataGrid> non funziona bene)
-- display dei messaggi di errore tramite <Snackbar>
 - controllare di usare gli Effect nel modo corretto
 - eliminazione di una prenotazione anche per giorni futuri
 - impedire di aggiungere e modificare prenotazioni in giorni passati 
@@ -35,7 +37,7 @@ Command to update database with last migration: update-database
 - tradurre "No rows" in "Nessun prenotazione per questo giorno"
 - messaggi di errore in italiano
 - il campo 'Table' dovrebbe suggerire la lista di tavoli liberi o dovrebbe controllare che vengano inseriti solamente dei valori validi (magari basandosi sulla mappa?)>
-- validare che non si possano fare prenotazioni in orari in cui il ristorante è chiuso
+
 
 +----------------------------------------------------------------------------------------------------------------------+
 |   DONE STEPS                                                                                                         |
@@ -67,3 +69,11 @@ Command to update database with last migration: update-database
 	Voglio essere in grado di recuperare ongi modifica di ogni elemento del menù. Hint: system-versioned tables
 - riprendere in mano il frontend una volta completate le API. Decidere se continuare con MUI o usare un altra libreria grafica
 - implementare le rotte con react-router
+- creazione di una prenotazione
+- validare che non si possano fare prenotazioni in orari in cui il ristorante è chiuso
+- display dei messaggi di errore tramite <Snackbar>
+
+Condizioni con cui è possibile aggiornare una prenotazione:
+- la prenotazione non deve essere già arrivata
+- la prenotazione non può essere di un giorno precedente ad oggi
+- è possibile aggiornare una prenotazione di un orario già passato solamente se la prenotazione è di oggi
