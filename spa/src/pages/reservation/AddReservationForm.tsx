@@ -248,8 +248,8 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                       <FieldLabel htmlFor={field.name}>Table</FieldLabel>
                       <Select
                         name={field.name}
-                        value={field.state.value?.toString() ?? ''}
-                        onValueChange={(e) => field.handleChange(parseInt(e))}
+                        value={field.state.value}
+                        onValueChange={(e) => field.handleChange(e)}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Choose table" />
