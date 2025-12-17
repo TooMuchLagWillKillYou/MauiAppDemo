@@ -18,7 +18,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
 import { useForm } from '@tanstack/react-form';
-import * as z from 'zod';
 import { toast } from 'sonner';
 import { useTablesForDropdown } from '@/hooks/tableHooks';
 import {
@@ -29,9 +28,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAddReservation } from '@/hooks/reservationHooks';
-import { timeRegex } from '@/lib/constants';
 import { buildLocalDateTime, formatAxiosErrors } from '@/lib/utils';
-import { format, isBefore, isSameDay } from 'date-fns';
+import { format, isBefore, isSameDay, isToday } from 'date-fns';
 import type { AddReservation } from '@/types/AddReservation';
 import { useState } from 'react';
 import axios from 'axios';
@@ -43,48 +41,50 @@ function AddReservationForm({ day }: AddReservationFormProps) {
   const [open, setOpen] = useState<boolean>(false);
   const { data } = useTablesForDropdown();
   const addReservationMutation = useAddReservation();
-  const formSchema = z
-    .object({
-      name: z.string().min(1, 'Name field in mandatory'),
-      hour: z.string().regex(timeRegex, 'Invalid time format'),
-      people: z
-        .number()
-        .min(1, 'There must be at least 1 person for this reservation'),
-      tableId: z.number().nullable(),
-      notes: z.string().nullable(),
-    })
-    .superRefine((data, ctx) => {
-      const reservationDatetime = buildLocalDateTime(day, data.hour);
 
-      if (isBefore(reservationDatetime, new Date())) {
-        ctx.addIssue({
-          path: ['hour'],
-          code: z.ZodIssueCode.custom,
-          message: 'The selected time is already in the past',
-        });
-      }
-    });
   const form = useForm({
     defaultValues: {
       name: '',
+      day,
       hour: '',
       people: 2,
-      tableId: null,
-      notes: null,
+      tableId: undefined,
+      notes: undefined,
     },
     validators: {
-      onChange: formSchema,
+      onChange: ({ value }) => {
+        const errors: Record<string, string | undefined> = {};
+
+        // name
+        if (!value.name.trim()) errors.name = "The 'Name' field is required";
+        // day
+        const date = new Date(value.day);
+        date.setHours(0, 0, 0, 0);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (date < today)
+          errors.day = 'Reservation day must be today or in the future';
+        // hour
+        if (!value.hour) errors.hour = "The 'Hour' field is required";
+        if (value.hour && isToday(value.day)) {
+          const reservationDatetime = buildLocalDateTime(value.day, value.hour);
+
+          if (isBefore(reservationDatetime, new Date()))
+            errors.hour = 'The selected time is already in the past for today';
+        }
+        // people
+        if (value.people < 1)
+          errors.people =
+            'There must be at least 1 person for this reservation';
+
+        return Object.keys(errors).length > 0 ? { fields: errors } : undefined;
+      },
     },
-    onSubmit: async (e) => {
+    onSubmit: async ({ value, formApi }) => {
       try {
-        const parsed = formSchema.parse(e.value);
+        await addReservationMutation.mutateAsync(value as AddReservation);
 
-        await addReservationMutation.mutateAsync({
-          ...parsed,
-          day,
-        } as AddReservation);
-
-        form.reset();
+        formApi.reset();
         setOpen(false);
         toast.success('Reservation created successfully!');
       } catch (error) {
@@ -157,7 +157,11 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                       placeholder="Name"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        errors={field.state.meta.errors?.map((e) => ({
+                          message: e,
+                        }))}
+                      />
                     )}
                   </Field>
                 );
@@ -189,7 +193,11 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                         }
                       />
                       {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
+                        <FieldError
+                          errors={field.state.meta.errors.map((e) => ({
+                            message: e,
+                          }))}
+                        />
                       )}
                     </Field>
                   );
@@ -218,7 +226,11 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                         placeholder="People"
                       />
                       {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
+                        <FieldError
+                          errors={field.state.meta.errors.map((e) => ({
+                            message: e,
+                          }))}
+                        />
                       )}
                     </Field>
                   );
@@ -254,7 +266,11 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                         </SelectContent>
                       </Select>
                       {isInvalid && (
-                        <FieldError errors={field.state.meta.errors} />
+                        <FieldError
+                          errors={field.state.meta.errors.map((e) => ({
+                            message: e,
+                          }))}
+                        />
                       )}
                     </Field>
                   );
@@ -281,7 +297,11 @@ function AddReservationForm({ day }: AddReservationFormProps) {
                       placeholder="Notes"
                     />
                     {isInvalid && (
-                      <FieldError errors={field.state.meta.errors} />
+                      <FieldError
+                        errors={field.state.meta.errors.map((e) => ({
+                          message: e,
+                        }))}
+                      />
                     )}
                   </Field>
                 );

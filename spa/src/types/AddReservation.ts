@@ -3,6 +3,6 @@ export type AddReservation = {
   day: string;
   hour: string;
   people: number;
-  tableId: number;
-  notes: string;
+  tableId: number | undefined;
+  notes: string | undefined;
 };
