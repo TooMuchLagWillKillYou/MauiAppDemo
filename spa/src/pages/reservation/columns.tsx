@@ -79,7 +79,7 @@ const columns: ColumnDef<Reservation>[] = [
   {
     accessorKey: 'table',
     header: ({ column }) => sortableHeader(column, 'Table'),
-    cell: (info) => <SelectCell {...info} />,
+    cell: (info) => <InputCell {...info} />,
     meta: { width: '10%' },
   },
   {
