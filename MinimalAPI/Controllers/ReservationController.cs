@@ -21,8 +21,18 @@ public class ReservationController(IReservationRepository reservations, ITableRe
     {
         if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        var table = dto.TableId is null ? null : await tables.Get((int)dto.TableId);
+        Table? table = null;
+        if (dto.TableId is not null)
+        {
+            table = await tables.Get((int)dto.TableId);
 
+            if (table is null)
+            {
+                ModelState.AddModelError(nameof(dto.TableId), $"A table with ID {dto.TableId} was not found.");
+                return BadRequest(ModelState);
+            }
+        }
+       
         await reservations.Add(new Reservation
         {
             Name = dto.Name,

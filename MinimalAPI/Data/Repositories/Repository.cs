@@ -7,15 +7,8 @@ public class Repository<TEntity>(ReservationDbContext ctx)
     : IRepository<TEntity> where TEntity : class, IEntity
 {
     public IQueryable<TEntity> Query() => ctx.Set<TEntity>();
-    public async Task<TEntity> Get(int id, CancellationToken token = default)
-    {
-        var result = await Query().FirstAsync(e => e.Id == id, token);
-
-        if (result is null) 
-            throw new KeyNotFoundException($"Item of type {typeof(TEntity).FullName} with id {id} not found");
-
-        return result;
-    }
+    public async Task<TEntity?> Get(int id, CancellationToken token = default)
+        => await Query().FirstOrDefaultAsync(e => e.Id == id, token);
     public async Task<TEntity> Add(TEntity e, CancellationToken token = default)
     {
         await ctx.Set<TEntity>().AddAsync(e, token);
