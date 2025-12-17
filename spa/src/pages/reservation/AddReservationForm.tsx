@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
-import { useForm } from '@tanstack/react-form';
+import { revalidateLogic, useForm } from '@tanstack/react-form';
 import { toast } from 'sonner';
 import { useTablesForDropdown } from '@/hooks/tableHooks';
 import {
@@ -50,9 +50,13 @@ function AddReservationForm({ day }: AddReservationFormProps) {
       people: 2,
       tableId: undefined,
       notes: undefined,
-    },
+    } as AddReservation,
+    validationLogic: revalidateLogic({
+      mode: 'submit',
+      modeAfterSubmission: 'change',
+    }),
     validators: {
-      onChange: ({ value }) => {
+      onDynamic: ({ value }) => {
         const errors: Record<string, string | undefined> = {};
 
         // name
