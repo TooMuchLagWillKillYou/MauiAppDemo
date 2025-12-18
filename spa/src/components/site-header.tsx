@@ -2,8 +2,7 @@ import { useLocation } from 'react-router';
 import routes from '@/routes/routes';
 import { SidebarTrigger } from './ui/sidebar';
 import { Separator } from './ui/separator';
-import { Button } from './ui/button';
-
+import Forecast from './forecast';
 export function SiteHeader() {
   const { pathname } = useLocation();
   const currentRoute = routes.find((r) => r.path === pathname);
@@ -20,16 +19,7 @@ export function SiteHeader() {
           {currentRoute?.title ?? 'Untitled Page'}
         </h1>
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="ghost" asChild size="sm" className="hidden sm:flex">
-            <a
-              href="https://github.com/shadcn-ui/ui/tree/main/apps/v4/app/(examples)/dashboard"
-              rel="noopener noreferrer"
-              target="_blank"
-              className="dark:text-foreground"
-            >
-              Meteo e ora
-            </a>
-          </Button>
+          <Forecast />
         </div>
       </div>
     </header>
