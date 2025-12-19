@@ -11,9 +11,7 @@ import { format } from 'date-fns';
 
 export default function Reservations() {
   const [day, setDay] = useState<string>(format(new Date(), 'yyyy-MM-dd'));
-  const { data, isLoading, isError } = useReservationsByDate(day);
-
-  if (isError) return <p>Error loading reservations</p>;
+  const { data, isLoading } = useReservationsByDate(day);
 
   const getSelectedRows = (): RowSelectionState => {
     const arrivedReservations: Reservation[] = Array.from(data ?? []).filter(

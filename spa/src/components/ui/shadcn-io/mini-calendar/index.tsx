@@ -54,7 +54,7 @@ const formatDate = (date: Date) => {
 
 export type MiniCalendarProps = HTMLAttributes<HTMLDivElement> & {
   value?: Date;
-  defaultValue?: Date;
+  defaultDate?: Date;
   onValueChange?: (date: Date | undefined) => void;
   startDate?: Date;
   defaultStartDate?: Date;
@@ -64,7 +64,7 @@ export type MiniCalendarProps = HTMLAttributes<HTMLDivElement> & {
 
 export const MiniCalendar = ({
   value,
-  defaultValue,
+  defaultDate,
   onValueChange,
   startDate,
   defaultStartDate = new Date(),
@@ -78,7 +78,7 @@ export const MiniCalendar = ({
     Date | undefined
   >({
     prop: value,
-    defaultProp: defaultValue,
+    defaultProp: defaultDate,
     onChange: onValueChange,
   });
 
@@ -215,7 +215,7 @@ export const MiniCalendarDay = ({
             <Button
               disabled
               className={cn(
-                'h-auto min-w-[3rem] flex-col gap-0 p-2 text-xs',
+                'h-auto min-w-12 flex-col gap-0 p-2 text-xs',
                 isTodayDate && !isSelected && 'bg-accent',
                 className
               )}
@@ -247,7 +247,7 @@ export const MiniCalendarDay = ({
   return (
     <Button
       className={cn(
-        'h-auto min-w-[3rem] flex-col gap-0 p-2 text-xs',
+        'h-auto min-w-12 flex-col gap-0 p-2 text-xs',
         isTodayDate && !isSelected && 'bg-accent',
         className
       )}

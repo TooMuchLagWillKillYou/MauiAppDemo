@@ -17,7 +17,7 @@ function isWithinRange(d: Date, range: ClosureDay) {
 const getDays = (
   startDate: Date,
   count: number,
-  closureDays: ClosureDay[]
+  closureDays?: ClosureDay[]
 ): DayForMiniCalendar[] => {
   const allDays: Date[] = [];
 
