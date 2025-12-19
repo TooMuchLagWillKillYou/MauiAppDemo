@@ -54,7 +54,7 @@ const formatDate = (date: Date) => {
 
 export type MiniCalendarProps = HTMLAttributes<HTMLDivElement> & {
   value?: Date;
-  defaultValue?: Date;
+  defaultDate?: Date;
   onValueChange?: (date: Date | undefined) => void;
   startDate?: Date;
   defaultStartDate?: Date;
@@ -64,7 +64,7 @@ export type MiniCalendarProps = HTMLAttributes<HTMLDivElement> & {
 
 export const MiniCalendar = ({
   value,
-  defaultValue,
+  defaultDate,
   onValueChange,
   startDate,
   defaultStartDate = new Date(),
@@ -78,7 +78,7 @@ export const MiniCalendar = ({
     Date | undefined
   >({
     prop: value,
-    defaultProp: defaultValue,
+    defaultProp: defaultDate,
     onChange: onValueChange,
   });
 

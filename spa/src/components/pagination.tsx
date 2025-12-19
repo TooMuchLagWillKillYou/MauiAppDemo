@@ -17,14 +17,12 @@ function Pagination({ setDay }: PaginationProps) {
   const numberOfDaysDisplayed = 24;
   const [from, setFrom] = useState<Date>(subDays(new Date(), 10));
   const [to, setTo] = useState<Date>(addDays(from, numberOfDaysDisplayed));
-  const { data, isLoading, isError } = useGetRange(from, to);
+  const { data, isLoading } = useGetRange(from, to);
 
   const handleStartDateChange = (d: Date) => {
     setFrom(d);
     setTo(addDays(d, numberOfDaysDisplayed));
   };
-
-  if (isError) return <p>Error loading closure days</p>;
 
   if (isLoading) {
     return (
@@ -39,10 +37,10 @@ function Pagination({ setDay }: PaginationProps) {
       defaultStartDate={from}
       days={numberOfDaysDisplayed}
       onStartDateChange={handleStartDateChange}
-      defaultValue={new Date()}
+      defaultDate={new Date()}
     >
       <MiniCalendarNavigation direction="prev" />
-      <MiniCalendarDays days={getDays(from, numberOfDaysDisplayed, data!)}>
+      <MiniCalendarDays days={getDays(from, numberOfDaysDisplayed, data)}>
         {(date) => (
           <MiniCalendarDay
             date={date}
