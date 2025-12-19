@@ -4,8 +4,8 @@ import { fetchWeatherApi } from 'openmeteo';
 
 export function useWeather() {
   const params = {
-    latitude: 45.8605,
-    longitude: 12.4128,
+    latitude: 45.8918,
+    longitude: 12.3299,
     hourly: ['temperature_2m', 'weather_code'],
     current: ['temperature_2m', 'weather_code'],
     timezone: 'GMT',
