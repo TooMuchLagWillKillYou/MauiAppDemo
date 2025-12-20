@@ -24,7 +24,7 @@ function Forecast() {
   }, []);
 
   const renderForecast = (hour: string, emoji?: string, temp?: string) => (
-    <div className="flex">
+    <div className="flex" key={hour}>
       <div className="text-4xl relative bottom-[.1rem]">{emoji}</div>
       <div className="flex flex-col">
         <span className="text-sm font-medium">{hour}</span>
