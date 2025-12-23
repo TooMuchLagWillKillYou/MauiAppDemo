@@ -18,9 +18,14 @@ Command to update database with last migration: update-database
 - di tanto in tanto eseguire il comando DBCC CHECKCONSTRAINTS
 
 // FE
-- dare la possibilità all'utente di rimuovere il tavolo da uan prenotazione con una option vuota, sia in fase di creazione che in fase di aggiornamento
+#region V1.0.0
+- dare la possibilità all'utente di rimuovere il tavolo da una prenotazione con una option vuota, sia in fase di creazione che in fase di aggiornamento
 - sistemare l'update di una prenotazione
 - impedire la modifica di una prenotazione passata o già arrivata
+- eliminazione di una prenotazione anche per giorni futuri
+- timeout che reimposta la data di oggi dopo un intervallo di tempo
+#endregion
+
 - cambio di stato di una prenotazione (Cancelled, Gone)
 - nuova sezione "worked hours" per tenere traccia delle ore lavorate dai dipendenti. Teoricamente saranno i dipendenti a inserire le loro ore di lavoro
 - sezione "calendario" per definire i giorni di chiusura del locale
@@ -28,9 +33,6 @@ Command to update database with last migration: update-database
 	- l'utente deve poter modificare la colonna "Categoria" scegliendo da un dropdown
 	- update di una prenotazione (il componente <DataGrid> non funziona bene)
 - controllare di usare gli Effect nel modo corretto
-- eliminazione di una prenotazione anche per giorni futuri
-- impedire di aggiungere e modificare prenotazioni in giorni passati 
-- timeout che reimposta la data di oggi dopo un intervallo di tempo
 - alert (vedi notion)
 - tradurre "No rows" in "Nessun prenotazione per questo giorno"
 - messaggi di errore in italiano
