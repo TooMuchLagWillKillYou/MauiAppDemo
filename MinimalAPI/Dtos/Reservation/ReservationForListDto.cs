@@ -7,7 +7,7 @@ namespace MinimalAPI.Dtos.Reservation
         DateOnly Day,
         TimeOnly Hour, 
         int People, 
-        string? Table, 
+        int? Table, 
         string? Notes, 
         ReservationStatus Status);
 }

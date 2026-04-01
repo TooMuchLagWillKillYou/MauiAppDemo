@@ -6,52 +6,63 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useUpdateReservation } from '@/hooks/reservationHooks';
-import type { Reservation } from '@/types/Reservation';
-import { useState } from 'react';
-import type { Column, Row } from '@tanstack/react-table';
+import type { Reservation } from '@/types/reservation';
+import type { Row } from '@tanstack/react-table';
 import { useTablesForDropdown } from '@/hooks/tableHooks';
-import type { Table } from '@/types/Table';
+import { useState } from 'react';
 
 interface SelectCellProps {
   row: Row<Reservation>;
-  column: Column<Reservation>;
 }
 
 function SelectCell({ row }: SelectCellProps) {
   const { data } = useTablesForDropdown();
-  const reservation = row.original as Reservation;
-
-  const [value, setValue] = useState<string | undefined>(
-    reservation.table?.id.toString() ?? ''
-  );
   const { mutateAsync } = useUpdateReservation();
 
-  const handleChange = async (value: string) => {
-    const selectedTable = data?.find((x) => x.value == value);
-    const table: Table = {
-      id: parseInt(selectedTable?.value ?? ''),
-      description: selectedTable?.value ?? '',
-    };
-    reservation.table = table;
+  const [value, setValue] = useState(row.original.table?.toString());
 
-    await mutateAsync(reservation);
-    setValue(value);
+  const handleChange = async (tableId: string) => {
+    console.log('tableId', tableId);
+
+    // const selected = data?.find((t) => t.value === tableId);
+    // console.log('selected', selected);
+
+    setValue(tableId);
+    // if (!selected) return;
+
+    await mutateAsync({
+      id: row.original.id,
+      name: row.original.name,
+      day: row.original.day,
+      hour: row.original.hour,
+      people: row.original.people,
+      tableId: Number(tableId),
+      notes: row.original.notes,
+    });
   };
 
   return (
-    <Select value={value} onValueChange={handleChange}>
+    <Select defaultValue={value} onValueChange={handleChange}>
       <SelectTrigger>
         <SelectValue placeholder="Choose table" />
       </SelectTrigger>
+
       <SelectContent>
-        {data?.map((x, i) => (
-          <SelectItem key={`option-table-${i}`} value={x.value}>
-            {x.label}
-          </SelectItem>
-        ))}
+        {data?.map((table) => {
+          return (
+            <SelectItem key={table.value} value={table.value.toString()}>
+              {table.label}
+            </SelectItem>
+          );
+        })}
       </SelectContent>
     </Select>
   );
 }
 
 export default SelectCell;
+
+// capire cosa sta succendendo di sbagliato:
+// - è sbagliata la prop 'value' dell'option della select
+// - oppure è l'api che manda il valore sbagliato?
+// - oppure il valore dell'api viene parsato erroneamente da qualche parte?
