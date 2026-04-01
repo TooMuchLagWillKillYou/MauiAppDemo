@@ -1,6 +1,6 @@
 import { apiConfig } from '@/lib/constants';
-import type { AddReservation } from '@/types/AddReservation';
-import type { Reservation } from '@/types/Reservation';
+import type { AddReservation } from '@/types/UpdateReservation';
+import type { Reservation } from '@/types/reservation';
 import { ReservationStatus } from '@/types/ReservationStatus';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
@@ -47,7 +47,7 @@ const useAddReservation = () => {
 const useUpdateReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (reservation: Reservation) =>
+    mutationFn: async (reservation: AddReservation) =>
       await axios.put(`${apiConfig.baseURL}/reservation/update`, reservation),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });

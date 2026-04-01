@@ -1,6 +1,6 @@
 import { Input } from '@/components/ui/input';
 import { useUpdateReservation } from '@/hooks/reservationHooks';
-import type { Reservation } from '@/types/Reservation';
+import type { Reservation } from '@/types/reservation';
 import type { Column, Row } from '@tanstack/react-table';
 import { useEffect, useState } from 'react';
 
@@ -32,7 +32,15 @@ function InputCell<TValue extends string | number>({
 
       if (sanitizedValue != reservation[field]) {
         reservation[field] = sanitizedValue;
-        await mutateAsync(reservation);
+        await mutateAsync({
+          id: reservation.id,
+          name: reservation.name,
+          day: reservation.day,
+          hour: reservation.hour,
+          people: reservation.people,
+          tableId: reservation.table?.id,
+          notes: reservation.notes,
+        });
       }
     }, 500);
 

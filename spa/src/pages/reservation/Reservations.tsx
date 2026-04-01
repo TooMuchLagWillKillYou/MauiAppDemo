@@ -3,7 +3,7 @@ import { useReservationsByDate } from '@/hooks/reservationHooks';
 import { columns } from './columns';
 import { useState } from 'react';
 import { ReservationStatus } from '@/types/ReservationStatus';
-import type { Reservation } from '@/types/Reservation';
+import type { Reservation } from '@/types/reservation';
 import type { RowSelectionState } from '@tanstack/react-table';
 import Pagination from '@/components/pagination';
 import AddReservationForm from './AddReservationForm';

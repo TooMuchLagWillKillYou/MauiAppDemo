@@ -2,10 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import type { Reservation } from '@/types/Reservation';
+import type { Reservation } from '@/types/reservation';
 import type { Column, ColumnDef } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
-import { format, parseISO, setHours, setMinutes } from 'date-fns';
 import InputCell from './InputCell';
 import CheckboxCell from './CheckboxCells';
 import { ReservationStatus } from '@/types/ReservationStatus';
@@ -21,16 +20,6 @@ const sortableHeader = (column: Column<Reservation>, title: string) => (
     <ArrowUpDown className="ml-2 h-4 w-4" />
   </Button>
 );
-
-const transformInput = (raw: string, original: Reservation) => {
-  const date = parseISO(original.hour);
-  const [h, m] = raw.split(':').map(Number);
-
-  const updated = setMinutes(setHours(date, h), m);
-
-  return format(updated, "yyyy-MM-dd'T'HH:mm:ss"); // TODO: surely need fix
-};
-
 const columns: ColumnDef<Reservation>[] = [
   {
     id: 'select',
@@ -65,9 +54,7 @@ const columns: ColumnDef<Reservation>[] = [
     id: 'hour',
     accessorFn: (row) => row.hour,
     header: ({ column }) => sortableHeader(column, 'Hour'),
-    cell: (info) => (
-      <InputCell {...info} transformInput={transformInput} inputType="time" />
-    ),
+    cell: (info) => <InputCell {...info} inputType="time" />,
     meta: { width: '10%' },
   },
   {
@@ -79,7 +66,7 @@ const columns: ColumnDef<Reservation>[] = [
   {
     accessorKey: 'table',
     header: ({ column }) => sortableHeader(column, 'Table'),
-    cell: (info) => <InputCell {...info} />,
+    cell: (info) => <SelectCell {...info} />,
     meta: { width: '10%' },
   },
   {

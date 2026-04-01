@@ -30,7 +30,7 @@ import {
 import { useAddReservation } from '@/hooks/reservationHooks';
 import { buildLocalDateTime, formatAxiosErrors } from '@/lib/utils';
 import { format, isBefore, isSameDay, isToday } from 'date-fns';
-import type { AddReservation } from '@/types/AddReservation';
+import type { AddReservation } from '@/types/UpdateReservation';
 import { useState } from 'react';
 import axios from 'axios';
 
