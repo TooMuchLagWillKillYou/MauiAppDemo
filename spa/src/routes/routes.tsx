@@ -1,5 +1,5 @@
 import Map from '@/pages/Map';
-import Menu from '@/pages/Menu';
+import Menu from '@/pages/menu/Menu';
 import Reservations from '@/pages/reservation/Reservations';
 import Settings from '@/pages/Settings';
 import WorkedHours from '@/pages/WorkedHours';
